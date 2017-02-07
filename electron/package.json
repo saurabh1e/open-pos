@@ -1,0 +1,34 @@
+{
+  "name": "covalent-electron-quick-start",
+  "version": "0.0.1",
+  "description": "A minimal Covalent Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/Teradata/covalent-electron",
+  "keywords": [
+    "Covalent",
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "license": "MIT",
+  "author": "Teradata UX",
+  "contributors": [
+    "Kyle Ledbetter <kyle.ledbetter@teradata.com>",
+    "Richa Vyas <richa.vyas@teradata.com>",
+    "Ed Morales <eduardo.morales@teradata.com>",
+    "Jason Weaver <jason.weaver@teradata.com>",
+    "Jeremy Wilken <jeremy.wilken@teradata.com>",
+    "Jeremy Smartt <jeremy.smartt@teradata.com>"
+  ],
+  "dependencies": {
+    "monaco-editor": "^0.8.0"
+  },
+  "devDependencies": {
+    "electron": "^1.4.1"
+  }
+}

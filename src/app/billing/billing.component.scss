@@ -1,0 +1,42 @@
+.filter-card{
+  width: 500px;
+}
+
+.filter-card-parent{
+  position: absolute;
+  left: 85px;
+  top:65px;
+  z-index: 3;
+}
+
+
+.Icon-Button {
+  [md-icon-button], [md-mini-fab] {
+    height: 0;
+    width: 10px;
+    line-height: 0;
+  }
+}
+
+.product-click{
+    cursor: pointer;
+}
+
+.info-click {
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+
+.search-margin{
+  margin-top: -20px;
+  padding:16px;
+}
+.divider-margin {
+  margin-top: 12px;
+}
+
+md-card>:first-child {
+  margin-top: 4px;
+}

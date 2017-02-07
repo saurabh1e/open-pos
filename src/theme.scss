@@ -1,0 +1,63 @@
+@import '~@angular/material/core/theming/all-theme';
+@import '~@covalent/core/theming/all-theme';
+@import '~@covalent/markdown/markdown-theme';
+@import '~@covalent/charts/charts-theme';
+@import '~@covalent/highlight/highlight-theme';
+// Plus imports for other components in your app.
+
+// Include the base styles for Angular Material core. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include md-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$primary: md-palette($md-blue, 700, 500, 800);
+$accent:  md-palette($md-orange, 800, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$warn:    md-palette($md-red, 600);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$theme: md-light-theme($primary, $accent, $warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($theme);
+@include covalent-theme($theme);
+@include covalent-markdown-theme($theme);
+@include covalent-charts-theme($theme);
+@include covalent-highlight-theme();
+
+// Custom theme examples
+.white-orange {
+    $primary2: md-palette($md-grey, 50);
+    $accent2:  md-palette($md-orange, 800);
+    $warn2:    md-palette($md-red, 600);
+
+    $white-orange: md-light-theme($primary2, $accent2, $warn2);
+
+    @include angular-material-theme($white-orange);
+    @include covalent-theme($white-orange);
+}
+.dark-grey-blue {
+    $primary3: md-palette($md-blue-grey, 800);
+    $accent3:  md-palette($md-teal, 500);
+    $warn3:    md-palette($md-red, 600);
+
+    $dark-grey-blue: md-dark-theme($primary3, $accent3, $warn3);
+
+    @include angular-material-theme($dark-grey-blue);
+    @include covalent-theme($dark-grey-blue);
+}
+.light-blue-red {
+    $primary4: md-palette($md-light-blue, 700);
+    $accent4:  md-palette($md-red, 700);
+    $warn4:    md-palette($md-deep-orange, 800);
+
+    $light-blue-red: md-light-theme($primary4, $accent4, $warn4);
+
+    @include angular-material-theme($light-blue-red);
+    @include covalent-theme($light-blue-red);
+}

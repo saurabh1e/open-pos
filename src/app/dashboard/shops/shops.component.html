@@ -1,0 +1,50 @@
+ <div class="md-content inset">
+      <div layout="row" layout-align="center center">
+
+        <template let-item let-last="last" ngFor [ngForOf]="shops">
+
+          <md-card flex="33">
+            <md-card-title class="tc-dark-orange-500">
+              {{item.name}}
+            </md-card-title>
+
+            <md-card-subtitle>{{item.identity}}</md-card-subtitle>
+
+            <md-divider></md-divider>
+
+            <md-card-content>
+              <p layout="row" layout-align="start start">
+                <span flex="30" class="text-left md-title tc-dark-blue-grey-500">Total Sales</span>&nbsp;
+                <span flex="5"></span>
+                <span class="text-right md-title tc-dark-blue-500">:&nbsp;{{item.total_sales.total_sales || 0}}/-</span>
+              </p>
+              <p layout="row" layout-align="start start">
+                <span flex="30" class="text-left md-title tc-dark-blue-grey-500">Total Orders</span>&nbsp;
+                <span flex="5"></span>
+                <span class="text-right md-title tc-dark-blue-500">:&nbsp;{{item.total_sales.total_orders}}</span>
+              </p>
+              <p layout="row" layout-align="start start">
+                <span flex="30" class="text-left md-title tc-dark-blue-grey-500">Total Items</span>&nbsp;
+                <span flex="5"></span>
+                <span class="text-right md-title tc-dark-blue-500">:&nbsp;{{item.total_sales.total_items}}</span>
+              </p>
+
+            </md-card-content>
+            <md-divider></md-divider>
+            <md-card-actions layout="row" layout-align="end end">
+              <button md-button md-raised-button="" color="accent" (click)="openShop(item)">Open</button>
+              <button md-button md-raised-button="" color="accent" (click)="syncData(item.id)">Sync</button>
+            </md-card-actions>
+
+          </md-card>
+          <md-divider *ngIf="!last"></md-divider>
+        </template>
+
+      </div>
+
+
+      <a md-fab color="accent" class="md-fab-position-bottom-right" [routerLink]="['/form']">
+        <md-icon>add</md-icon>
+      </a>
+
+    </div>
