@@ -1,8 +1,8 @@
 #!/bin/bash
-echo 'Replace api endpoint with heroku'
+echo 'Replace api endpoint with api.com'
 
 cat <<'EOF' >> api.config.ts
-export const MOCK_API: string = "https://whispering-beyond-86495.herokuapp.com";
+export const MOCK_API: string = "api.com";
 EOF
 
 mv src/config/api.config.ts api.config.ts.default
