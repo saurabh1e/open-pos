@@ -14,11 +14,19 @@ export class CartService {
   _carts$: Subject<Order[]> = <Subject<Order[]>>  new Subject();
 
   constructor(private _indexDB: IndexDBServiceService) {
-
+    this.carts = <Order[]>[];
   }
 
   set carts(data: Order[]) {
     this._carts = data;
+    this.carts.forEach((cart)=>{
+      this._indexDB.carts.add(cart).then((result)=>{
+
+      }, (err)=>{
+        this._indexDB.carts.update(cart.local_id, cart)
+      })
+    });
+
     this._carts$.next(this.carts);
   }
   set currentCart(data: Order) {
@@ -32,17 +40,24 @@ export class CartService {
     return this._currentCart
   }
 
-  async newCart(id: number): Promise<Order>{
+  async newCart(id: number): Promise<number>{
     let order = <Order>{};
     order.retail_shop_id = id;
-    console.log(this._currentCart);
     return await this._indexDB.carts.count().then((count)=>{
-      order.local_id = count;
-      this._currentCart = order;
-      return this._currentCart;
+      order.local_id = count+1;
+      order.total = 0;
+      order.created_on = new Date();
+      this.carts = this.carts.concat(order);
+      return order.local_id
     });
 
   }
 
+  async deleteCart(cart: Order): Promise<boolean>{
+    this.carts.splice(this.carts.indexOf(cart), 1);
+    return this._indexDB.carts.delete(cart.local_id).then(()=>{
+      return true
+    })
+  }
 
 }

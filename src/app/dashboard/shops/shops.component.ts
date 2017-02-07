@@ -54,8 +54,9 @@ export class ShopComponent implements AfterViewInit {
     }, (error) => {
       console.log(error)
     });
-
-
+  }
+  goBack():void {
+    window.history.back();
   }
 
 }

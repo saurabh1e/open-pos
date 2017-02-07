@@ -6,6 +6,7 @@ import {RetailShop} from "../../services/shop.service";
 
 import {Router, ActivatedRoute} from "@angular/router";
 import {IndexDBServiceService} from "../../services/indexdb.service";
+import {Order} from "../../services/orders.service";
 
 @Component({
   selector: 'billing',
@@ -17,6 +18,7 @@ import {IndexDBServiceService} from "../../services/indexdb.service";
 export class BillingComponent implements AfterViewInit, OnInit{
 
   shop: RetailShop;
+  cart: Order;
   searchInputTerm: string;
   filterType: number = 0;
   _brands: Brand[];
@@ -41,9 +43,9 @@ export class BillingComponent implements AfterViewInit, OnInit{
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params: {id: string}) => {
       if(params.id){
-        this._indexDb.shops.get(parseInt(params.id)).then((data)=>{
-          this.shop = data;
-          this.setInitialData();
+        this._indexDb.carts.get(parseInt(params.id)).then((data)=>{
+          this.cart = data;
+          this.setInitialData(this.cart.retail_shop_id);
         })
       }
     });
@@ -98,26 +100,26 @@ export class BillingComponent implements AfterViewInit, OnInit{
   }
 
   goBack():void {
-    this._route.navigate(['/home/dashboard'])
+    window.history.back();
   }
 
-  setInitialData():void{
-    this._indexDb.distributors.where({retail_shop_id: this.shop.id}).toArray().then((data)=>{
+  setInitialData(retail_shop_id: number):void{
+    this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.distributors = data;
       this._cd.markForCheck();
     });
 
-    this._indexDb.tags.where({retail_shop_id: this.shop.id}).toArray().then((data)=>{
+    this._indexDb.tags.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.tags = data;
       this._cd.markForCheck();
     });
 
-    this._indexDb.brands.where({retail_shop_id: this.shop.id}).toArray().then((data)=>{
+    this._indexDb.brands.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.brands = data;
       this._cd.markForCheck();
     });
 
-    this._indexDb.products.where({retail_shop_id: this.shop.id}).toArray().then((data)=>{
+    this._indexDb.products.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.products = data;
       this._cd.markForCheck();
 

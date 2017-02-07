@@ -37,7 +37,7 @@ export class IndexDBServiceService extends Dexie {
         taxes: "++id,name,retail_shop_id",
         shops: "++id, name",
         orders: "++id",
-        carts: "++id, local_id, retail_shop_id",
+        carts: "++local_id,id,retail_shop_id",
         localities: "++id, name"
       });
   }

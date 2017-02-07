@@ -35,6 +35,7 @@ export interface Order {
   address_id: number;
   retail_shop_id: number;
   current_status_id: number;
+  created_on: Date;
 
   address: Address;
   order_items: OrderItem[];

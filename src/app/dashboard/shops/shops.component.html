@@ -1,4 +1,50 @@
- <div class="md-content inset">
+
+<td-layout-manage-list #list>
+  <md-toolbar list-items>
+    <span>Menu</span>
+  </md-toolbar>
+  <md-nav-list list-items>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/home/dashboard']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      Dashboard
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/home/1']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      Add Stock
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/home/1']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      Add Consumptions
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/home/1']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      View Reports
+    </a>
+  </md-nav-list>
+
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <button md-icon-button color="accent" (click)="goBack()"><md-icon>arrow_back</md-icon></button>
+    <span>{{title}}</span>
+    <span flex></span>
+  </div>
+
+    <div class="md-content inset">
       <div layout="row" layout-align="center center">
 
         <template let-item let-last="last" ngFor [ngForOf]="shops">
@@ -48,3 +94,4 @@
       </a>
 
     </div>
+</td-layout-manage-list>
