@@ -9,6 +9,7 @@ import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Order} from "../../../services/orders.service";
 import {timeInterval} from "rxjs/operator/timeInterval";
 import {stringify} from "@angular/forms/src/facade/lang";
+import {BillingComponent} from "../../billing/billing.component";
 
 @Component({
   selector: 'carts',
@@ -23,25 +24,11 @@ export class CartComponent implements OnInit {
   constructor(private _cartService: CartService,
               private _activatedRoute: ActivatedRoute,
               private _indexDB: IndexDBServiceService,
-              private _dialogService: TdDialogService,
               private _route: Router,
               private _loadingService: TdLoadingService) {
 
   }
-  openConfirm(id: string): void {
-    this._dialogService.openConfirm({
-      message: 'Are you sure you want to delete this feature? It\'s being used!',
-      title: 'Confirm',
-      cancelButton: 'No, Cancel',
-      acceptButton: 'Yes, Delete',
-    }).afterClosed().subscribe((accept: boolean) => {
-      if (accept) {
 
-      } else {
-        // DO SOMETHING ELSE
-      }
-    });
-  }
   ngOnInit(): void {
     this.title = 'Pending Orders';
     this._activatedRoute.params.subscribe((params: {id: string}) => {
