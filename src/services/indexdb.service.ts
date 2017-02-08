@@ -1,7 +1,7 @@
 import {Subject, Observable} from "rxjs";
 
 import Dexie  from 'dexie';
-import {Product, Distributor, Tag, Brand, Tax} from "./items.service";
+import {Product, Distributor, Tag, Brand, Tax, Salt} from "./items.service";
 import {Injectable} from "@angular/core";
 import {RetailShop} from "./shop.service";
 import {Order, Locality} from "./orders.service";
@@ -18,6 +18,7 @@ export class IndexDBServiceService extends Dexie {
   distributors: Dexie.Table<Distributor, number>;
   brands: Dexie.Table<Brand, number>;
   tags: Dexie.Table<Tag, number>;
+  salts: Dexie.Table<Salt, number>;
   taxes: Dexie.Table<Tax, number>;
   shops: Dexie.Table<RetailShop, number>;
   orders: Dexie.Table<Order, number>;
@@ -34,6 +35,7 @@ export class IndexDBServiceService extends Dexie {
         distributors: "++id,name,retail_shop_id",
         brands: "++id,name,retail_shop_id",
         tags: "++id,name,retail_shop_id",
+        salts: "++id,name,retail_shop_id",
         taxes: "++id,name,retail_shop_id",
         shops: "++id, name",
         orders: "++id",

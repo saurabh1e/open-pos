@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Product, Tag, Brand} from "../services/items.service";
+import {Product, Tag, Brand, Salt} from "../services/items.service";
 
 @Pipe({
   name: 'productSearch'
@@ -33,6 +33,30 @@ export class ProductTagPipe implements PipeTransform {
             if (val.tags.indexOf(tag) < 0){
               return false
             }
+        });
+
+        return val;
+
+      });
+    }
+    return value
+  }
+
+}
+
+@Pipe({
+  name: 'productSalt'
+})
+export class ProductSaltPipe implements PipeTransform {
+
+  transform(value: Product[], args?: Salt[]): any {
+
+    if (args && value && args.length) {
+      return value.filter((val) => {
+        args.forEach((tag)=>{
+          if (val.salts.indexOf(tag) < 0){
+            return false
+          }
         });
 
         return val;

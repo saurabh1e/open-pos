@@ -27,7 +27,10 @@ import {HttpService} from "../services/http.service";
 import {AuthService} from "../services/auth.service";
 import {UsersService} from "../services/users.service";
 import {RetailShopsService} from "../services/shop.service";
-import {ItemsService, DistributorService, TagsService, TaxsService, BrandsService} from "../services/items.service";
+import {
+  ItemsService, DistributorService, TagsService, TaxsService, BrandsService,
+  SaltsService
+} from "../services/items.service";
 import {
   ProductSearchPipe, ProductBrandPipe, ProductDistributorPipe,
   ProductTagPipe
@@ -82,7 +85,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     UsersService,
     RetailShopsService,
     ItemsService,
-    DistributorService, TagsService,
+    DistributorService, TagsService, SaltsService,
     TaxsService,
     BrandsService,
     CartService,

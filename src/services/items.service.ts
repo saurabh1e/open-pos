@@ -16,6 +16,7 @@ export interface Product {
   auto_discount: number;
   name: string,
   tags: Tag[],
+  salts: Salt[],
   taxes: string[]
   brand_id: number;
   brand_name: string;
@@ -35,6 +36,12 @@ export interface Stock {
 }
 
 export interface Tag {
+  id: number;
+  name: string;
+  retail_shop_id: number;
+}
+
+export interface Salt {
   id: number;
   name: string;
   retail_shop_id: number;
@@ -298,6 +305,64 @@ export class TagsService extends RESTService<any> {
     })
   }
 }
+
+
+@Injectable()
+export class SaltsService extends RESTService<any> {
+
+  _salt: Salt = <Salt>{};
+  _salts: Salt[];
+
+  _salts$: Subject<Salt[]> = <Subject<Salt[]>>  new Subject();
+
+  constructor(private _http: HttpInterceptorService, private _indexDB: IndexDBServiceService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/salt',
+    });
+
+  }
+
+  set salts(data: Salt[]) {
+    this._salts = data;
+    this._salts$.next(this.salts);
+  }
+
+  set salt(data: Salt) {
+    this._salt = data;
+  }
+
+  get salt(): Salt {
+    return this._salt;
+  }
+
+  get salts(): Salt[] {
+    return this._salts;
+  }
+
+  get salts$(): Observable<Salt[]> {
+    return this._salts$.asObservable();
+  }
+  saveSalts(params?): void {
+    this.query(params).subscribe((data: {data: Salt[], count: number})=>{
+      data.data.forEach((value)=>{
+        this._indexDB.salts.add(value).then(()=>{},
+          ()=>{
+            this._indexDB.salts.update(value.id, value)
+          })
+      });
+      if (params && '__limit' in params && '__page' in params) {
+        if (params['__limit']==data.data.length) {
+          params['__page']+=1;
+          this.saveSalts(params);
+        }
+      }
+    }, (err) => {
+      console.log(err)
+    })
+  }
+}
+
 
 @Injectable()
 export class TaxsService extends RESTService<any> {

@@ -6,9 +6,8 @@ import { HttpInterceptorService, RESTService } from '@covalent/http';
 import { MOCK_API } from '../config/api.config';
 import {
   Product, Brand, Distributor, Tag, Tax, ItemsService, TagsService, TaxsService,
-  DistributorService, BrandsService
+  DistributorService, BrandsService, SaltsService
 } from "./items.service";
-import {UsersService} from "./users.service";
 import {IndexDBServiceService} from "./indexdb.service";
 
 
@@ -42,7 +41,8 @@ export class RetailShopsService extends RESTService<RetailShop> {
               private _tagService: TagsService,
               private _taxService: TaxsService,
               private _distributorService: DistributorService,
-              private _brandService: BrandsService,) {
+              private _brandService: BrandsService,
+              private _saltService: SaltsService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/retail_shop',
@@ -90,6 +90,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
     this._brandService.saveBrands(params);
     this._tagService.saveTags(params);
     this._taxService.saveTaxes(params);
+    this._saltService.saveSalts(params);
 
   }
 
