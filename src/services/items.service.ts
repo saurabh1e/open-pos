@@ -9,7 +9,7 @@ export interface Product {
 
   available_stock: number,
   available_stocks: Stock[],
-  description: string,
+  description: {},
   id: number,
   min_stock: number,
   mrp: number,
