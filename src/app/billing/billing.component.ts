@@ -1,7 +1,7 @@
 import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 
-import {Product, Tax, Tag, Distributor, Brand} from "../../services/items.service";
+import {Product, Tax, Tag, Distributor, Brand, Salt} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
 
 import {Router, ActivatedRoute} from "@angular/router";
@@ -25,10 +25,12 @@ export class BillingComponent implements AfterViewInit, OnInit{
   _products: Product[];
   _distributors: Distributor[];
   _tags: Tag[];
+  _salts: Salt[];
 
-  selectedTags: Tag[];
-  selectedBrands: number[];
-  selectedDistributors: number[];
+  selectedTags: Tag[] = [];
+  selectedSalts: Salt[] = [];
+  selectedBrands: number[] = [];
+  selectedDistributors: number[] = [];
 
 
 
@@ -49,9 +51,6 @@ export class BillingComponent implements AfterViewInit, OnInit{
         })
       }
     });
-    this.selectedBrands = [];
-    this.selectedDistributors= [];
-    this.selectedTags = [];
 
   }
 
@@ -72,6 +71,13 @@ export class BillingComponent implements AfterViewInit, OnInit{
   }
   get tags(): Tag[] {
     return this._tags
+  }
+
+  set salts(data: Tag[]) {
+    this._salts = data
+  }
+  get salts(): Tag[] {
+    return this._salts
   }
 
   set brands(data: Brand[]) {
@@ -106,18 +112,20 @@ export class BillingComponent implements AfterViewInit, OnInit{
   setInitialData(retail_shop_id: number):void{
     this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.distributors = data;
-      this._cd.markForCheck();
     });
 
     this._indexDb.tags.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.tags = data;
-      this._cd.markForCheck();
     });
 
     this._indexDb.brands.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.brands = data;
-      this._cd.markForCheck();
     });
+
+    this._indexDb.salts.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
+      this.salts = data;
+    });
+
 
     this._indexDb.products.where({retail_shop_id: retail_shop_id}).toArray().then((data)=>{
       this.products = data;
@@ -139,6 +147,10 @@ export class BillingComponent implements AfterViewInit, OnInit{
   }
   checkTag(tag:Tag):boolean {
     return this.selectedTags.indexOf(tag)>-1;
+
+  }
+  checkSalt(salt:Salt):boolean {
+    return this.selectedSalts.indexOf(salt)>-1;
 
   }
 
@@ -166,6 +178,15 @@ export class BillingComponent implements AfterViewInit, OnInit{
     }
     else {
       this.selectedTags.push(tag)
+    }
+    return
+  }
+  toggleSalt(salt: Salt):void {
+    if (this.checkSalt(salt)) {
+      this.selectedSalts.splice(this.selectedSalts.indexOf(salt), 1);
+    }
+    else {
+      this.selectedSalts.push(salt)
     }
     return
   }

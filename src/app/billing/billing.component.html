@@ -8,6 +8,7 @@
       <button md-button="" color="primary" class="bold" (click)="toggleFilter(1)" flex>Tags</button>
       <button md-button="" color="primary" class="bold" (click)="toggleFilter(2)" flex>Brands</button>
       <button md-button="" color="primary" class="bold" (click)="toggleFilter(3)" flex>Distributors</button>
+      <button md-button="" color="primary" class="bold" (click)="toggleFilter(4)" flex>Salts</button>
 
       <div class="filter-card-parent" [hidden]="filterType!=1">
         <md-card class="filter-card">
@@ -62,6 +63,24 @@
           </md-card-actions>
         </md-card>
       </div>
+      <div class="filter-card-parent" [hidden]="filterType!=4">
+        <md-card class="filter-card">
+          <md-card-title class="bold">Salts</md-card-title>
+          <md-divider></md-divider>
+          <md-card-content layout="row" layout-align="start start" layout-wrap="">
+            <template let-salt ngFor [ngForOf]="salts">
+              <md-checkbox class="" flex="33" layout-padding ([checked])="checkSalt(salt.id)"
+                           (change)="toggleSalt(salt.id)">
+                {{salt.name}}
+              </md-checkbox>
+            </template>
+          </md-card-content>
+          <md-divider></md-divider>
+          <md-card-actions layout="row" layout-align="end center">
+            <button md-raised-button="" color="accent" (click)="toggleFilter(0)">Close</button>
+          </md-card-actions>
+        </md-card>
+      </div>
       <span flex></span>
       <div flex="40" class="search-margin">
         <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
@@ -91,7 +110,8 @@
            <!--layout-align="center center">-->
         <template let-product ngFor let-last
                   [ngForOf]="products | productSearch: searchInputTerm | productDistributor: selectedDistributors
-                   | productBrand : selectedBrands | productTag: selectedTags | paginate : {itemsPerPage: 42, currentPage: p}">
+                   | productBrand : selectedBrands | productTag: selectedTags |
+                    productSalt: selectedSalts | paginate : {itemsPerPage: 42, currentPage: p}">
           <div class="md-content bgc-white-4 push-right push-bottom" flex="15">
             <md-card-title class="md-subhead tc-blue-700 pad-sm push-bottom-xs"  layout="row" layout-wrap="">
               <div flex="100" layout="row">

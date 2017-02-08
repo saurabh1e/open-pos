@@ -29,13 +29,16 @@ export class ProductTagPipe implements PipeTransform {
 
     if (args && value && args.length) {
       return value.filter((val) => {
-        args.forEach((tag)=>{
-            if (val.tags.indexOf(tag) < 0){
-              return false
-            }
-        });
-
-        return val;
+        let flag = true;
+        for (let tag in args) {
+          if (val.tags.indexOf(args[tag])<0){
+            flag = false;
+            return false
+          }
+        }
+        if (flag) {
+          return val;
+        }
 
       });
     }
@@ -50,17 +53,19 @@ export class ProductTagPipe implements PipeTransform {
 export class ProductSaltPipe implements PipeTransform {
 
   transform(value: Product[], args?: Salt[]): any {
-
     if (args && value && args.length) {
       return value.filter((val) => {
-        args.forEach((tag)=>{
-          if (val.salts.indexOf(tag) < 0){
+        let flag = true;
+        for (let salt in args) {
+          console.log(salt);
+          if (val.salts.indexOf(args[salt])<0){
+            flag = false;
             return false
           }
-        });
-
-        return val;
-
+        }
+        if (flag) {
+          return val;
+        }
       });
     }
     return value
