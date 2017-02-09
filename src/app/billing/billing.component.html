@@ -1,4 +1,4 @@
-<td-layout-nav logo="assets:covalent">
+<td-layout-nav logo="assets:logo">
   <div layout="column" layout-wrap="" class="">
     <div toolbar-buttons layout="row" flex="5" class="bgc-white-4">
       <button md-button=""  color="accent" (click)="goBack()" >
@@ -11,15 +11,18 @@
       <button md-button="" color="primary" class="bold" (click)="toggleFilter(4)" flex>Salts</button>
 
       <div class="filter-card-parent" [hidden]="filterType!=1">
-        <md-card class="filter-card">
+        <md-card flex="70">
           <md-card-title class="bold">Tags</md-card-title>
           <md-divider></md-divider>
-          <md-card-content layout="row" layout-align="start start" layout-wrap="">
-            <template let-tag ngFor [ngForOf]="tags">
-              <md-checkbox class="" flex="33" layout-padding="" ([checked])="checkTag(tag)" (change)="toggleTag(tag)">
+          <md-card-content class="md-content filter-card-height">
+            <div layout="row" layout-wrap="">
+              <template let-tag ngFor [ngForOf]="tags">
+              <md-checkbox class="" flex="20" layout-padding=""
+                           ([checked])="checkTag(tag)" (change)="toggleTag(tag)">
                 {{tag.name}}
               </md-checkbox>
             </template>
+            </div>
           </md-card-content>
           <md-divider></md-divider>
           <md-card-actions layout="row" layout-align="end center">
@@ -28,16 +31,18 @@
         </md-card>
       </div>
       <div class="filter-card-parent" [hidden]="filterType!=2">
-        <md-card class="filter-card">
+        <md-card flex="70">
           <md-card-title class="bold">Brands</md-card-title>
           <md-divider></md-divider>
-          <md-card-content layout="row" layout-align="start start" layout-wrap="">
-            <template let-brand ngFor [ngForOf]="brands">
-              <md-checkbox class="" flex="33" layout-padding ([checked])="checkBrand(brand.id)"
+          <md-card-content class="md-content filter-card-height">
+            <div layout="row" layout-wrap="">
+              <template let-brand ngFor [ngForOf]="brands">
+              <md-checkbox class="pad-xs" flex="20" ([checked])="checkBrand(brand.id)"
                            (change)="toggleBrand(brand.id)">
                 {{brand.name}}
               </md-checkbox>
             </template>
+            </div>
           </md-card-content>
           <md-divider></md-divider>
           <md-card-actions layout="row" layout-align="end center">
@@ -46,16 +51,18 @@
         </md-card>
       </div>
       <div class="filter-card-parent" [hidden]="filterType!=3">
-        <md-card class="filter-card">
+        <md-card flex="70">
           <md-card-title class="bold">Distributor</md-card-title>
           <md-divider></md-divider>
-          <md-card-content layout="row" layout-align="start start" layout-wrap="">
-            <template let-distributor ngFor [ngForOf]="distributors">
-              <md-checkbox class="" flex="33" layout-padding ([checked])="checkDistributor(distributor.id)"
+          <md-card-content class="md-content filter-card-height">
+            <div layout="row" layout-wrap="">
+              <template let-distributor ngFor [ngForOf]="distributors">
+              <md-checkbox class="" flex="20" layout-padding ([checked])="checkDistributor(distributor.id)"
                            (change)="toggleDistributor(distributor.id)">
                 {{distributor.name}}
               </md-checkbox>
             </template>
+            </div>
           </md-card-content>
           <md-divider></md-divider>
           <md-card-actions layout="row" layout-align="end center">
@@ -64,16 +71,18 @@
         </md-card>
       </div>
       <div class="filter-card-parent" [hidden]="filterType!=4">
-        <md-card class="filter-card">
+        <md-card class="filter-card" flex="70">
           <md-card-title class="bold">Salts</md-card-title>
           <md-divider></md-divider>
-          <md-card-content layout="row" layout-align="start start" layout-wrap="">
-            <template let-salt ngFor [ngForOf]="salts">
-              <md-checkbox class="" flex="33" layout-padding ([checked])="checkSalt(salt.id)"
-                           (change)="toggleSalt(salt.id)">
-                {{salt.name}}
-              </md-checkbox>
-            </template>
+          <md-card-content  class="md-content filter-card-height">
+            <div layout="row" layout-wrap="">
+              <template let-salt ngFor [ngForOf]="salts">
+                <md-checkbox class="pad-xs"  ([checked])="checkSalt(salt.id)"
+                             (change)="toggleSalt(salt.id)" flex="20">
+                  {{salt.name}}
+                </md-checkbox>
+              </template>
+            </div>
           </md-card-content>
           <md-divider></md-divider>
           <md-card-actions layout="row" layout-align="end center">

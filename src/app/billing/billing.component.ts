@@ -7,12 +7,15 @@ import {IndexDBServiceService} from "../../services/indexdb.service";
 import {Order} from "../../services/orders.service";
 import {TdDialogService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
+import {CheckoutComponent} from "./checkout/checkout.component";
+import {MdDialogRef, MdDialog} from "@angular/material";
 
 @Component({
   selector: 'billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  entryComponents: [ProductInfoComponent, CheckoutComponent]
 
 })
 export class BillingComponent implements AfterViewInit, OnInit {
@@ -35,6 +38,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   constructor(private _titleService: Title,
               private _route: Router,
               private _dialogService: TdDialogService,
+              private _dialogRef: MdDialog,
               private _activatedRoute: ActivatedRoute,
               private _cd: ChangeDetectorRef, private _indexDb: IndexDBServiceService) {
 
@@ -205,6 +209,11 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
   showInfo(product: Product): void {
 
-    this._dialogService.open(ProductInfoComponent, );
+
+    let a = this._dialogService.open(ProductInfoComponent, );
+    a.componentInstance['a'] = product;
+    a.afterClosed().subscribe((data)=>{
+      console.log(data);
+    })
   }
 }
