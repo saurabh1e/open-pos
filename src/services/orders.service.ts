@@ -38,7 +38,7 @@ export interface Order {
   created_on: Date;
 
   address: Address;
-  order_items: OrderItem[];
+  items: Item[];
   customer: Customer;
   retail_shop: RetailShop;
   discounts: Discount[];
@@ -47,7 +47,7 @@ export interface Order {
 
 }
 
-export interface OrderItem {
+export interface Item {
 
   product_id: number;
   unit_price: number;
@@ -56,11 +56,11 @@ export interface OrderItem {
   order_id: number;
   stock_id: number;
 
-  order_item_taxes: OrderItemTax[];
+  taxes: ItemTax[];
 
 }
 
-export interface OrderItemTax {
+export interface ItemTax {
 
   tax_value: number;
   order_item_id: number;
