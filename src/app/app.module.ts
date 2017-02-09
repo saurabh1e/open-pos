@@ -33,7 +33,7 @@ import {
 } from "../services/items.service";
 import {
   ProductSearchPipe, ProductBrandPipe, ProductDistributorPipe,
-  ProductTagPipe, ProductSaltPipe
+  ProductTagPipe, ProductSaltPipe, KeysPipe
 } from '../pipes/product-search.pipe';
 import {IndexDBServiceService} from "../services/indexdb.service";
 import {CartService} from "../services/cart.service";
@@ -62,7 +62,8 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     ProductBrandPipe,
     ProductDistributorPipe,
     ProductTagPipe,
-    ProductSaltPipe
+    ProductSaltPipe,
+    KeysPipe
   ], // directives, components, and pipes owned by this NgModule
   imports: [
     BrowserModule,

@@ -107,7 +107,7 @@
 
 
       <button md-button md-raised-button="" color="accent" class="text-bold" layout-padding="" flex="10"
-              layout-margin="">
+              layout-margin="" (click)="checkOut()">
         Checkout
       </button>
     </div>
@@ -144,7 +144,7 @@
               <span flex=""></span>
               <span class="tc-dark-blue-grey-500">Price</span>
               <span flex="5"></span>
-              <span class="tc-blue-500">:&nbsp;{{product.mrp || 0}}/-</span>
+              <span class="tc-blue-500">:&nbsp;{{product.mrp ||0 | currency:'INR':true:'1.2-2'}}/-</span>
             </div>
           </div>
         </template>

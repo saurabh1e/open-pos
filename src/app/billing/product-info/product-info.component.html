@@ -1,5 +1,54 @@
-<p>
-  product-info works!
-  {{a}}
-  <button md-raised-button="" color="warn" (click)="close()">Close</button>
-</p>
+
+<div class=" pad-sm">
+  <md-card-title class="tc-blue-700">{{product.name}}</md-card-title>
+  <md-card-subtitle>{{product.sub_description}}</md-card-subtitle>
+  <md-divider></md-divider>
+  <md-card-content class="md-content" md-scroll-y="">
+    <div  layout="row" layout-wrap="">
+      <h4>Stocks</h4>
+      <div flex="100" layout="row" layout-wrap="">
+        <md-list *ngFor="let stock of product.available_stocks" flex="20">
+          <md-list-item>
+            <md-icon class="tc-blue-500" md-list-avatar="">local_grocery_store</md-icon>
+            <span md-line>Stock:&nbsp;{{stock.units_purchased-stock.units_sold}}</span>
+            <p md-line>Purchase Date:&nbsp;{{stock.purchase_date}}</p>
+            <p md-line>Expiry Date:&nbsp;{{stock.expiry_date}}</p>
+            <p md-line>Price:&nbsp;{{stock.selling_amount ||0 | currency:'INR':true:'1.2-2'}}</p>
+          </md-list-item>
+
+        </md-list>
+      </div>
+      <div layout="row" layout-wrap=""  class="info-dialog">
+        <md-list flex="50">
+          <h4>Description</h4>
+          <template let-entry ngFor [ngForOf]="product.description | keys">
+            <md-list-item>
+              <md-icon class="tc-orange-A400" md-list-avatar="">description</md-icon>
+              <span class="md-body-1" md-line>{{entry.value}}</span>
+              <p md-line="">{{entry.key}}</p>
+            </md-list-item>
+          </template>
+
+        </md-list>
+        <md-list flex="50">
+          <h4>Similar Products</h4>
+          <template let-item ngFor [ngForOf]="products">
+            <md-list-item>
+              <md-icon class="tc-orange-A400" md-list-avatar="">label_outline</md-icon>
+              <span class="md-body-1" md-line>{{item.name}}</span>
+              <p md-line="">Price:&nbsp;{{item.mrp | currency:'INR':true:'1.2-2'}}&nbsp;<span flex></span>&nbsp;Stocks:&nbsp;{{item.available_stock||0}}</p>
+              <p md-line=""><template let-salt ngFor [ngForOf]="item.salts"><span>{{salt.name}}&nbsp;</span></template> </p>
+            </md-list-item>
+          </template>
+
+        </md-list>
+      </div>
+
+    </div>
+  </md-card-content>
+  <md-divider></md-divider>
+  <md-card-actions layout="row" layout-align="end center">
+    <button md-raised-button="" color="accent" (click)="close()">Close</button>
+
+  </md-card-actions>
+</div>

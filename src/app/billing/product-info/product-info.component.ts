@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {TdDialogService} from "@covalent/core";
 import {MdDialogRef} from "@angular/material";
+import {Product} from "../../../services/items.service";
+import {IndexDBServiceService} from "../../../services/indexdb.service";
 
 @Component({
   selector: 'app-product-info',
@@ -9,9 +11,18 @@ import {MdDialogRef} from "@angular/material";
 })
 export class ProductInfoComponent implements OnInit {
 
-  constructor(private _dialogService: TdDialogService,public dialogRef: MdDialogRef<ProductInfoComponent>) { }
+  product: Product;
+  products: Product[] = [];
+
+  constructor(private _dialogService: TdDialogService,
+              public dialogRef: MdDialogRef<ProductInfoComponent>, private _indexDB: IndexDBServiceService) { }
 
   ngOnInit() {
+    this.product.similar_products.forEach((value)=>{
+      this._indexDB.products.get(value).then((data)=>{
+        this.products.push(data);
+      })
+    });
   }
 
   close():void {

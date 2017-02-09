@@ -210,9 +210,16 @@ export class BillingComponent implements AfterViewInit, OnInit {
   showInfo(product: Product): void {
 
 
-    let a = this._dialogService.open(ProductInfoComponent, );
-    a.componentInstance['a'] = product;
-    a.afterClosed().subscribe((data)=>{
+    let _dialog = this._dialogService.open(ProductInfoComponent, );
+    _dialog.componentInstance.product = product;
+    _dialog.afterClosed().subscribe((data)=>{
+      console.log(data);
+    })
+  }
+  checkOut(): void {
+    let _dialog = this._dialogService.open(CheckoutComponent, );
+    _dialog.componentInstance.cart = this.cart;
+    _dialog.afterClosed().subscribe((data)=>{
       console.log(data);
     })
   }
