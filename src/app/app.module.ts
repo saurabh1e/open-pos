@@ -98,7 +98,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     IndexDBServiceService
 
   ], // additional providers needed for this module
-  entryComponents: [ ],
+  entryComponents: [ProductInfoComponent, CheckoutComponent],
   bootstrap: [ AppComponent ],
 })
 export class AppModule {}

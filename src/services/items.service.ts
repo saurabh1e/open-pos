@@ -122,13 +122,12 @@ export class ItemsService extends RESTService<any> {
         else {
           let status: Status = <Status>{};
           status.status = true;
-          console.log(data);
           this._indexDB._db$.next(status);
         }
       }
 
     }, (err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 
@@ -186,7 +185,7 @@ export class DistributorService extends RESTService<any> {
         }
       }
     }, (err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 
@@ -244,7 +243,7 @@ export class BrandsService extends RESTService<any> {
         }
       }
     }, (err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 
@@ -301,7 +300,7 @@ export class TagsService extends RESTService<any> {
         }
       }
     }, (err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 }
@@ -358,7 +357,7 @@ export class SaltsService extends RESTService<any> {
         }
       }
     }, (err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 }
@@ -415,7 +414,7 @@ export class TaxsService extends RESTService<any> {
         }
       }
     }, (err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 

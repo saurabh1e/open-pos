@@ -55,9 +55,7 @@ export class CartComponent implements OnInit {
 
   openCart(id: number): void {
     this._loadingService.register('cart');
-    console.log(id);
     this._indexDB.carts.get(id).then((cart)=>{
-      console.log(cart);
       this._route.navigate(['home/billing/'+stringify(cart.local_id)]).then(()=>{
         this._loadingService.resolve('cart');
         });
