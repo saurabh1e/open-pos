@@ -15,7 +15,7 @@ export class CheckoutComponent implements OnInit {
   cart: Order;
   customer: Customer;
   digitsArray: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  denominationArray: number[] = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 2000];
+  denominationArray: {} = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};
   total: string = '0';
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
@@ -29,4 +29,21 @@ export class CheckoutComponent implements OnInit {
     this.dialogRef.close({t:true});
   }
 
+  enterAmount(digit: string): void {
+    this.total +=digit;
+    this.cart.total = parseFloat(this.total);
+  }
+  clearAmount(): void{
+    this.total=this.total.slice(0,-1);
+    if (this.total.slice(-1) === '.'){
+      this.total=this.total.slice(0,-1);
+    }
+    if (this.total.slice(-2, -1) === '.'){
+      this.total=this.total.slice(0,-2);
+    }
+    this.cart.total = parseFloat(this.total);
+  }
+  clearDenomination():void {
+    this.denominationArray = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};
+  }
 }
