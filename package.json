@@ -14,6 +14,7 @@
     "tslint": "tslint -c ./tslint.json \"./src/**/*.ts\" -e \"./src/**/typings.d.ts\" -e \"./src/environments/**\"",
     "npm-install": "npm --prefix ./dist install ./dist --production",
     "postinstall": "webdriver-manager update",
+    "start": "ng serve --live-reload --watcher",
     "start-api": "cd mock-api && covalent-data &",
     "stop-api": "pkill covalent-data",
     "webdriver-update": "bash ./node_modules/.bin/webdriver-manager update",
