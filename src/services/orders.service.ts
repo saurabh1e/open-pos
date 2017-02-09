@@ -1,30 +1,6 @@
 import { Injectable } from '@angular/core';
 import {RetailShop} from "./shop.service";
-
-
-export interface Customer {
-  email: string;
-  name: string;
-  active: boolean;
-  mobile_number: number;
-  loyalty_points: number;
-  addresses: Address[];
-}
-
-export interface Address {
-  name: string;
-  locality: Locality;
-}
-
-export interface Locality {
-  name: string;
-  city: City;
-}
-
-export interface City {
-  name: string;
-}
-
+import {Address, Customer} from "./customer.service";
 
 export interface Order {
 

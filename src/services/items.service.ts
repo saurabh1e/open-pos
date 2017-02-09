@@ -9,7 +9,9 @@ export interface Product {
 
   available_stock: number,
   available_stocks: Stock[],
+  similar_products: number[],
   description: {},
+  sub_description: string;
   id: number,
   min_stock: number,
   mrp: number,

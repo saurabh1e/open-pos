@@ -4,7 +4,8 @@ import Dexie  from 'dexie';
 import {Product, Distributor, Tag, Brand, Tax, Salt} from "./items.service";
 import {Injectable} from "@angular/core";
 import {RetailShop} from "./shop.service";
-import {Order, Locality} from "./orders.service";
+import {Order} from "./orders.service";
+import {Locality} from "./customer.service";
 
 
 export interface Status {
