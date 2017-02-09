@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
-import { TdLoadingService } from '@covalent/core';
+import { TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
 import {RetailShopsService, RetailShop} from "../../../services/index";
 import {Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
@@ -25,32 +25,38 @@ export class ShopComponent implements AfterViewInit {
               private _loadingService: TdLoadingService,
               private _router: Router) {
     this.shops = this._shopService.shops;
+    this._loadingService.create({
+      name: 'shops',
+      type: LoadingType.Circular,
+      mode: LoadingMode.Indeterminate,
+      color: 'warn',
+    });
   }
 
   ngAfterViewInit(): void {
     this._titleService.setTitle('Dashboard');
 
-    this._loadingService.register('main');
+    this._loadingService.register('shops');
     this._shopService.shops$.subscribe((data: RetailShop[]) => {
       this.shops = data;
 
     }, (error) => {
       console.log(error)
     });
-    this._loadingService.resolve('main');
+    this._loadingService.resolve('shops');
   }
 
   openShop(data: RetailShop): void {
-    this._loadingService.register('main');
+    this._loadingService.register('shops');
     this._shopService.shop = data;
     this._router.navigate(['home/carts/'+stringify(data.id)]);
-    this._loadingService.resolve('main');
+    this._loadingService.resolve('shops');
   }
   syncData(data: number): void {
-    this._loadingService.register('main');
+    this._loadingService.register('shops');
     this._shopService.syncData(data);
     this._indexDBService.db$.subscribe((data) => {
-      this._loadingService.resolve('main');
+      this._loadingService.resolve('shops');
     }, (error) => {
       console.log(error)
     });

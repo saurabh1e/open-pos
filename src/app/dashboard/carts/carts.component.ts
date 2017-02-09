@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import { TdLoadingService } from '@covalent/core';
+import {TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
 import { TdDialogService } from '@covalent/core';
 
 import {CartService} from "../../../services/cart.service";
@@ -26,6 +26,12 @@ export class CartComponent implements OnInit {
               private _indexDB: IndexDBServiceService,
               private _route: Router,
               private _loadingService: TdLoadingService) {
+    this._loadingService.create({
+      name: 'cart',
+      type: LoadingType.Circular,
+      mode: LoadingMode.Determinate,
+      color: 'accent',
+    });
 
   }
 
@@ -48,12 +54,12 @@ export class CartComponent implements OnInit {
 
 
   openCart(id: number): void {
-    this._loadingService.register('main');
+    this._loadingService.register('cart');
     console.log(id);
     this._indexDB.carts.get(id).then((cart)=>{
       console.log(cart);
       this._route.navigate(['home/billing/'+stringify(cart.local_id)]).then(()=>{
-        this._loadingService.resolve('main');
+        this._loadingService.resolve('cart');
         });
 
       });
@@ -67,10 +73,10 @@ export class CartComponent implements OnInit {
   }
 
   newCart(): void {
-    this._loadingService.register('features.list');
+    this._loadingService.register('cart');
     this._cartService.newCart(this.shop_id).then((cartId)=>{
       this._route.navigate(['home/billing/'+stringify(cartId)]).then(()=>{
-        this._loadingService.resolve('features.list');
+        this._loadingService.resolve('cart');
       });
     });
   }
