@@ -4,7 +4,10 @@ import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Product, Tax, Stock} from "./items.service";
 
-
+function round(value, precision) {
+  let multiplier = Math.pow(10, precision || 0);
+  return Math.round(value * multiplier) / multiplier;
+}
 
 @Injectable()
 export class CartService {
@@ -39,20 +42,20 @@ export class CartService {
   async calcTotal(cart: Order): Promise<Order>{
 
     cart.total = 0;
-    cart.taxes = {total:0,};
+    cart.taxes = {total:0};
     cart.items.forEach((item)=>{
       item.total_price = item.unit_price*item.quantity;
       item.taxes.forEach((itemTax)=>{
-        itemTax.tax_amount = item.total_price * itemTax.tax_value/100;
-        if (cart.taxes.hasOwnProperty(itemTax.tax.name)){
-          cart.taxes['itemTax.tax.name'] += itemTax.tax_value
+        itemTax.tax_amount = round(item.total_price * itemTax.tax_value/100, 2);
+        if (itemTax.tax.name in cart.taxes){
+          cart.taxes[itemTax.tax.name] = round(cart.taxes[itemTax.tax.name] + itemTax.tax_amount, 2);
         }
         else {
-          cart.taxes['itemTax.tax.name'] = itemTax.tax_value
+          cart.taxes[itemTax.tax.name] = itemTax.tax_amount;
         }
-        cart.taxes.total += itemTax.tax_value;
+        cart.taxes.total = round(cart.taxes.total +itemTax.tax_amount, 2);
       });
-      cart.total += item.total_price;
+      cart.total = round(cart.total + item.total_price, 2);
     });
     cart.sub_total = cart.total - cart.taxes.total;
     return await this.setCart(cart, cart.local_id).then(()=>{
@@ -90,15 +93,12 @@ export class CartService {
   }
 
   async newCart(id: number): Promise<number>{
-    let order = <Order>{};
-    order.retail_shop_id = id;
     return await this._indexDB.carts.orderBy('local_id').last().then((cart)=>{
       let localId = 1;
       if (cart)
          localId = cart.local_id+1;
-      order.local_id = localId;
-      order.created_on = new Date();
-      order.items = <Item[]>[];
+      let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date() ,items: <Item[]>[], total:0};
+
       return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;
       });

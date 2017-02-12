@@ -1,6 +1,6 @@
 <td-layout-nav logo="assets:logo">
-  <div layout="column" layout-wrap="" class="">
-    <div toolbar-buttons layout="row" flex="5" class="bgc-white-4">
+  <div layout="column" layout-wrap="" flex-gt="5" flex-md="10">
+    <div toolbar-buttons layout="row" class="bgc-white-4">
       <button md-button="" color="accent" (click)="goBack()">
         <md-icon color="accent">arrow_back</md-icon>
       </button>
@@ -91,7 +91,7 @@
         </md-card>
       </div>
       <span flex></span>
-      <div flex="40" class="search-margin">
+      <div flex="40" class="">
         <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
                        [alwaysVisible]="true"
                        (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
@@ -102,8 +102,8 @@
 
       <span flex></span>
 
-      <button md-button="" layout-padding="" flex="10">
-        <span class="md-title tc-red-500 bold">2200.00/-</span>
+      <button md-button="" layout-padding="" flex="10" *ngIf="cart">
+        <span class="md-title tc-red-500 bold">{{cart.total ||0 | currency:'INR':true:'1.2-2'}}/-</span>
       </button>
 
 
@@ -114,15 +114,14 @@
 
     </div>
   </div>
-  <div layout="row" layout-wrap="">
-
-    <div layout="row" layout-wrap="" flex="" class="pad-sm" layout-align="center">
+  <div layout="row" layout-wrap="" class="pad-sm" flex>
+    <div layout="row" layout-wrap="" flex="" class="" layout-align="center">
       <!--<div class="md-content md-shadow-bottom-z-1" flex="100" md-scroll-y="" layout-fill="" layout="row" layout-wrap=""-->
       <!--layout-align="center center">-->
       <template let-product ngFor let-last
-                [ngForOf]="products | productSearch: searchInputTerm | productDistributor: selectedDistributors
+                [ngForOf]="products |  productDistributor: selectedDistributors | productSearch: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |
-                    productSalt: selectedSalts | paginate : {itemsPerPage: 48, currentPage: p}">
+                    productSalt: selectedSalts | paginate : {itemsPerPage: 42, currentPage: p}">
 
         <div class="md-content bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="15"
              layout="row" layout-wrap="" layout-align="center start">
@@ -146,9 +145,8 @@
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
     </div>
-
-    <div layout="column" class="pad-sm" flex="20">
-      <div class="md-content bgc-white-4" md-scroll-y="" flex="">
+    <div layout="column" class="" flex="20">
+      <div class="md-content bgc-white-4" md-scroll-y="" flex="80">
 
         <md-list *ngIf="cart">
           <template let-item ngFor let-last [ngForOf]="cart.items">
@@ -186,14 +184,18 @@
           </template>
         </md-list>
       </div>
-      <div class=" bgc-white-4" flex="20" layout-align="center center" layout="row" layout-wrap="">
-
+      <div class=" bgc-white-4" flex="20" layout-align="center center" layout="row" layout-wrap="" *ngIf="cart">
+        <template let-entry  ngFor [ngForOf]="cart.taxes | keys">
+          <div flex="100" layout-wrap="" layout="row" *ngIf="cart">
+            <span>{{entry.key}}</span>
+            <span flex></span>
+            <span>{{entry.value}}</span>
+          </div>
+        </template>
       </div>
 
     </div>
-
   </div>
-
 </td-layout-nav>
 
 
