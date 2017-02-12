@@ -41,6 +41,7 @@ import {OrdersService} from "../services/orders.service";
 import {BillingComponent} from "./billing/billing.component";
 import {ProductInfoComponent} from "./billing/product-info/product-info.component";
 import {CheckoutComponent} from "./billing/checkout/checkout.component";
+import {ItemDiscountComponent} from "./billing/item-discount/item-discount.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -55,6 +56,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     DashboardComponent,
     CartComponent,
     ShopComponent,
+    ItemDiscountComponent,
     ProductInfoComponent,
     CheckoutComponent,
     BillingComponent,
@@ -99,7 +101,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     IndexDBServiceService
 
   ], // additional providers needed for this module
-  entryComponents: [ProductInfoComponent, CheckoutComponent],
+  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent],
   bootstrap: [ AppComponent ],
 })
 export class AppModule {}

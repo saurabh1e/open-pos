@@ -7,8 +7,10 @@ export interface Order {
 
   sub_total: number;
   total: number;
+  auto_discount: number;
   local_id: number;
   customer_id: number;
+  amount_paid: number
   address_id: number;
   retail_shop_id: number;
   current_status_id: number;
@@ -34,6 +36,8 @@ export interface Item {
   discount: number;
   order_id: number;
   stock_id: number;
+  discounted_total_price: number;
+  discounted_unit_price: number;
   children: Item[];
   taxes: ItemTax[];
   total_price: number;

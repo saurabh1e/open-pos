@@ -42,11 +42,15 @@ export class CartService {
   async calcTotal(cart: Order): Promise<Order>{
 
     cart.total = 0;
+    cart.auto_discount = 0;
     cart.taxes = {total:0};
     cart.items.forEach((item)=>{
       item.total_price = item.unit_price*item.quantity;
+      item.discounted_unit_price = round(item.unit_price-(item.unit_price*item.discount)/100, 2);
+      item.discounted_total_price = round(item.discounted_unit_price*item.quantity, 2);
+
       item.taxes.forEach((itemTax)=>{
-        itemTax.tax_amount = round(item.total_price * itemTax.tax_value/100, 2);
+        itemTax.tax_amount = round(item.discounted_total_price * itemTax.tax_value/100, 2);
         if (itemTax.tax.name in cart.taxes){
           cart.taxes[itemTax.tax.name] = round(cart.taxes[itemTax.tax.name] + itemTax.tax_amount, 2);
         }
@@ -55,6 +59,7 @@ export class CartService {
         }
         cart.taxes.total = round(cart.taxes.total +itemTax.tax_amount, 2);
       });
+      cart.auto_discount = cart.auto_discount + round(item.total_price - item.discounted_total_price, 2);
       cart.total = round(cart.total + item.total_price, 2);
     });
     cart.sub_total = cart.total - cart.taxes.total;
@@ -67,6 +72,7 @@ export class CartService {
     let item = <Item>{};
     item.product_id = product.id;
     item.name = product.name;
+    item.discount = product.auto_discount;
     item.discount = product.auto_discount;
     item.unit_price = stock.selling_amount;
     item.max_units = stock.units_purchased-stock.units_sold;
@@ -137,6 +143,13 @@ export class CartService {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       cart.items.splice(cart.items.indexOf(item), 1);
+      return this.calcTotal(cart);
+    })
+  }
+  async updateDiscount(cartId: number, productId: number, stockId: number, discount: number): Promise<Order> {
+    return await this.getCart(cartId).then((cart)=> {
+      let item = this.getProduct(cart.items, productId, stockId);
+      item.discount = discount;
       return this.calcTotal(cart);
     })
   }

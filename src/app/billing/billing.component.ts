@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from "@angular/core";
+import {Component, AfterViewInit, OnInit, ChangeDetectorRef} from "@angular/core";
 import {Title} from "@angular/platform-browser";
 import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
@@ -10,13 +10,13 @@ import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialogConfig} from "@angular/material";
 import {CartService} from "../../services/cart.service";
+import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 
 @Component({
   selector: 'billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  entryComponents: [ProductInfoComponent, CheckoutComponent]
+  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent]
 
 })
 export class BillingComponent implements AfterViewInit, OnInit {
@@ -35,7 +35,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   selectedSalts: Salt[] = [];
   selectedBrands: number[] = [];
   selectedDistributors: number[] = [];
-  config = <MdDialogConfig>{};
+  config = <MdDialogConfig>{height: '70%', width: '70%'};
 
 
   constructor(private _titleService: Title,
@@ -43,7 +43,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
               private _dialogService: TdDialogService,
               private _cartService: CartService,
               private _activatedRoute: ActivatedRoute,
-              private _cd: ChangeDetectorRef,
               private _indexDb: IndexDBServiceService) {
 
   }
@@ -57,8 +56,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
         })
       }
     });
-    this.config.height = '70%';
-    this.config.width = '70%';
 
   }
 
@@ -142,7 +139,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
     this._indexDb.products.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
       this.products = data;
-      this._cd.markForCheck();
 
     });
 
@@ -212,19 +208,16 @@ export class BillingComponent implements AfterViewInit, OnInit {
   addProduct(product: Product, stock: Stock, qty?:number): void {
     this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart)=>{
       this.cart = cart;
-      this._cd.markForCheck();
     })
   }
   updateProductQuantity(productId: number, stockId: number, qty?: number): void {
     this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart)=>{
       this.cart = cart;
-      this._cd.markForCheck();
     })
   }
   removeProduct(productId: number, stockId: number): void {
     this._cartService.removeProduct(this.cart.local_id, productId, stockId).then((cart)=>{
       this.cart = cart;
-      this._cd.markForCheck();
     })
   }
 
@@ -241,6 +234,14 @@ export class BillingComponent implements AfterViewInit, OnInit {
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       console.log(data);
+    })
+  }
+  discountItem(productId: number, stockId: number){
+    let _dialog = this._dialogService.open(ItemDiscountComponent, <MdDialogConfig>{height: '25%', width: '25%'});
+    _dialog.afterClosed().subscribe((data)=>{
+      this._cartService.updateDiscount(this.cart.local_id, productId, stockId, data.discount).then((cart)=>{
+        this.cart = cart;
+      })
     })
   }
 }

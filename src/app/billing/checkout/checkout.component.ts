@@ -31,7 +31,7 @@ export class CheckoutComponent implements OnInit {
 
   enterAmount(digit: string): void {
     this.total +=digit;
-    this.cart.total = parseFloat(this.total);
+    this.cart.amount_paid = parseFloat(this.total);
   }
   clearAmount(): void{
     this.total=this.total.slice(0,-1);
@@ -41,7 +41,7 @@ export class CheckoutComponent implements OnInit {
     if (this.total.slice(-2, -1) === '.'){
       this.total=this.total.slice(0,-2);
     }
-    this.cart.total = parseFloat(this.total);
+    this.cart.amount_paid = parseFloat(this.total);
   }
   clearDenomination():void {
     this.denominationArray = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};

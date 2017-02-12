@@ -1,74 +1,88 @@
-<div class="md-content" layout="row" layout-wrap="" layout-align="center start">
 
-  <div flex="35" layout="row" layout-wrap="" class="pad-lg">
+<div layout="column" layout-fill="" layout-wrap="">
+  <div class="md-content" layout="row" layout-wrap="" flex="95" layout-align="center start" layout-fill="">
 
-    <md-card-title class="tc-blue-700">Transaction Detail</md-card-title>
-    <md-divider></md-divider>
-    <md-input type="number" [(ngModel)]="cart.total" flex="100" placeholder="Amount"></md-input>
-    <template let-digit ngFor [ngForOf]="digitsArray">
-      <button md-raised-button="" class="bgc-grey-100" (click)="enterAmount(digit)" flex="33"
-              layout-padding="" layout-margin="">{{digit}}
-      </button>
-    </template>
-    <button md-raised-button="" class="bgc-grey-100 bold" flex="33" (click)="enterAmount('.')">.</button>
-    <button md-raised-button="" class="bgc-grey-100 bold" flex="33" (click)="enterAmount('0')">0</button>
-    <button md-raised-button="" class="bgc-grey-100" (click)="clearAmount()" flex="33">
-      <md-icon>keyboard_backspace</md-icon>
-    </button>
-    <div flex="100" class="pad"></div>
-    <div layout="row" layout-wrap="" layout-align="center center">
-      <template let-denomination ngFor [ngForOf]="denominationArray | keys">
-        <button md-raised-button="" class="bgc-grey-100" flex="33" layout-padding=""
-                (click)="denomination.value=1+denomination.value" layout-margin="">
-          {{denomination.key}}
-          <small>&nbsp;({{denomination.value}})</small>
+    <div flex="35" layout="row" layout-wrap="" class="pad-lg">
+
+      <md-card-title class="tc-blue-700">Transaction Detail</md-card-title>
+      <md-divider></md-divider>
+      <md-input type="number" [(ngModel)]="cart.amount_paid" flex="100" placeholder="Amount"></md-input>
+      <template let-digit ngFor [ngForOf]="digitsArray">
+        <button md-raised-button="" class="bgc-grey-100" (click)="enterAmount(digit)" flex="33"
+                layout-padding="" layout-margin="">{{digit}}
         </button>
       </template>
-      <button md-raised-button="" class="bgc-grey-100" flex="33" layout-padding="" layout-margin=""
-              (click)="clearDenomination()">
+      <button md-raised-button="" class="bgc-grey-100 bold" flex="33" (click)="enterAmount('.')">.</button>
+      <button md-raised-button="" class="bgc-grey-100 bold" flex="33" (click)="enterAmount('0')">0</button>
+      <button md-raised-button="" class="bgc-grey-100" (click)="clearAmount()" flex="33">
         <md-icon>keyboard_backspace</md-icon>
+      </button>
+      <div flex="100" class="pad"></div>
+      <div layout="row" layout-wrap="" layout-align="center center">
+        <template let-denomination ngFor [ngForOf]="denominationArray | keys">
+          <button md-raised-button="" class="bgc-grey-100" flex="33" layout-padding=""
+                  (click)="denomination.value=1+denomination.value" layout-margin="">
+            {{denomination.key}}
+            <small>&nbsp;({{denomination.value}})</small>
+          </button>
+        </template>
+        <button md-raised-button="" class="bgc-grey-100" flex="33" layout-padding="" layout-margin=""
+                (click)="clearDenomination()">
+          <md-icon>keyboard_backspace</md-icon>
+        </button>
+      </div>
+
+    </div>
+
+    <div flex="" layout="row" layout-wrap="" class="pad-lg" layout-align="center center">
+      <md-card-title class="tc-blue-700" flex="100">Customer Information</md-card-title>
+      <div layout="row" layout-align="center center" class="pad" flex="60">
+        <td-search-input placeholder="Search Customer Here" [showUnderline]="true" [debounce]="500"
+                         (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event"
+                         (clear)="searchInputTerm = ''" flex="100">
+        </td-search-input>
+      </div>
+
+      <form flex="100">
+        <div layout="row" layout-margin>
+          <md-input-container flex>
+            <input md-input placeholder="Name">
+          </md-input-container>
+          <md-input-container flex>
+            <input md-input placeholder="Number" type="number">
+          </md-input-container>
+        </div>
+
+        <div layout="row" layout-margin>
+          <md-input-container flex>
+            <textarea md-input placeholder="Address"></textarea>
+          </md-input-container>
+        </div>
+        <div layout="row" layout-margin>
+          <md-input-container flex>
+            <input md-input placeholder="City">
+          </md-input-container>
+          <md-input-container flex>
+            <input md-input placeholder="Locality">
+          </md-input-container>
+          <md-input-container flex>
+            <input md-input maxlength="5" placeholder="Postal Code">
+          </md-input-container>
+        </div>
+      </form>
+    </div>
+    <div>
+      <button md-icon-button="" (click)="close()" color="accent">
+        <md-icon>close</md-icon>
       </button>
     </div>
 
   </div>
 
-  <div flex="10"></div>
-  <div flex="" layout="row" layout-wrap="" class="pad-lg">
-    <md-card-title class="tc-blue-700" flex="100">Customer Information</md-card-title>
-    <form flex="100">
-      <div layout="row" layout-margin>
-        <md-input-container flex>
-          <input md-input placeholder="Name">
-        </md-input-container>
-        <md-input-container flex>
-          <input md-input placeholder="Number" type="number">
-        </md-input-container>
-      </div>
+  <md-divider flex></md-divider>
+  <md-card-actions layout-align="center center" layout="row" class="">
+    <button md-raised-button="" color="accent">Print Bill</button>
+    <button md-raised-button="" color="accent">Checkout</button>
+  </md-card-actions>
 
-      <div layout="row" layout-margin>
-        <md-input-container flex>
-          <textarea md-input placeholder="Address"></textarea>
-        </md-input-container>
-      </div>
-      <div layout="row" layout-margin>
-        <md-input-container flex>
-          <input md-input placeholder="City">
-        </md-input-container>
-        <md-input-container flex>
-          <input md-input placeholder="Locality">
-        </md-input-container>
-        <md-input-container flex>
-          <input md-input maxlength="5" placeholder="Postal Code">
-        </md-input-container>
-      </div>
-    </form>
-  </div>
 </div>
-
-<md-divider></md-divider>
-<md-card-actions layout-align="end start" layout="row" class="push-top">
-  <button md-raised-button="" color="accent">Print Bill</button>
-  <button md-raised-button="" color="accent">Checkout</button>
-  <button md-raised-button="" (click)="close()" color="accent">Cancel</button>
-
-</md-card-actions>

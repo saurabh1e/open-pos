@@ -1,6 +1,6 @@
 <td-layout-nav logo="assets:logo">
-  <div layout="column" layout-wrap="" flex-gt="5" flex-md="10">
-    <div toolbar-buttons layout="row" class="bgc-white-4">
+
+    <div td-toolbar-button layout="row" class="bgc-whitesmoke md-shadow-bottom-z-1 push-sm" layout-wrap="">
       <button md-button="" color="accent" (click)="goBack()">
         <md-icon color="accent">arrow_back</md-icon>
       </button>
@@ -98,32 +98,40 @@
         </td-search-box>
       </div>
       <span flex></span>
-      <md-slide-toggle [color]="'accent'"><span class="bold tc-accent">Combo's</span></md-slide-toggle>
-
+      <span layout-align="center center" layout="row">
+        <md-slide-toggle [color]="'accent'" layout="row">
+          <span class="bold tc-accent">
+            Combo's
+          </span>
+        </md-slide-toggle>
+      </span>
       <span flex></span>
-
-      <button md-button="" layout-padding="" flex="10" *ngIf="cart">
-        <span class="md-title tc-red-500 bold">{{cart.total ||0 | currency:'INR':true:'1.2-2'}}/-</span>
-      </button>
-
-
-      <button md-button md-raised-button="" color="accent" class="text-bold" layout-padding="" flex="10"
+      <button md-button md-raised-button="" color="accent" class="bold" flex="20"
               layout-margin="" (click)="checkOut()">
+        <span *ngIf="cart" class=" md-title bold">
+        {{cart.total - cart.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
+        </span>
+
+        <span class="md-body-2 bold">
+
         Checkout
+        </span>
+
       </button>
 
     </div>
-  </div>
-  <div layout="row" layout-wrap="" class="pad-sm" flex>
-    <div layout="row" layout-wrap="" flex="" class="" layout-align="center">
+
+
+  <div layout="row" layout-wrap="" class="push-sm" flex>
+    <div layout="row" layout-wrap="" flex="" class="" layout-align="start">
       <!--<div class="md-content md-shadow-bottom-z-1" flex="100" md-scroll-y="" layout-fill="" layout="row" layout-wrap=""-->
       <!--layout-align="center center">-->
       <template let-product ngFor let-last
                 [ngForOf]="products |  productDistributor: selectedDistributors | productSearch: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |
-                    productSalt: selectedSalts | paginate : {itemsPerPage: 42, currentPage: p}">
+                    productSalt: selectedSalts | paginate : {itemsPerPage: 54, currentPage: p}">
 
-        <div class="md-content bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="15"
+        <div class="md-content bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="10"
              layout="row" layout-wrap="" layout-align="center start">
           <div flex="100" layout="row" class="">
             <span flex></span>
@@ -133,7 +141,7 @@
           </div>
           <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
                (click)="addProduct(product, product.available_stocks[0])">
-              <span class="tc-primary">
+              <span class="tc-primary bold">
               {{product.name}}
               </span>
             <span class="md-body-1 tc-grey-600">{{product.brand_name}}</span>
@@ -147,17 +155,16 @@
     </div>
     <div layout="column" class="" flex="20">
       <div class="md-content bgc-white-4" md-scroll-y="" flex="80">
-
         <md-list *ngIf="cart">
           <template let-item ngFor let-last [ngForOf]="cart.items">
             <md-list-item>
-              <h3 md-line class="tc-grey-700">{{item.name}}</h3>
+              <h4 md-line class="tc-grey-700">{{item.name}}</h4>
               <span flex></span>
               <span class="pad-left md-body-1 tc-grey-500">
                 <md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity"
                           (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"></md-input>
               </span>
-              <span flex="30" class="pad-left md-body-1 tc-grey-600">{{item.total_price | currency:'INR':true:'1.2-2'}}/-</span>
+              <span flex="30" class="pad-left md-body-1 tc-accent">{{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-</span>
               <span flex></span>
             </md-list-item>
             <md-list-item class="">
@@ -171,7 +178,7 @@
                 <md-icon class=" tc-grey-700">keyboard_arrow_down</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-blue-100">
+              <button md-icon-button="" class="bgc-blue-100" (click)="discountItem(item.product_id, item.stock_id)">
                 <md-icon class=" tc-grey-700">money_off</md-icon>
               </button>
               <span flex></span>
@@ -184,14 +191,32 @@
           </template>
         </md-list>
       </div>
-      <div class=" bgc-white-4" flex="20" layout-align="center center" layout="row" layout-wrap="" *ngIf="cart">
-        <template let-entry  ngFor [ngForOf]="cart.taxes | keys">
-          <div flex="100" layout-wrap="" layout="row" *ngIf="cart">
+      <div class="bgc-white-4 pad tc-grey-700 md-body-1 bold" flex="25" layout-align="center center" layout="row"
+           layout-wrap="" *ngIf="cart">
+        <template let-entry ngFor [ngForOf]="cart.taxes | keys">
+          <div flex="100" layout-wrap="" layout="row" *ngIf="entry.key!=='total'">
             <span>{{entry.key}}</span>
             <span flex></span>
-            <span>{{entry.value}}</span>
+            <span>{{entry.value | currency:'INR':true:'1.2-2'}}</span>
           </div>
         </template>
+
+        <div flex="100" layout-wrap="" layout="row">
+          <span>Auto Discount</span>
+          <span flex></span>
+          <span>{{cart.auto_discount | currency:'INR':true:'1.2-2'}}</span>
+        </div>
+        <div flex="100" layout-wrap="" layout="row" class="bold push-top-sm">
+          <md-divider class="pad-xs" flex="100"></md-divider>
+          <span>Sub Total</span>
+          <span flex></span>
+          <span>{{cart.sub_total | currency:'INR':true:'1.2-2'}}</span>
+        </div>
+        <div flex="100" layout-wrap="" layout="row" class="md-title bold push-top-sm">
+          <span>Total</span>
+          <span flex></span>
+          <span>{{cart.total | currency:'INR':true:'1.2-2'}}</span>
+        </div>
       </div>
 
     </div>

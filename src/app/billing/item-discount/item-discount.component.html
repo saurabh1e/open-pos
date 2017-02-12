@@ -1,0 +1,24 @@
+
+<div layout="column">
+  <div layout="row" layout-align="end end" flex="100">
+    <button md-icon-button="" (click)="close()" color="accent">
+      <md-icon>close</md-icon>
+    </button>
+
+  </div>
+  <div layout="row">
+    <form flex="100" layout="row" layout-wrap="" layout-align="center center">
+      <div layout="row" layout-margin>
+        <md-input-container flex>
+          <input md-input  placeholder="Discount Percentage" name="0" flex="100"
+                 type="" min="0" max="100" [(ngModel)]="discount" value="0" />
+        </md-input-container>
+      </div>
+      <div layout="row" >
+        <button md-raised-button="" color="accent" (click)="close()">Apply</button>
+
+      </div>
+    </form>
+
+  </div>
+</div>
