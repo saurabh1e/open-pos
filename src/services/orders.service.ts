@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {RetailShop} from "./shop.service";
 import {Address, Customer} from "./customer.service";
+import {Tax} from "./items.service";
 
 export interface Order {
 
@@ -13,6 +14,7 @@ export interface Order {
   current_status_id: number;
   created_on: Date;
 
+  taxes: {total: number,};
   address: Address;
   items: Item[];
   customer: Customer;
@@ -25,22 +27,29 @@ export interface Order {
 
 export interface Item {
 
+  name: string;
   product_id: number;
   unit_price: number;
   quantity: number;
   discount: number;
   order_id: number;
   stock_id: number;
-
+  children: Item[];
   taxes: ItemTax[];
+  total_price: number;
+  is_combo: boolean;
+  discount_amount: number;
+  max_units: number;
 
 }
 
 export interface ItemTax {
 
   tax_value: number;
+  tax_amount: number
   order_item_id: number;
   tax_id: number;
+  tax: Tax
 }
 
 export interface Discount {

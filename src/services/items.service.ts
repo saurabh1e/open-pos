@@ -19,7 +19,7 @@ export interface Product {
   name: string,
   tags: Tag[],
   salts: Salt[],
-  taxes: string[]
+  taxes: Tax[]
   brand_id: number;
   brand_name: string;
   distributor_id: number;
@@ -28,6 +28,7 @@ export interface Product {
 
 export interface Stock {
 
+  id: number;
   expiry_date: Date;
   purchase_amount: number;
   purchase_date: Date;
