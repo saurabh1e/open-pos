@@ -8,7 +8,7 @@ import {Order} from "../../services/orders.service";
 import {TdDialogService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
-import {MdDialogRef, MdDialog} from "@angular/material";
+import {MdDialogRef, MdDialog, MdDialogConfig} from "@angular/material";
 
 @Component({
   selector: 'billing',
@@ -34,6 +34,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
   selectedSalts: Salt[] = [];
   selectedBrands: number[] = [];
   selectedDistributors: number[] = [];
+  config = <MdDialogConfig>{};
+
 
   constructor(private _titleService: Title,
               private _route: Router,
@@ -53,6 +55,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
         })
       }
     });
+    this.config.height = '70%';
+    this.config.width = '70%';
 
   }
 
@@ -209,15 +213,14 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
   showInfo(product: Product): void {
 
-
-    let _dialog = this._dialogService.open(ProductInfoComponent, );
+    let _dialog = this._dialogService.open(ProductInfoComponent, this.config);
     _dialog.componentInstance.product = product;
     _dialog.afterClosed().subscribe((data)=>{
       console.log(data);
     })
   }
   checkOut(): void {
-    let _dialog = this._dialogService.open(CheckoutComponent, );
+    let _dialog = this._dialogService.open(CheckoutComponent, this.config);
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       console.log(data);

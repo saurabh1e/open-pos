@@ -1,13 +1,19 @@
 
-<div class=" pad-sm">
-  <md-card-title class="tc-blue-700">{{product.name}}</md-card-title>
+<div class="">
+  <md-card-title class="tc-blue-700" layout="row" layout-wrap="">
+    {{product.name}}
+    <span flex=""></span>
+    <button (click)="close()" md-icon-button="">
+      <md-icon class="tc-accent">close</md-icon>
+    </button>
+  </md-card-title>
   <md-card-subtitle>{{product.sub_description}}</md-card-subtitle>
   <md-divider></md-divider>
   <md-card-content class="md-content" md-scroll-y="">
     <div  layout="row" layout-wrap="">
       <h4>Stocks</h4>
       <div flex="100" layout="row" layout-wrap="">
-        <md-list *ngFor="let stock of product.available_stocks" flex="20">
+        <md-list *ngFor="let stock of product.available_stocks" flex="">
           <md-list-item>
             <md-icon class="tc-blue-500" md-list-avatar="">local_grocery_store</md-icon>
             <span md-line>Stock:&nbsp;{{stock.units_purchased-stock.units_sold}}</span>
@@ -46,9 +52,4 @@
 
     </div>
   </md-card-content>
-  <md-divider></md-divider>
-  <md-card-actions layout="row" layout-align="end center">
-    <button md-raised-button="" color="accent" (click)="close()">Close</button>
-
-  </md-card-actions>
 </div>
