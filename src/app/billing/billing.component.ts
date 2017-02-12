@@ -244,4 +244,9 @@ export class BillingComponent implements AfterViewInit, OnInit {
       })
     })
   }
+  updateOrderDiscount(discount: number): void{
+    this._cartService.updateOrderDiscount(this.cart.local_id, discount).then((cart)=>{
+      this.cart = cart;
+    })
+  }
 }

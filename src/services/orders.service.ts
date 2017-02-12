@@ -15,6 +15,7 @@ export interface Order {
   retail_shop_id: number;
   current_status_id: number;
   created_on: Date;
+  additional_discount: number;
 
   taxes: {total: number,};
   address: Address;

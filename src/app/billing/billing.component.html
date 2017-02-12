@@ -202,9 +202,15 @@
         </template>
 
         <div flex="100" layout-wrap="" layout="row">
-          <span>Auto Discount</span>
+          <span>Discount</span>
           <span flex></span>
           <span>{{cart.auto_discount | currency:'INR':true:'1.2-2'}}</span>
+        </div>
+        <div flex="100" layout-wrap="" layout="row" class="bold">
+          <label class="md-input-wrapper">Add. %</label>
+          <span flex></span>
+          <md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value" [(ngModel)]="cart.discounts[0].value"
+                    (change)="updateOrderDiscount(cart.discounts[0].value)"></md-input>
         </div>
         <div flex="100" layout-wrap="" layout="row" class="bold push-top-sm">
           <md-divider class="pad-xs" flex="100"></md-divider>

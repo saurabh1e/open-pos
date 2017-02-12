@@ -44,3 +44,10 @@ md-card>:first-child {
 .bgc-whitesmoke{
   background: whitesmoke;
 }
+.input-wrapper{
+  margin: 0;
+  .md-input-wrapper{
+    margin: 0;
+  }
+}
+

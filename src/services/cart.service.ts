@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Order, Item, ItemTax} from "./orders.service";
+import {Order, Item, ItemTax, Discount} from "./orders.service";
 import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Product, Tax, Stock} from "./items.service";
@@ -44,9 +44,14 @@ export class CartService {
     cart.total = 0;
     cart.auto_discount = 0;
     cart.taxes = {total:0};
+    cart.additional_discount = 0;
+    cart.discounts.forEach((discount)=>{
+      cart.additional_discount = round(cart.additional_discount + discount.value, 2)
+    });
     cart.items.forEach((item)=>{
       item.total_price = item.unit_price*item.quantity;
-      item.discounted_unit_price = round(item.unit_price-(item.unit_price*item.discount)/100, 2);
+      let discount = item.discount + cart.additional_discount<=100?item.discount + cart.additional_discount:100;
+      item.discounted_unit_price = round(item.unit_price-(item.unit_price*discount)/100, 2);
       item.discounted_total_price = round(item.discounted_unit_price*item.quantity, 2);
 
       item.taxes.forEach((itemTax)=>{
@@ -63,6 +68,7 @@ export class CartService {
       cart.total = round(cart.total + item.total_price, 2);
     });
     cart.sub_total = cart.total - cart.taxes.total;
+
     return await this.setCart(cart, cart.local_id).then(()=>{
       return cart
     })
@@ -103,7 +109,9 @@ export class CartService {
       let localId = 1;
       if (cart)
          localId = cart.local_id+1;
-      let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date() ,items: <Item[]>[], total:0};
+      let discount = <Discount>{value:0, type:'PERCENTAGE'};
+      let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date() ,items: <Item[]>[], total:0,
+        discounts:[discount]};
 
       return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;
@@ -150,6 +158,12 @@ export class CartService {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       item.discount = discount;
+      return this.calcTotal(cart);
+    })
+  }
+  async updateOrderDiscount(cartId: number, discount: number): Promise<Order> {
+    return await this.getCart(cartId).then((cart)=> {
+      cart.discounts[0].value = discount;
       return this.calcTotal(cart);
     })
   }
