@@ -97,7 +97,8 @@
                        (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
         </td-search-box>
       </div>
-
+      <span flex></span>
+      <md-slide-toggle [color]="'accent'"><span class="bold tc-accent">Combo's</span></md-slide-toggle>
 
       <span flex></span>
 
@@ -110,6 +111,7 @@
               layout-margin="" (click)="checkOut()">
         Checkout
       </button>
+
     </div>
   </div>
   <div layout="row" layout-wrap="">
@@ -131,7 +133,7 @@
               </span>
           </div>
           <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
-               (click)="addProduct(product)">
+               (click)="addProduct(product, product.available_stocks[0])">
               <span class="tc-primary">
               {{product.name}}
               </span>
@@ -148,21 +150,26 @@
     <div layout="column" class="pad-sm" flex="20">
       <div class="md-content bgc-white-4" md-scroll-y="" flex="">
 
-        <md-list>
-          <template let-item ngFor let-last [ngForOf]="[1,2,3,4,5,6,7,8,9,0]">
+        <md-list *ngIf="cart">
+          <template let-item ngFor let-last [ngForOf]="cart.items">
             <md-list-item>
-              <h3 md-line class="tc-grey-700">Product&nbsp;{{item}}</h3>
+              <h3 md-line class="tc-grey-700">{{item.name}}</h3>
               <span flex></span>
-              <span class="pad-left md-body-1 tc-grey-500"><md-input type="number" value="1"></md-input></span>
-              <span flex="30" class="pad-left md-body-1 tc-grey-600">220/-</span>
+              <span class="pad-left md-body-1 tc-grey-500">
+                <md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity"
+                          (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"></md-input>
+              </span>
+              <span flex="30" class="pad-left md-body-1 tc-grey-600">{{item.total_price | currency:'INR':true:'1.2-2'}}/-</span>
               <span flex></span>
             </md-list-item>
             <md-list-item class="">
-              <button md-icon-button="" class="bgc-blue-100">
+              <button md-icon-button="" class="bgc-blue-100"
+                      (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity+1)">
                 <md-icon class=" tc-grey-700">keyboard_arrow_up</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-blue-100">
+              <button md-icon-button="" class="bgc-blue-100"
+                      (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity-1)">
                 <md-icon class=" tc-grey-700">keyboard_arrow_down</md-icon>
               </button>
               <span flex></span>
@@ -170,7 +177,7 @@
                 <md-icon class=" tc-grey-700">money_off</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-blue-100">
+              <button md-icon-button="" class="bgc-blue-100" (click)="removeProduct(item.product_id, item.stock_id)">
                 <md-icon class=" tc-grey-700">remove_circle_outline</md-icon>
               </button>
 

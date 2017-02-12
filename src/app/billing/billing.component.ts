@@ -1,6 +1,6 @@
 import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from "@angular/core";
 import {Title} from "@angular/platform-browser";
-import {Product, Tag, Distributor, Brand, Salt} from "../../services/items.service";
+import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
 import {Router, ActivatedRoute} from "@angular/router";
 import {IndexDBServiceService} from "../../services/indexdb.service";
@@ -8,13 +8,14 @@ import {Order} from "../../services/orders.service";
 import {TdDialogService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
-import {MdDialogRef, MdDialog, MdDialogConfig} from "@angular/material";
+import {MdDialogConfig} from "@angular/material";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   entryComponents: [ProductInfoComponent, CheckoutComponent]
 
 })
@@ -40,9 +41,10 @@ export class BillingComponent implements AfterViewInit, OnInit {
   constructor(private _titleService: Title,
               private _route: Router,
               private _dialogService: TdDialogService,
-              private _dialogRef: MdDialog,
+              private _cartService: CartService,
               private _activatedRoute: ActivatedRoute,
-              private _cd: ChangeDetectorRef, private _indexDb: IndexDBServiceService) {
+              private _cd: ChangeDetectorRef,
+              private _indexDb: IndexDBServiceService) {
 
   }
 
@@ -207,8 +209,23 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
 
-  addProduct(product: Product): void {
-    console.log(product.id)
+  addProduct(product: Product, stock: Stock, qty?:number): void {
+    this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart)=>{
+      this.cart = cart;
+      this._cd.markForCheck();
+    })
+  }
+  updateProductQuantity(productId: number, stockId: number, qty?: number): void {
+    this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart)=>{
+      this.cart = cart;
+      this._cd.markForCheck();
+    })
+  }
+  removeProduct(productId: number, stockId: number): void {
+    this._cartService.removeProduct(this.cart.local_id, productId, stockId).then((cart)=>{
+      this.cart = cart;
+      this._cd.markForCheck();
+    })
   }
 
   showInfo(product: Product): void {
