@@ -1,7 +1,8 @@
-
 <div class="">
   <md-card-title class="tc-blue-700" layout="row" layout-wrap="">
-    {{product.name}}
+    <span layout-align="center center" layout="row">
+      {{product.name}}
+    </span>
     <span flex=""></span>
     <button (click)="close()" md-icon-button="">
       <md-icon class="tc-accent">close</md-icon>
@@ -10,7 +11,7 @@
   <md-card-subtitle>{{product.sub_description}}</md-card-subtitle>
   <md-divider></md-divider>
   <md-card-content class="md-content" md-scroll-y="">
-    <div  layout="row" layout-wrap="">
+    <div layout="row" layout-wrap="">
       <h4>Stocks</h4>
       <div flex="100" layout="row" layout-wrap="">
         <md-list *ngFor="let stock of product.available_stocks" flex="">
@@ -24,7 +25,7 @@
 
         </md-list>
       </div>
-      <div layout="row" layout-wrap=""  class="info-dialog">
+      <div layout="row" layout-wrap="" class="info-dialog">
         <md-list flex="50">
           <h4>Description</h4>
           <template let-entry ngFor [ngForOf]="product.description | keys">
@@ -42,8 +43,11 @@
             <md-list-item>
               <md-icon class="tc-orange-A400" md-list-avatar="">label_outline</md-icon>
               <span class="md-body-1" md-line>{{item.name}}</span>
-              <p md-line="">Price:&nbsp;{{item.mrp | currency:'INR':true:'1.2-2'}}&nbsp;<span flex></span>&nbsp;Stocks:&nbsp;{{item.available_stock||0}}</p>
-              <p md-line=""><template let-salt ngFor [ngForOf]="item.salts"><span>{{salt.name}}&nbsp;</span></template> </p>
+              <p md-line="">Price:&nbsp;{{item.mrp | currency:'INR':true:'1.2-2'}}&nbsp;<span flex></span>&nbsp;Stocks:&nbsp;{{item.available_stock||0}}
+              </p>
+              <p md-line="">
+                <template let-salt ngFor [ngForOf]="item.salts"><span>{{salt.name}}&nbsp;</span></template>
+              </p>
             </md-list-item>
           </template>
 
