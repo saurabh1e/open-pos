@@ -29,3 +29,21 @@ a[md-icon-button] {
 .md-icon-logo{
   max-width: 50px;
 }
+.tc-primary{
+  color: md-color($primary)
+}
+.tc-accent{
+  color: md-color($accent)
+}
+.tc-warn{
+  color: md-color($warn)
+}
+.bgc-primary {
+  color: md-color($primary)
+}
+.bgc-accent {
+  color: md-color($accent)
+}
+.bgc-warn {
+  color: md-color($warn)
+}
