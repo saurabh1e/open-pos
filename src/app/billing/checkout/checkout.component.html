@@ -2,7 +2,7 @@
 <div layout="column" layout-fill="" layout-wrap="">
   <div class="md-content" layout="row" layout-wrap="" flex="95" layout-align="center start" layout-fill="">
 
-    <div flex="35" layout="row" layout-wrap="" class="pad-lg">
+    <div flex="" layout="row" layout-wrap="" class="pad-xs">
 
       <md-card-title class="tc-blue-700">Transaction Detail</md-card-title>
       <md-divider></md-divider>
@@ -34,7 +34,7 @@
 
     </div>
 
-    <div flex="" layout="row" layout-wrap="" class="pad-lg" layout-align="center center">
+    <div flex="" layout="row" layout-wrap="" class="pad-xs" layout-align="center center">
       <md-card-title class="tc-blue-700" flex="100">Customer Information</md-card-title>
       <div layout="row" layout-align="center center" class="pad" flex="60">
         <td-search-input placeholder="Search Customer Here" [showUnderline]="true" [debounce]="500"
@@ -70,6 +70,9 @@
           </md-input-container>
         </div>
       </form>
+    </div>
+    <div flex  layout="row" layout-wrap="" class="pad-xs" layout-align="center center">
+
     </div>
     <div>
       <button md-icon-button="" (click)="close()" color="accent">

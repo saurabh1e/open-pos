@@ -160,9 +160,9 @@
             <md-list-item>
               <h4 md-line class="tc-grey-700">{{item.name}}</h4>
               <span flex></span>
-              <span class="pad-left md-body-1 tc-grey-500">
-                <md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity"
-                          (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"></md-input>
+              <span class="pad-left md-body-1 tc-grey-500" flex="30">
+                <input md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity" class="text-right"
+                          (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
               </span>
               <span flex="30" class="pad-left md-body-1 tc-accent">{{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-</span>
               <span flex></span>
@@ -191,7 +191,7 @@
           </template>
         </md-list>
       </div>
-      <div class="bgc-white-4 pad tc-grey-700 md-body-1 bold" flex="25" layout-align="center center" layout="row"
+      <div class="bgc-white-4 pad tc-grey-700 md-body-1 bold" flex="30" layout-align="center center" layout="row"
            layout-wrap="" *ngIf="cart">
         <template let-entry ngFor [ngForOf]="cart.taxes | keys">
           <div flex="100" layout-wrap="" layout="row" *ngIf="entry.key!=='total'">
@@ -206,11 +206,12 @@
           <span flex></span>
           <span>{{cart.auto_discount | currency:'INR':true:'1.2-2'}}</span>
         </div>
-        <div flex="100" layout-wrap="" layout="row" class="bold">
-          <label class="md-input-wrapper">Add. %</label>
+        <div flex="100" layout-wrap="" layout="row" class="bold" *ngIf="cart.discounts">
+          <label class="">Add. %</label>
           <span flex></span>
-          <md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value" [(ngModel)]="cart.discounts[0].value"
-                    (change)="updateOrderDiscount(cart.discounts[0].value)"></md-input>
+          <input md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value"
+                 [(ngModel)]="cart.discounts[0].value" class="text-right"
+                    (change)="updateOrderDiscount(cart.discounts[0].value)"/>
         </div>
         <div flex="100" layout-wrap="" layout="row" class="bold push-top-sm">
           <md-divider class="pad-xs" flex="100"></md-divider>
