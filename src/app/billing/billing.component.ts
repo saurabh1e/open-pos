@@ -230,7 +230,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     })
   }
   checkOut(): void {
-    let _dialog = this._dialogService.open(CheckoutComponent, this.config);
+    let _dialog = this._dialogService.open(CheckoutComponent);
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       console.log(data);

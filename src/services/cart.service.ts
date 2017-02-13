@@ -111,7 +111,7 @@ export class CartService {
          localId = cart.local_id+1;
       let discount = <Discount>{value:0, type:'PERCENTAGE'};
       let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date() ,items: <Item[]>[], total:0,
-        discounts:[discount]};
+        discounts:[discount], amount_paid:0};
 
       return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;

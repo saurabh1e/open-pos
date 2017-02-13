@@ -1,32 +1,50 @@
-
 <div layout="column" layout-fill="" layout-wrap="">
-  <div class="md-content" layout="row" layout-wrap="" flex="95" layout-align="center start" layout-fill="">
+  <md-card-title class="tc-primary" layout="row" layout-wrap="">
+    Checkout
+    <span flex></span>
+    <button md-icon-button="" (click)="close()" color="accent">
+      <md-icon>close</md-icon>
+    </button>
+  </md-card-title>
 
-    <div flex="" layout="row" layout-wrap="" class="pad-xs">
+  <md-card-content flex layout="row" layout-wrap="" layout-align="start start">
 
-      <md-card-title class="tc-blue-700">Transaction Detail</md-card-title>
-      <md-divider></md-divider>
+
+    <div flex="30" layout="row" layout-wrap="" class="pad">
+
+      <md-card-subtitle class="tc-blue-700">Transaction Detail</md-card-subtitle>
+
       <md-input type="number" [(ngModel)]="cart.amount_paid" flex="100" placeholder="Amount"></md-input>
       <template let-digit ngFor [ngForOf]="digitsArray">
-        <button md-raised-button="" class="bgc-grey-100" (click)="enterAmount(digit)" flex="33"
-                layout-padding="" layout-margin="">{{digit}}
-        </button>
+        <div flex="33">
+          <button md-icon-button="" class="bgc-blue-50" (click)="enterAmount(digit)">{{digit}}
+          </button>
+        </div>
       </template>
-      <button md-raised-button="" class="bgc-grey-100 bold" flex="33" (click)="enterAmount('.')">.</button>
-      <button md-raised-button="" class="bgc-grey-100 bold" flex="33" (click)="enterAmount('0')">0</button>
-      <button md-raised-button="" class="bgc-grey-100" (click)="clearAmount()" flex="33">
-        <md-icon>keyboard_backspace</md-icon>
-      </button>
+      <div flex="33">
+        <button md-icon-button="" class="bgc-blue-50 bold" (click)="enterAmount('.')">.</button>
+      </div>
+      <div flex="33">
+        <button md-icon-button="" class="bgc-blue-50 bold" (click)="enterAmount('0')">
+        </button>
+      </div>
+      <div flex="33">
+        <button md-icon-button="" class="bgc-blue-50" (click)="clearAmount()">
+          <md-icon>keyboard_backspace</md-icon>
+        </button>
+      </div>
+
+
       <div flex="100" class="pad"></div>
       <div layout="row" layout-wrap="" layout-align="center center">
         <template let-denomination ngFor [ngForOf]="denominationArray | keys">
-          <button md-raised-button="" class="bgc-grey-100" flex="33" layout-padding=""
+          <button md-button="" class="bgc-grey-100" flex="33" layout-padding=""
                   (click)="denomination.value=1+denomination.value" layout-margin="">
             {{denomination.key}}
             <small>&nbsp;({{denomination.value}})</small>
           </button>
         </template>
-        <button md-raised-button="" class="bgc-grey-100" flex="33" layout-padding="" layout-margin=""
+        <button md-button="" class="bgc-grey-100" flex="33" layout-padding="" layout-margin=""
                 (click)="clearDenomination()">
           <md-icon>keyboard_backspace</md-icon>
         </button>
@@ -34,9 +52,9 @@
 
     </div>
 
-    <div flex="" layout="row" layout-wrap="" class="pad-xs" layout-align="center center">
-      <md-card-title class="tc-blue-700" flex="100">Customer Information</md-card-title>
-      <div layout="row" layout-align="center center" class="pad" flex="60">
+    <div flex="40" layout="row" layout-wrap="" class="pad">
+      <md-card-subtitle class="tc-blue-700" flex="100">Customer Information</md-card-subtitle>
+      <div layout="row" class="" flex="100" layout-align="center center">
         <td-search-input placeholder="Search Customer Here" [showUnderline]="true" [debounce]="500"
                          (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event"
                          (clear)="searchInputTerm = ''" flex="100">
@@ -71,19 +89,142 @@
         </div>
       </form>
     </div>
-    <div flex  layout="row" layout-wrap="" class="pad-xs" layout-align="center center">
+
+    <div flex="30" layout="row" layout-wrap="" class="pad" *ngIf="shop">
+      <md-card-subtitle class="tc-primary" felx="100">Bill Details</md-card-subtitle>
+      <div  class="invoice-box pad md-shadow-bottom-z-2" layout="row" layout-wrap="" flex="100">
+        <table cellpadding="0" cellspacing="0">
+          <tr class="top">
+            <td colspan="3">
+              <table>
+                <tr>
+                  <td class=" text-center">
+                    {{shop.name}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    {{shop.address.name}},<br>
+                    {{shop.address.locality.name}},<br>
+                    {{shop.address.locality.city.name}},
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    Bill Date: {{cart.created_on| date:'medium'}}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr class="heading">
+            <td>
+              Item
+            </td>
+            <td>
+              Qty
+            </td>
+            <td>
+              Price
+            </td>
+          </tr>
+          <template let-item ngFor [ngForOf]="cart.items">
+            <tr class="item">
+              <td>
+                {{item.name}}
+              </td>
+              <td class="text-center">
+                {{item.quantity}}
+              </td>
+              <td>
+                {{item.total_price| currency:'INR':true:'1.2-2'}}/-
+              </td>
+            </tr>
+          </template>
+          <tr class="">
+            <td>
+
+            </td>
+            <td>
+              Sub.Total:
+            </td>
+            <td>
+              {{cart.sub_total | currency:'INR':true:'1.2-2'}}/-
+            </td>
+          </tr>
+          <template let-tax ngFor let-index [ngForOf]="cart.taxes | keys">
+            <tr class="taxes" *ngIf="tax.key!=='total'">
+              <td></td>
+              <td>
+                {{tax.key}}
+              </td>
+              <td>
+                {{tax.value}}
+              </td>
+            </tr>
+
+          </template>
+          <tr class="discount">
+            <td>
+
+            </td>
+            <td>
+              Discount:
+            </td>
+            <td>
+              {{cart.auto_discount | currency:'INR':true:'1.2-2'}}/-
+            </td>
+          </tr>
+          <tr class="total">
+            <td>
+
+            </td>
+            <td>
+              Net Amount:
+            </td>
+            <td>
+              {{cart.total - cart.auto_discount | currency:'INR':true:'1.2-2'}}/-
+            </td>
+          </tr>
+
+          <tr class="">
+            <td colspan="3">
+              <table class="bottom">
+                <template let-item ngFor [ngForOf]="shop.registration_details">
+                  <tr class="registration">
+                    <td class="text-left">
+                      {{item.name}}
+                    </td>
+                    <td class="text-left">
+                      &nbsp;:&nbsp;{{item.value}}
+                    </td>
+                  </tr>
+
+                </template>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <table class="bottom">
+                <tr>
+                  <td class="text-center md-italics">Thank you for shopping with us! Visit us again.</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </div>
 
     </div>
-    <div>
-      <button md-icon-button="" (click)="close()" color="accent">
-        <md-icon>close</md-icon>
-      </button>
-    </div>
 
-  </div>
+  </md-card-content>
+
 
   <md-divider flex></md-divider>
-  <md-card-actions layout-align="center center" layout="row" class="">
+  <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="">
     <button md-raised-button="" color="accent">Print Bill</button>
     <button md-raised-button="" color="accent">Checkout</button>
   </md-card-actions>

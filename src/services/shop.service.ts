@@ -9,22 +9,31 @@ import {
   DistributorService, BrandsService, SaltsService
 } from "./items.service";
 import {IndexDBServiceService} from "./indexdb.service";
+import {Address} from "./customer.service";
 
 
 export interface RetailShop {
   id: number;
   name: string;
   products: Product[];
+  registration_details: RegistrationDetail[];
   total_sales: {
     total_sales: number;
     total_orders: number;
     total_items: number;
   };
+  address: Address;
   brands: Brand[];
   distributors: Distributor[];
   tags: Tag[];
   taxes: Tax[];
   _link: {};
+}
+
+export interface RegistrationDetail {
+  name: string;
+  value: string;
+
 }
 
 @Injectable()

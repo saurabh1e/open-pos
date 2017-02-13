@@ -5,14 +5,14 @@
         <md-icon color="accent">arrow_back</md-icon>
       </button>
 
-      <button md-button="" color="primary" class="bold" (click)="toggleFilter(1)" flex>Tags</button>
-      <button md-button="" color="primary" class="bold" (click)="toggleFilter(2)" flex>Brands</button>
-      <button md-button="" color="primary" class="bold" (click)="toggleFilter(3)" flex>Distributors</button>
-      <button md-button="" color="primary" class="bold" (click)="toggleFilter(4)" flex>Salts</button>
+      <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(1)" flex>Tags</button>
+      <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(2)" flex>Brands</button>
+      <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(3)" flex>Distributors</button>
+      <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(4)" flex>Salts</button>
 
       <div class="filter-card-parent" [hidden]="filterType!=1">
         <md-card flex="70">
-          <md-card-title class="bold">Tags</md-card-title>
+          <md-card-title class="font-bold-500">Tags</md-card-title>
           <md-divider></md-divider>
           <md-card-content class="md-content filter-card-height">
             <div layout="row" layout-wrap="">
@@ -32,7 +32,7 @@
       </div>
       <div class="filter-card-parent" [hidden]="filterType!=2">
         <md-card flex="70">
-          <md-card-title class="bold">Brands</md-card-title>
+          <md-card-title class="font-bold-500">Brands</md-card-title>
           <md-divider></md-divider>
           <md-card-content class="md-content filter-card-height">
             <div layout="row" layout-wrap="">
@@ -52,7 +52,7 @@
       </div>
       <div class="filter-card-parent" [hidden]="filterType!=3">
         <md-card flex="70">
-          <md-card-title class="bold">Distributor</md-card-title>
+          <md-card-title class="font-bold-500">Distributor</md-card-title>
           <md-divider></md-divider>
           <md-card-content class="md-content filter-card-height">
             <div layout="row" layout-wrap="">
@@ -72,7 +72,7 @@
       </div>
       <div class="filter-card-parent" [hidden]="filterType!=4">
         <md-card class="filter-card" flex="70">
-          <md-card-title class="bold">Salts</md-card-title>
+          <md-card-title class="font-bold-500">Salts</md-card-title>
           <md-divider></md-divider>
           <md-card-content class="md-content filter-card-height">
             <div layout="row" layout-wrap="">
@@ -91,7 +91,7 @@
         </md-card>
       </div>
       <span flex></span>
-      <div flex="40" class="">
+      <div flex="30" class="">
         <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
                        [alwaysVisible]="true"
                        (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
@@ -100,23 +100,21 @@
       <span flex></span>
       <span layout-align="center center" layout="row">
         <md-slide-toggle [color]="'accent'" layout="row">
-          <span class="bold tc-accent">
+          <span class="font-bold-500 tc-accent">
             Combo's
           </span>
         </md-slide-toggle>
       </span>
       <span flex></span>
-      <button md-button md-raised-button="" color="accent" class="bold" flex="20"
+      <button md-button class="font-bold-500" flex="10"
               layout-margin="" (click)="checkOut()">
-        <span *ngIf="cart" class=" md-title bold">
+        <span *ngIf="cart" class="tc-accent md-title font-bold-500">
         {{cart.total - cart.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
         </span>
-
-        <span class="md-body-2 bold">
-
-        Checkout
-        </span>
-
+      </button>
+      <button md-raised-button="" color="accent" class="font-bold-500" flex="10"
+              layout-margin="" (click)="checkOut()">
+        <md-icon class="md-24">add_shopping_cart</md-icon>
       </button>
 
     </div>
@@ -141,10 +139,10 @@
           </div>
           <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
                (click)="addProduct(product, product.available_stocks[0])">
-              <span class="tc-primary bold">
+              <span class="tc-primary md-body-1 font-bold-500">
               {{product.name}}
               </span>
-            <span class="md-body-1 tc-grey-600">{{product.brand_name}}</span>
+            <span class="md-caption tc-grey-600">{{product.brand_name}}</span>
           </div>
         </div>
       </template>
@@ -153,46 +151,55 @@
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
     </div>
-    <div layout="column" class="" flex="20">
-      <div class="md-content bgc-white-4" md-scroll-y="" flex="80">
+    <div layout="column" class="" flex="20" flex-gt-lg-auto="">
+      <div class="md-content bgc-white-4 pad-xs" md-scroll-y="" flex-grow>
         <md-list *ngIf="cart">
           <template let-item ngFor let-last [ngForOf]="cart.items">
-            <md-list-item>
-              <h4 md-line class="tc-grey-700">{{item.name}}</h4>
+            <div layout="row" layout-wrap="" class="pad-xs product-list">
+              <span md-line class="tc-grey-700 md-body-2">{{item.name}}</span>
               <span flex></span>
               <span class="pad-left md-body-1 tc-grey-500" flex="30">
                 <input md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity" class="text-right"
                           (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
               </span>
-              <span flex="30" class="pad-left md-body-1 tc-accent">{{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-</span>
+              <span flex="30" class="pad-left md-body-1 tc-accent text-right">
+                {{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-
+              </span>
               <span flex></span>
-            </md-list-item>
-            <md-list-item class="">
-              <button md-icon-button="" class="bgc-blue-100"
+            </div>
+            <div layout="row" layout-wrap="" class="pad-xs bgc-blue-100">
+              <button md-icon-button="" class="bgc-white-1"
                       (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity+1)">
-                <md-icon class=" tc-grey-700">keyboard_arrow_up</md-icon>
+                <md-icon class=" tc-grey-600">keyboard_arrow_up</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-blue-100"
+              <button md-icon-button="" class="bgc-white-1"
                       (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity-1)">
-                <md-icon class=" tc-grey-700">keyboard_arrow_down</md-icon>
+                <md-icon class=" tc-grey-600">keyboard_arrow_down</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-blue-100" (click)="discountItem(item.product_id, item.stock_id)">
-                <md-icon class=" tc-grey-700">money_off</md-icon>
+              <button md-icon-button="" class="bgc-white-1" (click)="discountItem(item.product_id, item.stock_id)">
+                <md-icon class=" tc-grey-600">money_off</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-blue-100" (click)="removeProduct(item.product_id, item.stock_id)">
-                <md-icon class=" tc-grey-700">remove_circle_outline</md-icon>
+              <button md-icon-button="" class="bgc-white-1" (click)="removeProduct(item.product_id, item.stock_id)">
+                <md-icon class=" tc-grey-600">remove</md-icon>
               </button>
 
-            </md-list-item>
+            </div>
             <!--<md-divider *ngIf="!!last" class=""></md-divider>-->
           </template>
         </md-list>
       </div>
-      <div class="bgc-white-4 pad tc-grey-700 md-body-1 bold" flex="30" layout-align="center center" layout="row"
+      <div class="bgc-white-4 md-content pad-sm tc-grey-700 md-caption font-bold-500" flex="35"
+            md-scroll-y="" layout="row"
            layout-wrap="" *ngIf="cart">
+        <div flex="100" layout-wrap="" layout="row" class="font-bold-500">
+
+          <span>Sub Total</span>
+          <span flex></span>
+          <span>{{cart.sub_total | currency:'INR':true:'1.2-2'}}</span>
+        </div>
         <template let-entry ngFor [ngForOf]="cart.taxes | keys">
           <div flex="100" layout-wrap="" layout="row" *ngIf="entry.key!=='total'">
             <span>{{entry.key}}</span>
@@ -206,20 +213,16 @@
           <span flex></span>
           <span>{{cart.auto_discount | currency:'INR':true:'1.2-2'}}</span>
         </div>
-        <div flex="100" layout-wrap="" layout="row" class="bold" *ngIf="cart.discounts">
+        <div flex="100" layout-wrap="" layout="row" class="font-bold-500" *ngIf="cart.discounts">
           <label class="">Add. %</label>
           <span flex></span>
           <input md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value"
                  [(ngModel)]="cart.discounts[0].value" class="text-right"
                     (change)="updateOrderDiscount(cart.discounts[0].value)"/>
         </div>
-        <div flex="100" layout-wrap="" layout="row" class="bold push-top-sm">
+
+        <div flex="100" layout-wrap="" layout="row" class="md-subhead font-bold-500 push-top-sm">
           <md-divider class="pad-xs" flex="100"></md-divider>
-          <span>Sub Total</span>
-          <span flex></span>
-          <span>{{cart.sub_total | currency:'INR':true:'1.2-2'}}</span>
-        </div>
-        <div flex="100" layout-wrap="" layout="row" class="md-title bold push-top-sm">
           <span>Total</span>
           <span flex></span>
           <span>{{cart.total | currency:'INR':true:'1.2-2'}}</span>

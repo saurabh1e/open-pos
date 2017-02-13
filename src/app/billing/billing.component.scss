@@ -50,5 +50,12 @@ md-card>:first-child {
     margin: 0;
   }
 }
+.product-list {
+  line-height: 32px;
+}
 
-
+[md-icon-button] {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
