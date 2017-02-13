@@ -1,4 +1,3 @@
-
 <td-layout-manage-list #list>
   <md-toolbar list-items>
     <span>Menu</span>
@@ -18,7 +17,7 @@
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/home/1']">
       <md-icon md-list-icon>dashboard</md-icon>
-      Add Stock
+      Add Product
     </a>
     <a md-list-item
        md-ripple class="block relative"
@@ -26,7 +25,7 @@
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/home/1']">
       <md-icon md-list-icon>dashboard</md-icon>
-      Add Consumptions
+      Add Brand
     </a>
     <a md-list-item
        md-ripple class="block relative"
@@ -34,64 +33,59 @@
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/home/1']">
       <md-icon md-list-icon>dashboard</md-icon>
-      View Reports
+      Add Distributor
     </a>
   </md-nav-list>
 
   <div td-toolbar-content layout="row" layout-align="start center" flex>
-    <button md-icon-button color="accent" (click)="goBack()"><md-icon>arrow_back</md-icon></button>
+    <button md-icon-button color="accent" (click)="goBack()">
+      <md-icon>arrow_back</md-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
   </div>
 
-    <div class="md-content inset">
-      <div layout="row" layout-align="center center">
+  <div class="md-content inset">
+    <div layout="row" layout-align="center center">
 
-        <template let-item let-last="last" ngFor [ngForOf]="shops">
+      <template let-item let-last="last" ngFor [ngForOf]="shops">
 
-          <md-card flex="33">
-            <md-card-title class="tc-dark-orange-500">
-              {{item.name}}
-            </md-card-title>
+        <md-card flex="25">
+          <md-card-title class="tc-accent" layout="row" layout-wrap="">
+            {{item.name}}
+            <span flex></span>
+            <button md-icon-button="" color="accent" (click)="syncData(item.id)">
+              <md-icon class="md-36">refresh</md-icon>
+            </button>
+          </md-card-title>
 
-            <md-card-subtitle>{{item.identity}}</md-card-subtitle>
+          <md-card-subtitle>{{item.identity}}</md-card-subtitle>
 
-            <md-divider></md-divider>
+          <md-divider></md-divider>
 
-            <md-card-content>
-              <p layout="row" layout-align="start start">
-                <span flex="30" class="text-left md-title tc-dark-blue-grey-500">Total Sales</span>&nbsp;
-                <span flex="5"></span>
-                <span class="text-right md-title tc-dark-blue-500">:&nbsp;{{item.total_sales.total_sales || 0}}/-</span>
-              </p>
-              <p layout="row" layout-align="start start">
-                <span flex="30" class="text-left md-title tc-dark-blue-grey-500">Total Orders</span>&nbsp;
-                <span flex="5"></span>
-                <span class="text-right md-title tc-dark-blue-500">:&nbsp;{{item.total_sales.total_orders}}</span>
-              </p>
-              <p layout="row" layout-align="start start">
-                <span flex="30" class="text-left md-title tc-dark-blue-grey-500">Total Items</span>&nbsp;
-                <span flex="5"></span>
-                <span class="text-right md-title tc-dark-blue-500">:&nbsp;{{item.total_sales.total_items}}</span>
-              </p>
+          <div md-content layout-align="center center">
+            <md-list>
+              <md-list-item>
+                <md-icon md-list-avatar>attach_money</md-icon>
+                <h4 md-line>{{item.total_sales.total_sales || 0| currency:'INR':true:'1.2-2'}}/-</h4>
+              </md-list-item>
+              <md-list-item>
+                <md-icon md-list-avatar>shopping_cart</md-icon>
+                <h4 md-line>{{item.total_sales.total_orders}}</h4>
+              </md-list-item>
+            </md-list>
 
-            </md-card-content>
-            <md-divider></md-divider>
-            <md-card-actions layout="row" layout-align="end end">
-              <button md-button md-raised-button="" color="accent" (click)="openShop(item)">Open</button>
-              <button md-button md-raised-button="" color="accent" (click)="syncData(item.id)">Sync</button>
-            </md-card-actions>
-
-          </md-card>
-          <md-divider *ngIf="!last"></md-divider>
-        </template>
-
-      </div>
-
-
-      <a md-fab color="accent" class="md-fab-position-bottom-right" [routerLink]="['/form']">
-        <md-icon>add</md-icon>
-      </a>
-
+          </div>
+          <md-card-actions layout="row" layout-align="end end">
+            <button md-button md-raised-button="" color="accent" (click)="openShop(item)">Open</button>
+          </md-card-actions>
+        </md-card>
+        <md-divider *ngIf="!last"></md-divider>
+      </template>
     </div>
+    <a md-fab color="accent" class="md-fab-position-bottom-right" [routerLink]="['/form']">
+      <md-icon>add</md-icon>
+    </a>
+
+  </div>
 </td-layout-manage-list>
