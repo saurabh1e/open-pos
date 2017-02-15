@@ -92,9 +92,10 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
 
   syncData(retailShopId: number): void {
-    let params = {__retail_shop_id__exact: retailShopId, __limit:200, __page:1};
-
-    this._itemService.saveProducts(params);
+    let params = {__retail_shop_id__equal: retailShopId, __limit:100, __page:1};
+    let product_params = params;
+    product_params['__include'] = ['similar_products', 'available_stocks', 'brand', 'distributor'];
+    this._itemService.saveProducts(product_params);
     this._distributorService.saveDistributors(params);
     this._brandService.saveBrands(params);
     this._tagService.saveTags(params);

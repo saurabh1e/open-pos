@@ -3,6 +3,8 @@ import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
 import {Subject, Observable} from "rxjs";
 import {Status,IndexDBServiceService} from "./indexdb.service";
+import {URLSearchParams} from "@angular/http";
+import {RetailShop} from "./shop.service";
 
 
 export interface Product {
@@ -24,6 +26,9 @@ export interface Product {
   brand_name: string;
   distributor_id: number;
   retail_shop_id: number;
+  brand: Brand;
+  distributor: Distributor;
+  retail_shop: RetailShop;
 }
 
 export interface Stock {
