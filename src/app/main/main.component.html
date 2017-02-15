@@ -1,10 +1,1 @@
-<td-layout #layout logo="assets:logo" sidenavTitle="Quickstart" displayName="Firstname Lastname" (logout)="logout()">
-  <md-nav-list menu-items>
-    <template let-item let-last="last" ngFor [ngForOf]="routes">
-      <a md-list-item [routerLink]="[item.route]" (click)="layout.close()"><md-icon>{{item.icon}}</md-icon>{{item.title}}</a>
-    </template>
-  </md-nav-list>
-  <router-outlet></router-outlet>
-
-
-</td-layout>
+ <router-outlet></router-outlet>
