@@ -1,41 +1,3 @@
-<td-layout-manage-list #list>
-  <md-toolbar list-items>
-    <span>Menu</span>
-  </md-toolbar>
-  <md-nav-list list-items>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/dashboard']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Dashboard
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/1']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Add Product
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/1']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Add Brand
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/1']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Add Distributor
-    </a>
-  </md-nav-list>
 
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <button md-icon-button color="accent" (click)="goBack()">
@@ -73,7 +35,3 @@
       <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal" (change)="page($event)"></td-paging-bar>
     </div>
   </div>
-
-</td-layout-manage-list>
-
-

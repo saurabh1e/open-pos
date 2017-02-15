@@ -4,21 +4,21 @@ import {
   TdLoadingService, LoadingType, LoadingMode
 } from '@covalent/core';
 import { IPageChangeEvent } from '@covalent/core';
-import {Tag, TagsService} from "../../../services/items.service";
+import {Salt, SaltsService} from "../../../services/items.service";
 import {UsersService} from "../../../services/users.service";
 import {Title} from "@angular/platform-browser";
 
 
 @Component({
-  selector: 'app-tag',
-  templateUrl: './tag.component.html',
-  styleUrls: ['./tag.component.scss']
+  selector: 'app-salt',
+  templateUrl: 'salt.component.html',
+  styleUrls: ['salt.component.scss']
 })
-export class TagComponent implements AfterViewInit {
+export class SaltComponent implements AfterViewInit {
 
   selectedRows = [];
 
-  data: Tag[] = [
+  data: Salt[] = [
 
   ];
 
@@ -42,7 +42,7 @@ export class TagComponent implements AfterViewInit {
   constructor(
     private _titleService: Title,
     private _loadingService: TdLoadingService,
-    private _tagService: TagsService,
+    private _saltService: SaltsService,
     private _userService: UsersService) {
     this._loadingService.create({
       name: 'products',
@@ -88,9 +88,9 @@ export class TagComponent implements AfterViewInit {
     if (this.sortOrder.toString() == 'DESC'){
       sortBy = '-'.concat(sortBy);
     }
-    this._tagService.query({__retail_shop_id__in: this.shops, __include: ['retail_shop'],
+    this._saltService.query({__retail_shop_id__in: this.shops, __include: ['retail_shop'],
       __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy})
-      .subscribe((resp: {data: Tag[], total: number})=>{
+      .subscribe((resp: {data: Salt[], total: number})=>{
         this.data = resp.data;
         this.filteredData = resp.data;
         this.filteredTotal = resp.total;

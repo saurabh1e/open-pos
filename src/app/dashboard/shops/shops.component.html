@@ -1,92 +1,39 @@
-<td-layout-manage-list #list>
-  <md-toolbar list-items>
-    <span>Menu</span>
-  </md-toolbar>
-  <md-nav-list list-items>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/dashboard']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Dashboard
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/products']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Products
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/brands']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Brands
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/distributors']">
-      <md-icon md-list-icon>dashboard</md-icon>
-      Distributors
-    </a>
-  </md-nav-list>
+<div class="md-content inset">
+  <div layout="row" layout-align="center center">
 
-  <div td-toolbar-content layout="row" layout-align="start center" flex>
-    <button md-icon-button color="accent" (click)="goBack()">
-      <md-icon>arrow_back</md-icon>
-    </button>
-    <span flex></span>
-    <span>{{title}}</span>
-    <span flex></span>
+    <template let-item let-last="last" ngFor [ngForOf]="shops">
+
+      <md-card flex="25">
+        <md-card-title class="tc-accent" layout="row" layout-wrap="">
+          {{item.name}}
+          <span flex></span>
+          <button md-icon-button="" color="accent" (click)="syncData(item.id)">
+            <md-icon class="md-36">refresh</md-icon>
+          </button>
+        </md-card-title>
+
+        <md-card-subtitle>{{item.identity}}</md-card-subtitle>
+
+        <md-divider></md-divider>
+
+        <div md-content layout-align="center center">
+          <md-list>
+            <md-list-item>
+              <md-icon md-list-avatar>attach_money</md-icon>
+              <h4 md-line>{{item.total_sales.total_sales || 0| currency:'INR':true:'1.2-2'}}/-</h4>
+            </md-list-item>
+            <md-list-item>
+              <md-icon md-list-avatar>shopping_cart</md-icon>
+              <h4 md-line>{{item.total_sales.total_orders}}</h4>
+            </md-list-item>
+          </md-list>
+
+        </div>
+        <md-card-actions layout="row" layout-align="end end">
+          <button md-button md-raised-button="" color="accent" (click)="openShop(item)">Open</button>
+        </md-card-actions>
+      </md-card>
+      <md-divider *ngIf="!last"></md-divider>
+    </template>
   </div>
-
-  <div class="md-content inset">
-    <div layout="row" layout-align="center center">
-
-      <template let-item let-last="last" ngFor [ngForOf]="shops">
-
-        <md-card flex="25">
-          <md-card-title class="tc-accent" layout="row" layout-wrap="">
-            {{item.name}}
-            <span flex></span>
-            <button md-icon-button="" color="accent" (click)="syncData(item.id)">
-              <md-icon class="md-36">refresh</md-icon>
-            </button>
-          </md-card-title>
-
-          <md-card-subtitle>{{item.identity}}</md-card-subtitle>
-
-          <md-divider></md-divider>
-
-          <div md-content layout-align="center center">
-            <md-list>
-              <md-list-item>
-                <md-icon md-list-avatar>attach_money</md-icon>
-                <h4 md-line>{{item.total_sales.total_sales || 0| currency:'INR':true:'1.2-2'}}/-</h4>
-              </md-list-item>
-              <md-list-item>
-                <md-icon md-list-avatar>shopping_cart</md-icon>
-                <h4 md-line>{{item.total_sales.total_orders}}</h4>
-              </md-list-item>
-            </md-list>
-
-          </div>
-          <md-card-actions layout="row" layout-align="end end">
-            <button md-button md-raised-button="" color="accent" (click)="openShop(item)">Open</button>
-          </md-card-actions>
-        </md-card>
-        <md-divider *ngIf="!last"></md-divider>
-      </template>
-    </div>
-    <a md-fab color="accent" class="md-fab-position-bottom-right" [routerLink]="['/form']">
-      <md-icon>add</md-icon>
-    </a>
-
-  </div>
-</td-layout-manage-list>
+</div>

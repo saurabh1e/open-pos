@@ -11,8 +11,8 @@ import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-tax',
-  templateUrl: './tax.component.html',
-  styleUrls: ['./tax.component.scss']
+  templateUrl: 'tax.component.html',
+  styleUrls: ['tax.component.scss']
 })
 export class TaxComponent implements AfterViewInit {
 

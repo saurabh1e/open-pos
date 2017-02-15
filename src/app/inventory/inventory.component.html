@@ -15,25 +15,57 @@
          md-ripple class="block relative"
          [routerLinkActive]="['active']"
          [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/home/dashboard/shops']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Dashboard
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
          [routerLink]="['/inventory/products']">
         <md-icon md-list-icon>dashboard</md-icon>
-        Inventory
+        Products
       </a>
       <a md-list-item
          md-ripple class="block relative"
          [routerLinkActive]="['active']"
          [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/reports']">
+         [routerLink]="['/inventory/brands']">
         <md-icon md-list-icon>dashboard</md-icon>
-        Reports
+        Brands
+      </a>
+      <a md-list-item
+         md-ripple class="block relative"
+         [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}"
+         [routerLink]="['/inventory/distributors']">
+        <md-icon md-list-icon>dashboard</md-icon>
+        Distributors
+      </a>
+      <a md-list-item
+         md-ripple class="block relative"
+         [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}"
+         [routerLink]="['/inventory/salts']">
+        <md-icon md-list-icon>dashboard</md-icon>
+        Salts
+      </a>
+      <a md-list-item
+         md-ripple class="block relative"
+         [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}"
+         [routerLink]="['/inventory/tags']">
+        <md-icon md-list-icon>dashboard</md-icon>
+        Tags
+      </a>
+      <a md-list-item
+         md-ripple class="block relative"
+         [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}"
+         [routerLink]="['/inventory/taxes']">
+        <md-icon md-list-icon>dashboard</md-icon>
+        Taxes
+      </a>
+      <a md-list-item
+         md-ripple class="block relative"
+         [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}"
+         [routerLink]="['/home/dashboard/shops']">
+        <md-icon md-list-icon>dashboard</md-icon>
+        DashBoard
       </a>
     </md-nav-list>
 
@@ -42,7 +74,7 @@
         <md-icon>arrow_back</md-icon>
       </button>
       <span flex></span>
-      <span>{{title}}</span>
+      <span>Inventory</span>
       <span flex></span>
     </div>
 

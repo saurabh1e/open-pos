@@ -51,7 +51,7 @@ export class ShopComponent implements AfterViewInit {
   openShop(data: RetailShop): void {
     this._loadingService.register('shops');
     this._shopService.shop = data;
-    this._router.navigate(['home/carts/'+stringify(data.id)]);
+    this._router.navigate(['home/dashboard/carts/'+stringify(data.id)]);
     this._loadingService.resolve('shops');
   }
   syncData(data: number): void {

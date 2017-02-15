@@ -3,10 +3,7 @@ import { BrowserModule, Title }  from '@angular/platform-browser';
 
 import {CovalentCoreModule, CovalentDataTableModule} from '@covalent/core';
 import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
-import { CovalentHighlightModule } from '@covalent/highlight';
-import { CovalentMarkdownModule } from '@covalent/markdown';
-import { CovalentChartsModule } from '@covalent/charts';
-import { CovalentSearchModule, CovalentExpansionPanelModule } from '@covalent/core';
+import { CovalentSearchModule } from '@covalent/core';
 
 
 import { AppComponent } from './app.component';
@@ -42,12 +39,13 @@ import {BillingComponent} from "./billing/billing.component";
 import {ProductInfoComponent} from "./billing/product-info/product-info.component";
 import {CheckoutComponent} from "./billing/checkout/checkout.component";
 import {ItemDiscountComponent} from "./billing/item-discount/item-discount.component";
-import {ProductComponent} from "./dashboard/product/product.component";
-import {BrandComponent} from "./dashboard/brand/brand.component";
-import {TagComponent} from "./dashboard/tag/tag.component";
-import {SaltComponent} from "./dashboard/salt/salt.component";
-import {TaxComponent} from "./dashboard/tax/tax.component";
-import {DistributorComponent} from "./dashboard/distributor/distributor.component";
+import {ProductComponent} from "./inventory/product/product.component";
+import {BrandComponent} from "./inventory/brand/brand.component";
+import {TagComponent} from "./inventory/tag/tag.component";
+import {SaltComponent} from "./inventory/salt/salt.component";
+import {TaxComponent} from "./inventory/tax/tax.component";
+import {DistributorComponent} from "./inventory/distributor/distributor.component";
+import {InventoryComponent} from "./inventory/inventory.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -72,6 +70,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     DistributorComponent,
     CheckoutComponent,
     BillingComponent,
+    InventoryComponent,
     ProductSearchPipe,
     ProductBrandPipe,
     ProductDistributorPipe,

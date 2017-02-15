@@ -11,8 +11,8 @@ import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-distributor',
-  templateUrl: './distributor.component.html',
-  styleUrls: ['./distributor.component.scss']
+  templateUrl: 'distributor.component.html',
+  styleUrls: ['distributor.component.scss']
 })
 export class DistributorComponent implements AfterViewInit {
 
