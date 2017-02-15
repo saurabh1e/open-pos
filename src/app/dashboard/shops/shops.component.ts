@@ -16,7 +16,7 @@ export class ShopComponent implements AfterViewInit {
 
   items: Object[];
   users: Object[];
-
+  title: string;
   shops: RetailShop[];
 
   constructor(private _titleService: Title,
@@ -25,6 +25,7 @@ export class ShopComponent implements AfterViewInit {
               private _loadingService: TdLoadingService,
               private _router: Router) {
     this.shops = this._shopService.shops;
+
     this._loadingService.create({
       name: 'shops',
       type: LoadingType.Circular,
@@ -35,6 +36,7 @@ export class ShopComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this._titleService.setTitle('Dashboard');
+    this.title  = 'Dashboard';
 
     this._loadingService.register('shops');
     this._shopService.shops$.subscribe((data: RetailShop[]) => {

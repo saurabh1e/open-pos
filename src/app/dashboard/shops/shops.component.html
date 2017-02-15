@@ -15,7 +15,7 @@
        md-ripple class="block relative"
        [routerLinkActive]="['active']"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/home/1']">
+       [routerLink]="['/home/products']">
       <md-icon md-list-icon>dashboard</md-icon>
       Add Product
     </a>
@@ -41,6 +41,7 @@
     <button md-icon-button color="accent" (click)="goBack()">
       <md-icon>arrow_back</md-icon>
     </button>
+    <span flex></span>
     <span>{{title}}</span>
     <span flex></span>
   </div>
