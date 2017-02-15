@@ -1,6 +1,6 @@
-<td-layout-nav logo="assets:logo">
+<td-layout logo="assets:logo" layout="column" layout-wrap="">
 
-    <div td-toolbar-button layout="row" class="bgc-whitesmoke md-shadow-bottom-z-1 push-sm" layout-wrap="">
+    <div td-toolbar-button layout="row" class="bgc-whitesmoke md-shadow-bottom-z-1" layout-wrap="">
       <button md-button="" color="accent" (click)="goBack()">
         <md-icon color="accent">arrow_back</md-icon>
       </button>
@@ -120,39 +120,44 @@
     </div>
 
 
-  <div layout="row" layout-wrap="" class="push-sm" flex>
-    <div layout="row" layout-wrap="" flex="" class="" layout-align="start">
+  <div layout="row" layout-wrap="" class="push-sm" flex="100" md-content="" md-scroll-y="">
+    <div layout="column" layout-wrap="" flex="80" class="" layout-align="start">
       <!--<div class="md-content md-shadow-bottom-z-1" flex="100" md-scroll-y="" layout-fill="" layout="row" layout-wrap=""-->
       <!--layout-align="center center">-->
-      <template let-product ngFor let-last
-                [ngForOf]="products |  productDistributor: selectedDistributors | productSearch: searchInputTerm
+      <div layout="column" layout-wrap="" flex="80">
+        <div layout="row" layout-fill="" md-scroll-y="" layout-wrap="" md-content="">
+          <template let-product ngFor let-last
+                    [ngForOf]="products |  productDistributor: selectedDistributors | productSearch: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |
-                    productSalt: selectedSalts | paginate : {itemsPerPage: 54, currentPage: p}">
+                    productSalt: selectedSalts | paginate : {itemsPerPage: 63, currentPage: p}">
 
-        <div class="md-content bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="10"
-             layout="row" layout-wrap="" layout-align="center start">
-          <div flex="100" layout="row" class="">
-            <span flex></span>
-            <span (click)="showInfo(product)" class="info-click pad-top-xs pad-right-xs"><md-icon
-              class="md-18 tc-accent">info_outline</md-icon>
+            <div class="md-content bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="10"
+                 layout="row" layout-wrap="" layout-align="center start">
+              <div flex="100" layout="row" class="">
+                <span flex></span>
+                <span (click)="showInfo(product)" class="info-click pad-top-xs pad-right-xs"><md-icon
+                  class="md-18 tc-accent">info_outline</md-icon>
               </span>
-          </div>
-          <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
-               (click)="addProduct(product, product.available_stocks[0])">
+              </div>
+              <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
+                   (click)="addProduct(product, product.available_stocks[0])">
               <span class="tc-primary md-body-1 font-bold-500">
               {{product.name}}
               </span>
-            <span class="md-caption tc-grey-600">{{product.brand_name}}</span>
-          </div>
+                <span class="md-caption tc-grey-600">{{product.brand.name}}</span>
+              </div>
+            </div>
+          </template>
         </div>
-      </template>
 
-      <div flex="100" layout="row" layout-align="center center" class=" tc-grey-700">
+      </div>
+
+      <div flex="10" layout="row" layout-align="center center" class=" tc-grey-700">
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
     </div>
     <div layout="column" class="" flex="20" flex-gt-lg-auto="">
-      <div class="md-content bgc-white-4 pad-xs" md-scroll-y="" flex-grow>
+      <div class="md-content bgc-white-4 pad-xs" md-scroll-y="" flex="55">
         <md-list *ngIf="cart">
           <template let-item ngFor let-last [ngForOf]="cart.items">
             <div layout="row" layout-wrap="" class="pad-xs product-list">
@@ -231,7 +236,7 @@
 
     </div>
   </div>
-</td-layout-nav>
+</td-layout>
 
 
 
