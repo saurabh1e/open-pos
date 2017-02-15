@@ -6,3 +6,12 @@
 .logo {
   height: 50px!important;
 }
+.pagination {
+  position: fixed;
+  bottom: 0;
+  z-index: 3;
+  text-align: right;
+  right: 30px;
+  font-size: 14px;
+
+}

@@ -22,11 +22,11 @@ const routes: Routes = [
         children: [
           {path: 'dashboard', component: ShopComponent},
           {path: 'products', component: ProductComponent},
-          {path: 'products', component: BrandComponent},
-          {path: 'products', component: DistributorComponent},
-          {path: 'products', component: TagComponent},
-          {path: 'products', component: TaxComponent},
-          {path: 'products', component: SaltComponent},
+          {path: 'brands', component: BrandComponent},
+          {path: 'distributors', component: DistributorComponent},
+          {path: 'tags', component: TagComponent},
+          {path: 'taxes', component: TaxComponent},
+          {path: 'salts', component: SaltComponent},
 
           {path: 'carts',
             children: [
