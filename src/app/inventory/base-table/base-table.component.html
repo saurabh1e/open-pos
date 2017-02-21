@@ -28,16 +28,25 @@
         <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
       </td>
       <td>
-        <button class="small-button" (click)="editRow(row, filteredData.indexOf(row))">
+        <button class="small-button" (click)="edit(row, filteredData.indexOf(row))">
           <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
         </button>
-        <button class="small-button" *ngIf="row.is_enabled" (click)="toggleRow(row, filteredData.indexOf(row))">
-          <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
-        </button>
-        <button class="small-button" *ngIf="!row.is_enabled" (click)="toggleRow(row, filteredData.indexOf(row))">
-          <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
-        </button>
-
+        <span *ngIf="row.hasOwnProperty('is_disabled')">
+          <button class="small-button" *ngIf="!row.is_disabled"
+                  (click)="toggle(row, filteredData.indexOf(row))">
+            <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
+          </button>
+          <button class="small-button" *ngIf="row.is_disabled"
+                  (click)="toggle(row, filteredData.indexOf(row))">
+            <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
+          </button>
+        </span>
+        <span *ngIf="!row.hasOwnProperty('is_disabled')">
+          <button class="small-button"
+                  (click)="deleteRow(row, filteredData.indexOf(row))">
+            <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">close</md-icon>
+          </button>
+        </span>
 
       </td>
     </tr>
@@ -48,3 +57,6 @@
   <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal"
                  (change)="page($event)"></td-paging-bar>
 </div>
+<a md-fab color="accent" class="md-fab-position-bottom-right" (click)="add()">
+  <md-icon>add</md-icon>
+</a>

@@ -152,11 +152,11 @@ export class ProductComponent implements AfterViewInit {
 
   toggleProduct(product: Product, index: number): void {
     this._loadingService.register('products');
-    product.is_enabled = !product.is_enabled;
+    product.is_disabled = !product.is_disabled;
     this._itemService.update(product.id, product).subscribe(()=> {
       this._loadingService.resolve('products');
     }, ()=>{
-      this.data[index].is_enabled = !this.data[index].is_enabled;
+      this.data[index].is_disabled = !this.data[index].is_disabled;
       this._loadingService.resolve('products');
     })
   }

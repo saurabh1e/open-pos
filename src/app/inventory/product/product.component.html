@@ -33,10 +33,10 @@
             <button class="small-button" (click)="editProduct(row, data.indexOf(row))">
               <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
             </button>
-          <button class="small-button" *ngIf="row.is_enabled" (click)="toggleProduct(row, data.indexOf(row))">
+          <button class="small-button" *ngIf="!row.is_disabled" (click)="toggleProduct(row, data.indexOf(row))">
             <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
           </button>
-          <button class="small-button" *ngIf="!row.is_enabled" (click)="toggleProduct(row, data.indexOf(row))">
+          <button class="small-button" *ngIf="!!row.is_disabled" (click)="toggleProduct(row, data.indexOf(row))">
             <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
           </button>
 

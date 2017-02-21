@@ -12,7 +12,7 @@ export interface Product {
   similar_products?: number[],
   description?: {},
   sub_description: string;
-  is_enabled: boolean;
+  is_disabled: boolean;
   id: number,
   min_stock: number,
   mrp: number,
@@ -57,6 +57,7 @@ export interface Salt {
 export interface Tax {
   id: number;
   name: string;
+  is_disabled?: boolean;
   retail_shop_id?: number;
   value?: number;
 }

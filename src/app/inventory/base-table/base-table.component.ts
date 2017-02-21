@@ -4,6 +4,7 @@ import { IPageChangeEvent } from '@covalent/core';
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {RESTService} from "@covalent/http";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -29,13 +30,13 @@ export class BaseTableComponent implements OnInit {
 
   @Input()
   filter:()=> RESTService<any>;
-  @Input()
-  addRow:()=> void;
-  @Input()
-  editRow:()=> void;
-  @Input()
-  toggleRow:()=> void;
 
+  @Input()
+  editRow:(any)=> Observable<any>;
+  @Input()
+  toggleRow:(any)=> Observable<any>;
+  @Input()
+  addRow:()=> Observable<any>;
 
   shops: RetailShop[];
   currentPage: number = 1;
@@ -101,5 +102,43 @@ export class BaseTableComponent implements OnInit {
         this.filteredTotal = resp.total;
         this._loadingService.resolve('tables');
       });
+  }
+
+  edit(row: any, index: number):void {
+    this.editRow(row).subscribe((data)=> {
+        if (data) {
+          this.filteredData[index] = data
+        }
+    }, ()=> {
+
+    })
+  }
+
+  toggle(row: any, index: number):void {
+    this._loadingService.register('tables');
+    this.toggleRow(row).subscribe((data)=> {
+      this.filteredData[index].is_disabled = !this.filteredData[index].is_disabled;
+      this._loadingService.resolve('tables');
+    }, ()=> {
+      this._loadingService.resolve('tables');
+    })
+  }
+
+  deleteRow(row: any, index: number):void {
+    this.toggleRow(row).subscribe(()=> {
+      this.filteredData.splice(index, 1);
+      this._loadingService.resolve('tables');
+    }, ()=> {
+      this._loadingService.resolve('tables');
+    })
+  }
+  add(): void {
+    this.addRow().subscribe((data)=> {
+      if (data) {
+        this.filteredData = this.filteredData.concat(data);
+      }
+    }, ()=> {
+
+    })
   }
 }
