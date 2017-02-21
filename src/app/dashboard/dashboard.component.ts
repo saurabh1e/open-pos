@@ -17,9 +17,4 @@ export class DashboardComponent implements AfterViewInit {
     this.title = this._titleService.getTitle();
   }
 
-  goBack():void {
-    window.history.back();
-  }
-
-
 }
