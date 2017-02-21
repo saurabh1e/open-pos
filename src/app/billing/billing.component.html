@@ -165,13 +165,13 @@
         <md-list *ngIf="cart">
           <template let-item ngFor let-last [ngForOf]="cart.items">
             <div layout="row" layout-wrap="" class="pad-xs product-list">
-              <span md-line class="tc-grey-700 md-body-2">{{item.name}}</span>
+              <span md-line flex="55" class="tc-grey-700 md-body-2">{{item.name}}</span>
               <span flex></span>
-              <span class="pad-left md-body-1 tc-grey-500" flex="30">
+              <span class="pad-left md-body-1 tc-grey-500" flex="20">
                 <input md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity" class="text-right"
                        (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
               </span>
-              <span flex="30" class="pad-left md-body-1 tc-accent text-right">
+              <span flex="20" class="pad-left md-body-1 tc-accent text-right">
                 {{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-
               </span>
               <span flex></span>
