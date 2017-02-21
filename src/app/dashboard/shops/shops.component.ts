@@ -52,18 +52,35 @@ export class ShopComponent implements AfterViewInit {
   openShop(data: RetailShop): void {
     this._loadingService.register('shops');
     this._shopService.shop = data;
-    this.shop_id = data.id;
-    this._loadingService.resolve('shops');
+    this._indexDBService.products.where({retail_shop_id: data.id}).count().then((count)=>{
+      if (count< 1) {
+        this._shopService.syncData(data.id);
+        this._indexDBService.db$.subscribe(() => {
+          this.shop_id = data.id;
+          this._loadingService.resolve('shops');
+        }, (error) => {
+          console.log(error)
+        });
+
+      }
+      else  {
+        this.shop_id = data.id;
+        this._loadingService.resolve('shops');
+      }
+
+    });
+
   }
   syncData(data: number): void {
     this._loadingService.register('shops');
     this._shopService.syncData(data);
-    this._indexDBService.db$.subscribe((data) => {
+    this._indexDBService.db$.subscribe(() => {
       this._loadingService.resolve('shops');
     }, (error) => {
       console.log(error)
     });
   }
+
   closeCart(): void {
     this.shop_id = null;
   }

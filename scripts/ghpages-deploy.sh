@@ -1,8 +1,8 @@
 #!/bin/bash
-echo 'Replace api endpoint with https://open-point-of-sale.herokuapp.com/'
+echo 'Replace api endpoint with https://open-point-of-sale.herokuapp.com/api/v1/'
 
 cat <<'EOF' >> api.config.ts
-export const MOCK_API: string = "https://open-point-of-sale.herokuapp.com/";
+export const MOCK_API: string = "https://open-point-of-sale.herokuapp.com/api/v1/";
 EOF
 
 mv src/config/api.config.ts api.config.ts.default

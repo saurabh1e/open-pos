@@ -138,7 +138,7 @@
                    | productBrand : selectedBrands | productTag: selectedTags |
                     productSalt: selectedSalts | paginate : {itemsPerPage: 54, currentPage: p}">
 
-        <div class="md-content bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="10"
+        <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="10"
              layout="row" layout-wrap="" layout-align="center start">
           <div flex="100" layout="row" class="">
             <span flex></span>
@@ -147,11 +147,11 @@
               </span>
           </div>
           <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
-               (click)="addProduct(product, product.available_stocks[0])">
+               (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">
               <span class="tc-primary md-body-1 font-bold-500">
               {{product.name}}
               </span>
-            <span class="md-caption tc-grey-600">{{product.brand.name}}</span>
+            <span class="md-caption tc-grey-600" *ngIf="product.brand">{{product.brand.name}}</span>
           </div>
         </div>
       </template>

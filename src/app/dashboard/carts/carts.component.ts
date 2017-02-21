@@ -46,10 +46,7 @@ export class CartComponent implements OnInit {
   openCart(id: number): void {
     this._loadingService.register('cart');
     this._indexDB.carts.get(id).then((cart)=>{
-      this._route.navigate(['billing/'+stringify(cart.local_id)]).then(()=>{
-        this._loadingService.resolve('cart');
-        });
-
+      this.routeCart(cart.local_id);
       });
     }
 
@@ -63,10 +60,15 @@ export class CartComponent implements OnInit {
   newCart(): void {
     this._loadingService.register('cart');
     this._cartService.newCart(this.shop_id).then((cartId)=>{
-      this._route.navigate(['billing/'+stringify(cartId)]).then(()=>{
-        this._loadingService.resolve('cart');
-      });
+      this.routeCart(cartId);
     });
+  }
+
+  routeCart(cartId: number): void {
+    this._route.navigate(['billing/'+stringify(cartId)]).then(()=>{
+    this._loadingService.resolve('cart');
+
+    })
   }
 
 }
