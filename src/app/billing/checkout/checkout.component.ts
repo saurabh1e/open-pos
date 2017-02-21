@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Order} from "../../../services/orders.service";
+import {Order, OrdersService} from "../../../services/orders.service";
 import {MdDialogRef} from "@angular/material";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Customer, CustomerService, Address} from "../../../services/customer.service";
 import {RetailShop} from "../../../services/shop.service";
 import {Observable} from "rxjs";
-import {IUser} from "../../../services/users.service";
+import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
+
 
 @Component({
   selector: 'app-checkout',
@@ -25,8 +26,18 @@ export class CheckoutComponent implements OnInit {
   denominationArray: {} = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};
   total: string = '0';
 
-  constructor(public dialogRef: MdDialogRef<CheckoutComponent>, private _customerService: CustomerService,
-              private _indexDB: IndexDBServiceService) { }
+  constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
+              private _customerService: CustomerService,
+              private _indexDB: IndexDBServiceService,
+              private _orderService: OrdersService,
+              private _loadingService: TdLoadingService) {
+    this._loadingService.create({
+      name: 'checkout',
+      type: LoadingType.Circular,
+      mode: LoadingMode.Indeterminate,
+      color: 'warn',
+    });
+  }
 
   ngOnInit() {
     this._indexDB.shops.get(this.cart.retail_shop_id).then((shop)=>{
@@ -58,19 +69,22 @@ export class CheckoutComponent implements OnInit {
 
 
   getCustomers = (event):Observable<string[]> => {
-
+    this._loadingService.register('checkout');
     if (parseInt(event)) {
-      return this._customerService.query({__retail_brand_id__equal: this.shop.retail_brand_id, __number__contains: event,
+      return this._customerService.query({__retail_brand_id__equal: this.shop.retail_brand_id,
+        __number__contains: event,
+        __limit:100,
         __only: ['id', 'name', 'mobile_number']}).map(data => data.data.map((item) => {
-
+        this._loadingService.resolve('checkout');
           return {display: item.name + ' <'+item.mobile_number+'>', value: item.id}
         }))
     }
     else {
       return this._customerService.query({__retail_brand_id__equal: this.shop.retail_brand_id, __name__contains: event,
+        __limit:100,
         __only: ['id', 'name', 'mobile_number']})
         .map(data => data.data.map((item) => {
-
+          this._loadingService.resolve('checkout');
           return {display: item.name + ' <'+item.mobile_number+'>', value: item.id}
         }))
     }
@@ -81,7 +95,6 @@ export class CheckoutComponent implements OnInit {
     if (this.customers.length) {
       this._customerService.query({__id__equal: this.customers[0].value, __include: ['addresses'], __limit: 1}).subscribe((data: {data: Customer[]})=>{
         this.customer = data.data[0];
-        console.log(data);
         this.addresses = this.customer.addresses.map((item)=>{
           return {display: item.name, value: item.id}
         })
@@ -91,7 +104,21 @@ export class CheckoutComponent implements OnInit {
       this.customer = <Customer>{addresses: <Address[]>[]};
     }
   }
-  addAddress(event): void {
-    console.log(event);
+  addAddress(): void {
+    this.cart.address = {id: this.addresses[0].value, name:this.addresses[0].display}
+  }
+  removeAddress(): void {
+    this.cart.address = null;
+  }
+
+  checkOut(): void {
+    this._loadingService.register('checkout');
+    this.cart.customer = this.customer;
+    this._orderService.create(this.cart).subscribe(()=>{
+      this._loadingService.resolve('checkout');
+      this.dialogRef.close(true);
+    }, ()=> {
+      this._loadingService.register('checkout');
+    })
   }
 }

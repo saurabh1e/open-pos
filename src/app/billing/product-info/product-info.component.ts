@@ -14,8 +14,8 @@ export class ProductInfoComponent implements OnInit {
   product: Product;
   products: Product[] = [];
 
-  constructor(private _dialogService: TdDialogService,
-              public dialogRef: MdDialogRef<ProductInfoComponent>, private _indexDB: IndexDBServiceService) { }
+  constructor(public dialogRef: MdDialogRef<ProductInfoComponent>,
+              private _indexDB: IndexDBServiceService) { }
 
   ngOnInit() {
     this.product.similar_products.forEach((value)=>{
@@ -26,8 +26,7 @@ export class ProductInfoComponent implements OnInit {
   }
 
   close():void {
-    this.dialogRef.close({t:true});
-    // this._dialogService.closeAll();
+    this.dialogRef.close();
   }
 
 }

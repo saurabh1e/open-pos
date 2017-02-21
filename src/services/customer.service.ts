@@ -16,12 +16,12 @@ export interface Customer {
 export interface Address {
   id: number;
   name: string;
-  locality: Locality;
+  locality?: Locality;
 }
 
 export interface Locality {
   name: string;
-  city: City;
+  city?: City;
 }
 
 export interface City {

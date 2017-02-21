@@ -87,7 +87,7 @@
           <div layout="row" layout-wrap="">
             <template let-salt ngFor [ngForOf]="salts">
               <md-checkbox class="pad-xs" ([checked])="checkSalt(salt.id)"
-                           (change)="toggleSalt(salt.id)" flex="20">
+                           (change)="toggleSalt(salt.id)" flex="25">
                 {{salt.name}}
               </md-checkbox>
             </template>

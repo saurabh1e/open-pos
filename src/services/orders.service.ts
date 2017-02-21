@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {RetailShop} from "./shop.service";
 import {Address, Customer} from "./customer.service";
 import {Tax} from "./items.service";
+import {RESTService, HttpInterceptorService} from "@covalent/http";
+import {MOCK_API} from "../config/api.config";
 
 export interface Order {
 
@@ -72,8 +74,13 @@ export interface Status {
 }
 
 @Injectable()
-export class OrdersService {
+export class OrdersService extends RESTService<Order> {
 
-  constructor() { }
+  constructor(private _http: HttpInterceptorService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/order',
+    });
+  }
 
 }

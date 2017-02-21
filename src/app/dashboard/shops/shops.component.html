@@ -40,7 +40,7 @@
     <app-carts [shop_id]="shop_id" ></app-carts>
   </div>
 
-  <div flex="5" layout-align="end end" *ngIf="shop_id" class="push-left">
+  <div flex-shrink layout-align="end end" *ngIf="shop_id" class="push-top push-right">
     <button md-icon-button="" (click)="closeCart()">
       <md-icon color="accent" class="md-48">close</md-icon>
     </button>

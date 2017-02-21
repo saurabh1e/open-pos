@@ -54,9 +54,9 @@
 
     <div flex="40" layout="row" layout-wrap="" class="pad">
       <md-card-subtitle class="tc-blue-700" flex="100">Customer Information</md-card-subtitle>
-      <div layout="row" class="" flex="100" layout-align="center center">
+      <div layout="row" class="" flex="100" layout-align="center start">
         <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
-                   (onAdd)="addCustomer()"
+                   (onAdd)="addCustomer()" flex="65"
                    [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
           <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false">
             <template let-item="item" let-index="index">
@@ -74,13 +74,13 @@
         </div>
         <div layout="row" layout-margin="">
           <md-input-container flex>
-            <input md-input placeholder="Number" type="number" name="mobile_number" [ngModel]="customer.mobile_number">
+            <input md-input placeholder="Number" type="number" min="0" name="mobile_number" [ngModel]="customer.mobile_number">
           </md-input-container>
         </div>
 
         <div layout="row" layout-margin>
           <div flex>
-            <tag-input [(ngModel)]="address" name="address" placeholder="Search Address..." (onRemove)="addAddress()"
+            <tag-input [(ngModel)]="address" name="address" placeholder="Search Address..." (onRemove)="removeAddress()"
                        (onAdd)="addAddress()"
                        [secondaryPlaceholder]="'Search Address...'"  [maxItems]="1">
               <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="addresses">
@@ -241,7 +241,7 @@
   <md-divider flex></md-divider>
   <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="">
     <button md-raised-button="" color="accent">Print Bill</button>
-    <button md-raised-button="" color="accent">Checkout</button>
+    <button md-raised-button="" (click)="checkOut()" color="accent">Checkout</button>
   </md-card-actions>
 
 </div>

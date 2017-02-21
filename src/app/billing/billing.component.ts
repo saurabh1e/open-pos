@@ -38,8 +38,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   config = <MdDialogConfig>{height: '70%', width: '70%'};
 
 
-  constructor(private _titleService: Title,
-              private _route: Router,
+  constructor(private _router: Router,
               private _dialogService: TdDialogService,
               private _cartService: CartService,
               private _activatedRoute: ActivatedRoute,
@@ -60,7 +59,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this._titleService.setTitle('Products');
 
   }
 
@@ -113,10 +111,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
     this.filterType = value;
     return
-  }
-
-  goBack(): void {
-    window.history.back();
   }
 
   setInitialData(retail_shop_id: number): void {
@@ -226,14 +220,15 @@ export class BillingComponent implements AfterViewInit, OnInit {
     let _dialog = this._dialogService.open(ProductInfoComponent, this.config);
     _dialog.componentInstance.product = product;
     _dialog.afterClosed().subscribe((data)=>{
-      console.log(data);
     })
   }
   checkOut(): void {
     let _dialog = this._dialogService.open(CheckoutComponent);
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
-      console.log(data);
+      if (data && data === true){
+       this._router.navigate(['dashboard/shops']);
+      }
     })
   }
   discountItem(productId: number, stockId: number){
