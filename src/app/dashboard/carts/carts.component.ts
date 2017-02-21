@@ -39,7 +39,6 @@ export class CartComponent implements OnInit {
     this.title = 'Pending Orders';
         this._indexDB.carts.where({retail_shop_id: this.shop_id}).toArray().then((data)=>{
           this.carts = data;
-
         })
   }
 
@@ -55,7 +54,7 @@ export class CartComponent implements OnInit {
     }
 
   deleteCart(cart: Order): void {
-  this._cartService.deleteCart(cart).then(()=>{
+  this._cartService.deleteCart(cart.local_id).then(()=>{
     this.carts.splice(this.carts.indexOf(cart), 1)
   })
 

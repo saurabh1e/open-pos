@@ -56,11 +56,12 @@
       <md-card-subtitle class="tc-blue-700" flex="100">Customer Information</md-card-subtitle>
       <div layout="row" class="" flex="100" layout-align="center start">
         <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
-                   (onAdd)="addCustomer()" flex="65"
+                   (onAdd)="addCustomer($event)" flex="65"
                    [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
-          <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false">
+          <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false" [identifyBy]="'id'"
+                              [displayBy]="'name'">
             <template let-item="item" let-index="index">
-              {{ item.display }}
+              {{ item.name }}&nbsp;<{{item.mobile_number}}>
             </template>
           </tag-input-dropdown>
         </tag-input>
@@ -81,11 +82,12 @@
         <div layout="row" layout-margin>
           <div flex>
             <tag-input [(ngModel)]="address" name="address" placeholder="Search Address..." (onRemove)="removeAddress()"
-                       (onAdd)="addAddress()"
-                       [secondaryPlaceholder]="'Search Address...'"  [maxItems]="1">
-              <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="addresses">
+                       (onAdd)="addAddress($event)"
+                       [secondaryPlaceholder]="'Search Address...'"  [maxItems]="1" >
+              <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="addresses" [identifyBy]="'id'"
+                                  [displayBy]="'name'">
                 <template let-item="item" let-index="index">
-                  {{ item.display }}
+                  {{ item.name }}
                 </template>
               </tag-input-dropdown>
             </tag-input>

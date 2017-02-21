@@ -5,6 +5,7 @@ import {MOCK_API} from "../config/api.config";
 
 
 export interface Customer {
+  id: number;
   email: string;
   name: string;
   active?: boolean;

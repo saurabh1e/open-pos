@@ -6,6 +6,7 @@ import {Customer, CustomerService, Address} from "../../../services/customer.ser
 import {RetailShop} from "../../../services/shop.service";
 import {Observable} from "rxjs";
 import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
+import {CartService} from "../../../services/cart.service";
 
 
 @Component({
@@ -18,10 +19,10 @@ export class CheckoutComponent implements OnInit {
 
   cart: Order;
   shop: RetailShop;
-  customers: {display: string, value: number}[];
+  customers: Customer[];
   customer: Customer = <Customer>{addresses: <Address[]>[]};
-  addresses: {display: string, value: number}[];
-  address: any;
+  addresses: Address[];
+  address: any[];
   digitsArray: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   denominationArray: {} = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};
   total: string = '0';
@@ -30,6 +31,7 @@ export class CheckoutComponent implements OnInit {
               private _customerService: CustomerService,
               private _indexDB: IndexDBServiceService,
               private _orderService: OrdersService,
+              private _cartService: CartService,
               private _loadingService: TdLoadingService) {
     this._loadingService.create({
       name: 'checkout',
@@ -42,7 +44,13 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this._indexDB.shops.get(this.cart.retail_shop_id).then((shop)=>{
       this.shop = shop;
-    })
+    });
+    if (this.cart.customer) {
+      this.customer = this.cart.customer;
+    }
+    if (this.cart.address.hasOwnProperty('name')) {
+      this.address = [{display: this.cart.address.name, value: this.cart.address.id}]
+    }
   }
 
   close():void {
@@ -76,7 +84,7 @@ export class CheckoutComponent implements OnInit {
         __limit:100,
         __only: ['id', 'name', 'mobile_number']}).map(data => data.data.map((item) => {
         this._loadingService.resolve('checkout');
-          return {display: item.name + ' <'+item.mobile_number+'>', value: item.id}
+          return item
         }), ()=>{
           console.log('ddd')
 
@@ -91,7 +99,7 @@ export class CheckoutComponent implements OnInit {
         __only: ['id', 'name', 'mobile_number']})
         .map(data => data.data.map((item) => {
           this._loadingService.resolve('checkout');
-          return {display: item.name + ' <'+item.mobile_number+'>', value: item.id}
+          return item
         })).catch((error)=>{
           this._loadingService.resolve('checkout');
           return Observable.throw(error.json().error)
@@ -100,29 +108,34 @@ export class CheckoutComponent implements OnInit {
 
   };
 
-  addCustomer(): void {
-    if (this.customers.length) {
-      this._customerService.query({__id__equal: this.customers[0].value, __include: ['addresses'], __limit: 1}).subscribe((data: {data: Customer[]})=>{
+  addCustomer(event): void {
+    if (event) {
+      this._customerService.query({__id__equal: event.id, __include: ['addresses'], __limit: 1}).subscribe((data: {data: Customer[]})=>{
         this.customer = data.data[0];
-        this.addresses = this.customer.addresses.map((item)=>{
-          return {display: item.name, value: item.id}
-        })
+        this.cart.customer = this.customer;
+        this._cartService.setCart(this.cart, this.cart.local_id).then();
+        this.addresses = this.customer.addresses;
+        this.address = [];
       });
     }
     else {
       this.customer = <Customer>{addresses: <Address[]>[]};
+      this.cart.customer = this.customer;
+      this.address = [];
+      this._cartService.setCart(this.cart, this.cart.local_id).then();
     }
   }
-  addAddress(): void {
-    this.cart.address = {id: this.addresses[0].value, name:this.addresses[0].display}
+  addAddress(event): void {
+    this.cart.address = {id: event.value, name: event.display};
+    this._cartService.setCart(this.cart, this.cart.local_id).then()
   }
   removeAddress(): void {
     this.cart.address = null;
+    this._cartService.setCart(this.cart, this.cart.local_id).then()
   }
 
   checkOut(): void {
     this._loadingService.register('checkout');
-    this.cart.customer = this.customer;
     this._orderService.create(this.cart).subscribe(()=>{
       this._loadingService.resolve('checkout');
       this.dialogRef.close(true);

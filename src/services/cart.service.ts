@@ -119,8 +119,8 @@ export class CartService {
     });
   }
 
-  async deleteCart(cart: Order): Promise<boolean>{
-    return this._indexDB.carts.delete(cart.local_id).then(()=>{
+  async deleteCart(cartId: number): Promise<boolean>{
+    return this._indexDB.carts.delete(cartId).then(()=>{
       return true
     })
   }

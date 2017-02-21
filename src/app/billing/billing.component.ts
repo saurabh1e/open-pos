@@ -227,7 +227,9 @@ export class BillingComponent implements AfterViewInit, OnInit {
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       if (data && data === true){
-       this._router.navigate(['dashboard/shops']);
+        this._cartService.deleteCart(this.cart.local_id).then(()=>{
+          this._router.navigate(['dashboard/shops']);
+        });
       }
     })
   }
