@@ -3,6 +3,7 @@ import {Order, Item, ItemTax, Discount} from "./orders.service";
 import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Product, Tax, Stock} from "./items.service";
+import {Customer, Address} from "./customer.service";
 
 function round(value, precision) {
   let multiplier = Math.pow(10, precision || 0);
@@ -111,7 +112,7 @@ export class CartService {
          localId = cart.local_id+1;
       let discount = <Discount>{value:0, type:'PERCENTAGE'};
       let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date() ,items: <Item[]>[], total:0,
-        discounts:[discount], amount_paid:0};
+        discounts:[discount], amount_paid:0, customer: <Customer>{}, address: <Address>{}};
       return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;
       });

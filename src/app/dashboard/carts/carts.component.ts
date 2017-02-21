@@ -23,7 +23,6 @@ export class CartComponent implements OnInit {
   title: string;
 
   constructor(private _cartService: CartService,
-              private _activatedRoute: ActivatedRoute,
               private _indexDB: IndexDBServiceService,
               private _route: Router,
               private _loadingService: TdLoadingService) {

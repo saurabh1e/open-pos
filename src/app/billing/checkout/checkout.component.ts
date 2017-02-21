@@ -77,7 +77,13 @@ export class CheckoutComponent implements OnInit {
         __only: ['id', 'name', 'mobile_number']}).map(data => data.data.map((item) => {
         this._loadingService.resolve('checkout');
           return {display: item.name + ' <'+item.mobile_number+'>', value: item.id}
-        }))
+        }), ()=>{
+          console.log('ddd')
+
+      }).catch((error)=>{
+        this._loadingService.resolve('checkout');
+        return Observable.throw(error.json().error)
+        })
     }
     else {
       return this._customerService.query({__retail_brand_id__equal: this.shop.retail_brand_id, __name__contains: event,
@@ -86,7 +92,10 @@ export class CheckoutComponent implements OnInit {
         .map(data => data.data.map((item) => {
           this._loadingService.resolve('checkout');
           return {display: item.name + ' <'+item.mobile_number+'>', value: item.id}
-        }))
+        })).catch((error)=>{
+          this._loadingService.resolve('checkout');
+          return Observable.throw(error.json().error)
+        })
     }
 
   };
@@ -118,7 +127,7 @@ export class CheckoutComponent implements OnInit {
       this._loadingService.resolve('checkout');
       this.dialogRef.close(true);
     }, ()=> {
-      this._loadingService.register('checkout');
+      this._loadingService.resolve('checkout');
     })
   }
 }
