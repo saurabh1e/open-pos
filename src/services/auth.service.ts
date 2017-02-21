@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { HttpService } from './http.service'
 import {UsersService, IUser} from "./users.service";
+import {IndexDBServiceService} from "./indexdb.service";
 
 
 
@@ -18,8 +19,9 @@ export class AuthService {
   _auth: Auth = <Auth>{};
   _auth$: Subject<Auth> = <Subject<Auth>> new Subject();
 
-  constructor(private _http: HttpService, private _userService: UsersService) {
-    if (Cookie.get('authentication_token')) {
+  constructor(private _http: HttpService, private _userService: UsersService,
+              private _indexDB: IndexDBServiceService) {
+    if (Cookie.get('authentication_token') && Cookie.get('id')) {
       this.auth = {id: Cookie.get('id'), authentication_token: Cookie.get('authentication_token')};
     }
 
@@ -30,9 +32,13 @@ export class AuthService {
     Cookie.set('authentication_token', data.authentication_token);
     Cookie.set('id', data.id);
     this._userService.get(data.id).subscribe((data: IUser)=> {
-      this._userService.user = (data);
+      this._userService.user = data;
     }, (error)=>{
-      console.log(error);
+      if (error.type == 'error') {
+        this._indexDB.users.get(parseInt(data.id)).then((data)=>{
+          this._userService.user = data;
+        })
+      }
     });
 
   }

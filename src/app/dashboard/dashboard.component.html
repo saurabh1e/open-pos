@@ -1,51 +1,39 @@
-<td-layout-nav logo="assets:logo">
-  <div toolbar-content layout="row" layout-align="center center" flex>
-    <span>Dashboard</span>
+<td-layout-nav-list logo="assets:logo" toolbarTitle="Postica"
+                    class="bgc-white-1">
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
     <a md-icon-button mdTooltip="author" href="https://github.com/saurabh1e" target="_blank"><md-icon>person_outline</md-icon></a>
     <a md-icon-button mdTooltip="Github" href="https://github.com/saurabh1e/open-pos-frontend"
        target="_blank"><md-icon svgIcon="assets:github"></md-icon></a>
   </div>
-  <td-layout-manage-list #list>
-    <md-toolbar list-items>
-      <span>Menu</span>
-    </md-toolbar>
-    <md-nav-list list-items>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/home/dashboard/shops']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Dashboard
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/products']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Inventory
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/reports']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Reports
-      </a>
-    </md-nav-list>
 
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <button md-icon-button color="accent" (click)="goBack()">
-        <md-icon>arrow_back</md-icon>
-      </button>
-      <span flex></span>
-      <span>{{title}}</span>
-      <span flex></span>
-    </div>
 
-    <router-outlet></router-outlet>
-  </td-layout-manage-list>
-</td-layout-nav>
+  <md-nav-list td-sidenav-content>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/dashboard/shops']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      Dashboard
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/menu']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      Inventory
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/reports']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      Reports
+    </a>
+  </md-nav-list>
+  <router-outlet></router-outlet>
+
+</td-layout-nav-list>

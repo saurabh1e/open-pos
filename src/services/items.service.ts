@@ -3,25 +3,24 @@ import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
 import {Subject, Observable} from "rxjs";
 import {Status,IndexDBServiceService} from "./indexdb.service";
-import {URLSearchParams} from "@angular/http";
 import {RetailShop} from "./shop.service";
-
 
 export interface Product {
 
   available_stock: number,
   available_stocks: Stock[],
-  similar_products: number[],
-  description: {},
+  similar_products?: number[],
+  description?: {},
   sub_description: string;
+  is_enabled: boolean;
   id: number,
   min_stock: number,
   mrp: number,
   auto_discount: number;
   name: string,
-  tags: Tag[],
-  salts: Salt[],
-  taxes: Tax[]
+  tags?: Tag[],
+  salts?: Salt[],
+  taxes?: Tax[]
   brand_id: number;
   brand_name: string;
   distributor_id: number;
@@ -46,43 +45,44 @@ export interface Stock {
 export interface Tag {
   id: number;
   name: string;
-  retail_shop_id: number;
+  retail_shop_id?: number;
 }
 
 export interface Salt {
   id: number;
   name: string;
-  retail_shop_id: number;
+  retail_shop_id?: number;
 }
 
 export interface Tax {
   id: number;
   name: string;
-  retail_shop_id: number;
-  value: number;
+  retail_shop_id?: number;
+  value?: number;
 }
 
 
 export interface Distributor {
   id: number;
   name: string
-  retail_shop_id: number;
+  retail_shop_id?: number;
 }
 
 export interface Brand {
   id: number;
   name: string
-  retail_shop_id: number;
+  retail_shop_id?: number;
 }
 
 
 @Injectable()
-export class ItemsService extends RESTService<any> {
+export class ItemsService extends RESTService<Product> {
 
   _product: Product = <Product>{};
   _products: Product[];
 
   _products$: Subject<Product[]> = <Subject<Product[]>>  new Subject();
+  _product$: Subject<Product> = <Subject<Product>>  new Subject();
 
   constructor(private _http: HttpInterceptorService, private _indexDB: IndexDBServiceService) {
     super(_http, {
@@ -99,6 +99,7 @@ export class ItemsService extends RESTService<any> {
 
   set product(data: Product) {
     this._product = data;
+    this._product$.next(this.product);
   }
 
   get product(): Product {
@@ -111,6 +112,9 @@ export class ItemsService extends RESTService<any> {
 
   get products$(): Observable<Product[]> {
     return this._products$.asObservable();
+  }
+  get product$(): Observable<Product> {
+    return this._product$.asObservable();
   }
 
   saveProducts(params?): void {
@@ -142,7 +146,7 @@ export class ItemsService extends RESTService<any> {
 }
 
 @Injectable()
-export class DistributorService extends RESTService<any> {
+export class DistributorService extends RESTService<Distributor> {
 
   _distributor: Distributor = <Distributor>{};
   _distributors: Distributor[];
@@ -200,7 +204,7 @@ export class DistributorService extends RESTService<any> {
 }
 
 @Injectable()
-export class BrandsService extends RESTService<any> {
+export class BrandsService extends RESTService<Brand> {
 
   _brand: Brand = <Brand>{};
   _brands: Brand[];
@@ -258,7 +262,7 @@ export class BrandsService extends RESTService<any> {
 }
 
 @Injectable()
-export class TagsService extends RESTService<any> {
+export class TagsService extends RESTService<Tag> {
 
   _tag: Tag = <Tag>{};
   _tags: Tag[];

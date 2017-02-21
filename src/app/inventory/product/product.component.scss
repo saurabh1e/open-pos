@@ -8,4 +8,20 @@
 .md-fab-position-bottom-right {
   bottom: 10px;
   position: fixed;
+
+}
+
+.edit-button {
+  right: 100px;
+}
+.close-button {
+  position: fixed;
+  z-index: 25;
+  top: 80px;
+  right: 25px;
+}
+.small-button {
+  box-shadow: none;
+  background: transparent;
+  border: 0;
 }

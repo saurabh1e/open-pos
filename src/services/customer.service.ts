@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
+import {RESTService, HttpInterceptorService} from "@covalent/http";
+import {MOCK_API} from "../config/api.config";
 
 
 
 export interface Customer {
   email: string;
   name: string;
-  active: boolean;
-  mobile_number: number;
-  loyalty_points: number;
-  addresses: Address[];
+  active?: boolean;
+  mobile_number: string;
+  loyalty_points?: number;
+  addresses?: Address[];
 }
 
 export interface Address {
+  id: number;
   name: string;
   locality: Locality;
 }
@@ -26,8 +29,13 @@ export interface City {
 }
 
 @Injectable()
-export class CustomerService {
+export class CustomerService extends RESTService<Customer> {
 
-  constructor() { }
+  constructor(private _http: HttpInterceptorService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/customer',
+    });
+  }
 
 }

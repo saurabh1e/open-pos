@@ -1,9 +1,18 @@
 <td-layout-nav logo="assets:logo" class="bgc-white-5">
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span flex></span>
+    <a md-icon-button mdTooltip="author" href="https://github.com/saurabh1e" target="_blank"><md-icon>person_outline</md-icon></a>
+    <a md-icon-button mdTooltip="Github" href="https://github.com/saurabh1e/open-pos-frontend"
+       target="_blank"><md-icon svgIcon="assets:github"></md-icon></a>
+  </div>
+
+
 
   <div td-toolbar-button layout="row" class="bgc-white-4 md-shadow-bottom-z-1 push-sm" layout-wrap="">
-    <button md-button="" color="accent" (click)="goBack()">
-      <md-icon color="accent">arrow_back</md-icon>
-    </button>
+    <div layout="row" layout-align="center center" flex>
+      <app-back-button></app-back-button>
+    </div>
+
 
     <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(1)" flex>Tags</button>
     <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(2)" flex>Brands</button>

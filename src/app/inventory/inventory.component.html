@@ -1,83 +1,80 @@
-<td-layout-nav logo="assets:logo">
-  <div toolbar-content layout="row" layout-align="center center" flex>
-    <span>Dashboard</span>
+<td-layout-nav-list logo="assets:logo" toolbarTitle="Postica"
+                    class="bgc-white-1">
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
     <a md-icon-button mdTooltip="author" href="https://github.com/saurabh1e" target="_blank"><md-icon>person_outline</md-icon></a>
     <a md-icon-button mdTooltip="Github" href="https://github.com/saurabh1e/open-pos-frontend"
        target="_blank"><md-icon svgIcon="assets:github"></md-icon></a>
   </div>
-  <td-layout-manage-list #list>
-    <md-toolbar list-items>
-      <span>Menu</span>
-    </md-toolbar>
-    <md-nav-list list-items>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/products']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Products
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/brands']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Brands
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/distributors']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Distributors
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/salts']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Salts
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/tags']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Tags
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/inventory/taxes']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        Taxes
-      </a>
-      <a md-list-item
-         md-ripple class="block relative"
-         [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}"
-         [routerLink]="['/home/dashboard/shops']">
-        <md-icon md-list-icon>dashboard</md-icon>
-        DashBoard
-      </a>
-    </md-nav-list>
 
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <button md-icon-button color="accent" (click)="goBack()">
-        <md-icon>arrow_back</md-icon>
-      </button>
-      <span flex></span>
-      <span>Inventory</span>
-      <span flex></span>
+
+
+  <md-nav-list list-items>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/menu']">
+      <md-icon md-list-icon class="pad-xs push-right-sm" >dashboard</md-icon>
+      Menu
+    </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/products']">
+      <md-icon md-list-icon class="pad-xs push-right-sm" >dashboard</md-icon>
+      Products
+    </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/brands']">
+      <md-icon md-list-icon class="pad-xs push-right-sm">dashboard</md-icon>
+      Brands
+    </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/distributors']">
+      <md-icon md-list-icon class="pad-xs push-right-sm">dashboard</md-icon>
+      Distributors
+    </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/salts']">
+      <md-icon md-list-icon class="pad-xs push-right-sm">dashboard</md-icon>
+      Salts
+    </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/tags']">
+      <md-icon md-list-icon class="pad-xs push-right-sm">dashboard</md-icon>
+      Tags
+    </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/taxes']">
+      <md-icon md-list-icon class="pad-xs push-right-sm">dashboard</md-icon>
+      Taxes
+    </a>
+    <md-divider flex="" class=" bgc-blue-100"></md-divider>
+    <div class="bgc-white-4 pad" layout-align="center center" layout="row">
+      <app-back-button></app-back-button>
     </div>
 
-    <router-outlet></router-outlet>
-  </td-layout-manage-list>
-</td-layout-nav>
+
+
+  </md-nav-list>
+
+
+  <router-outlet></router-outlet>
+</td-layout-nav-list>

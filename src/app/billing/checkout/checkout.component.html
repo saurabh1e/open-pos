@@ -55,28 +55,43 @@
     <div flex="40" layout="row" layout-wrap="" class="pad">
       <md-card-subtitle class="tc-blue-700" flex="100">Customer Information</md-card-subtitle>
       <div layout="row" class="" flex="100" layout-align="center center">
-        <td-search-input placeholder="Search Customer Here" [showUnderline]="true" [debounce]="500"
-                         (searchDebounce)="searchInputTerm = $event" (search)="searchInputTerm = $event"
-                         (clear)="searchInputTerm = ''" flex="100">
-        </td-search-input>
+        <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
+                   (onAdd)="addCustomer()"
+                   [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
+          <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false">
+            <template let-item="item" let-index="index">
+              {{ item.display }}
+            </template>
+          </tag-input-dropdown>
+        </tag-input>
       </div>
 
-      <form flex="100">
+      <form flex="100" layout="column" layout-fill="">
         <div layout="row" layout-margin>
           <md-input-container flex>
-            <input md-input placeholder="Name">
+            <input md-input placeholder="Name" name="customer_name" [ngModel]="customer.name">
           </md-input-container>
+        </div>
+        <div layout="row" layout-margin="">
           <md-input-container flex>
-            <input md-input placeholder="Number" type="number">
+            <input md-input placeholder="Number" type="number" name="mobile_number" [ngModel]="customer.mobile_number">
           </md-input-container>
         </div>
 
         <div layout="row" layout-margin>
-          <md-input-container flex>
-            <textarea md-input placeholder="Address"></textarea>
-          </md-input-container>
+          <div flex>
+            <tag-input [(ngModel)]="address" name="address" placeholder="Search Address..." (onRemove)="addAddress()"
+                       (onAdd)="addAddress()"
+                       [secondaryPlaceholder]="'Search Address...'"  [maxItems]="1">
+              <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="addresses">
+                <template let-item="item" let-index="index">
+                  {{ item.display }}
+                </template>
+              </tag-input-dropdown>
+            </tag-input>
+          </div>
         </div>
-        <div layout="row" layout-margin>
+        <div layout="row" layout-margin *ngIf="false">
           <md-input-container flex>
             <input md-input placeholder="City">
           </md-input-container>

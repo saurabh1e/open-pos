@@ -15,25 +15,32 @@ import {Address} from "./customer.service";
 export interface RetailShop {
   id: number;
   name: string;
-  products: Product[];
-  registration_details: RegistrationDetail[];
+  retail_brand_id?: number;
+  products?: Product[];
+  registration_details?: RegistrationDetail[];
   total_sales: {
     total_sales: number;
     total_orders: number;
     total_items: number;
   };
+  retail_brand?: RetailBrand;
   address: Address;
-  brands: Brand[];
-  distributors: Distributor[];
-  tags: Tag[];
-  taxes: Tax[];
-  _link: {};
+  brands?: Brand[];
+  distributors?: Distributor[];
+  tags?: Tag[];
+  taxes?: Tax[];
+  _link?: {};
 }
 
 export interface RegistrationDetail {
   name: string;
   value: string;
 
+}
+
+export interface RetailBrand {
+  name: string;
+  id: number;
 }
 
 @Injectable()

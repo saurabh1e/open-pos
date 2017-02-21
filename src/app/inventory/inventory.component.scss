@@ -1,4 +1,28 @@
-.md-fab-position-bottom-right {
-  bottom: 10px;
-  position: fixed;
+
+md-nav-list a[md-list-item] .md-list-item{
+  font-size: 16px;
+}
+.md-list-text {
+  font-size: 12px;
+}
+md-list-item {
+  font-size: 12px;
+}
+.list-item {
+
+}
+
+.list-item > .active > .material-icons {
+  color: #ef6c00;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  box-sizing: border-box;
+  font-size: 14px;
+  height: 48px;
+  padding: 0 16px;
 }

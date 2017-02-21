@@ -15,10 +15,11 @@ export class DashboardComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this._titleService.setTitle( 'Dashboard' );
     this.title = this._titleService.getTitle();
-
   }
+
   goBack():void {
     window.history.back();
   }
+
 
 }

@@ -4,6 +4,7 @@ import { BrowserModule, Title }  from '@angular/platform-browser';
 import {CovalentCoreModule, CovalentDataTableModule} from '@covalent/core';
 import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
 import { CovalentSearchModule } from '@covalent/core';
+import { TagInputModule } from 'ng2-tag-input';
 
 
 import { AppComponent } from './app.component';
@@ -46,6 +47,17 @@ import {SaltComponent} from "./inventory/salt/salt.component";
 import {TaxComponent} from "./inventory/tax/tax.component";
 import {DistributorComponent} from "./inventory/distributor/distributor.component";
 import {InventoryComponent} from "./inventory/inventory.component";
+import {TableRowComponent} from "./inventory/table-row/table-row.component";
+import {BackButtonComponent} from "./back-button/back-button.component";
+import {GoBackDirective} from "../directives/go-back.directive";
+import {MenuComponent} from "./inventory/menu/menu.component";
+import {ProductFormComponent} from "./inventory/product/product-form/product-form.component";
+import {BrandFormComponent} from "./inventory/brand/brand-form/brand-form.component";
+import {BaseTableComponent} from "./inventory/base-table/base-table.component";
+import {TaxFormComponent} from "./inventory/tax/tax-form/tax-form.component";
+import {TagFormComponent} from "./inventory/tag/tag-form/tag-form.component";
+import {SaltFormComponent} from "./inventory/salt/salt-form/salt-form.component";
+import {DistributorFormComponent} from "./inventory/distributor/distributor-form/distributor-form.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -60,6 +72,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     DashboardComponent,
     CartComponent,
     ShopComponent,
+    BackButtonComponent,
     ItemDiscountComponent,
     ProductInfoComponent,
     ProductComponent,
@@ -71,12 +84,22 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     CheckoutComponent,
     BillingComponent,
     InventoryComponent,
+    MenuComponent,
+    BrandFormComponent,
+    BaseTableComponent,
+    ProductFormComponent,
+    DistributorFormComponent,
+    TagFormComponent,
+    TaxFormComponent,
+    SaltFormComponent,
+    TableRowComponent,
     ProductSearchPipe,
     ProductBrandPipe,
     ProductDistributorPipe,
     ProductTagPipe,
     ProductSaltPipe,
-    KeysPipe
+    KeysPipe,
+    GoBackDirective
   ], // directives, components, and pipes owned by this NgModule
   imports: [
     BrowserModule,
@@ -89,6 +112,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
       }],
     }),
     CovalentSearchModule.forRoot(),
+    TagInputModule,
     appRoutes,
     NgxChartsModule,
   ], // modules needed to run this module
@@ -109,7 +133,9 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     IndexDBServiceService
 
   ], // additional providers needed for this module
-  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent],
+  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
+    ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent,
+    DistributorFormComponent],
   bootstrap: [ AppComponent ],
 })
 export class AppModule {}

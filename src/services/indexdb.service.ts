@@ -6,6 +6,7 @@ import {Injectable} from "@angular/core";
 import {RetailShop} from "./shop.service";
 import {Order} from "./orders.service";
 import {Locality} from "./customer.service";
+import {IUser} from "./users.service";
 
 
 export interface Status {
@@ -25,6 +26,7 @@ export class IndexDBServiceService extends Dexie {
   orders: Dexie.Table<Order, number>;
   localities: Dexie.Table<Locality, number>;
   carts: Dexie.Table<Order, number>;
+  users: Dexie.Table<IUser, number>;
 
   _db$: Subject<Status> = <Subject<Status>> new Subject;
 
@@ -41,7 +43,8 @@ export class IndexDBServiceService extends Dexie {
         shops: "++id, name",
         orders: "++id",
         carts: "++local_id,id,retail_shop_id",
-        localities: "++id, name"
+        localities: "++id, name",
+        users: "++id, mobile_number, email"
       });
   }
   get db$():Observable<Status>{

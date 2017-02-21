@@ -1,6 +1,6 @@
-<div layout="row" layout-wrap="" layout-align="center start">
+<div layout="row" layout-wrap="" layout-align="start start" class="pad-xs">
   <template let-cart ngFor [ngForOf]="carts">
-    <md-card flex="25" class="cart-card">
+    <md-card flex="30" class="cart-card">
       <md-card-title class="tc-blue-700" layout="row" layout-wrap="">
           <span layout-align="center center" layout="row">
             #{{cart.local_id}}
@@ -41,7 +41,6 @@
     </md-card>
 
   </template>
-
 </div>
 
 <a md-fab color="accent" class="md-fab-position-bottom-right" (click)="newCart()">

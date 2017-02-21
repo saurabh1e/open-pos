@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ITdDataTableColumn} from "@covalent/core";
 
 @Component({
   selector: 'app-inventory',
@@ -10,10 +11,6 @@ export class InventoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
-
-  goBack():void {
-    window.history.back();
   }
 
 }

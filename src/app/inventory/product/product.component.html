@@ -1,37 +1,58 @@
-<div td-toolbar-content layout="row" layout-align="start center" flex>
-  <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search By Product "
-                 (searchDebounce)="search($event)" flex [showUnderline]="true" [debounce]="500"
-                 [alwaysVisible]="true">
-  </td-search-box>
-  <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search By Brand"
-                 (searchDebounce)="search($event)" flex [showUnderline]="true" [debounce]="500"
-                 [alwaysVisible]="true">
-  </td-search-box>
-  <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search By Distributor"
-                 (searchDebounce)="search($event)" flex [showUnderline]="true" [debounce]="500"
-                 [alwaysVisible]="true">
-  </td-search-box>
-</div>
 
-<div layout="column" class="pad-sm" layout-wrap="" layout-align="center center">
-  <div class="md-content bgc-white-4" layout-fill="" md-scroll-y="">
 
-    <td-data-table
-      [data]="filteredData"
-      [columns]="columns"
-      [sortable]="true"
-      [sortBy]="sortBy"
-      [sortOrder]="sortOrder"
-      (sortChange)="sort($event)">
-    </td-data-table>
+<div layout="row" class="" layout-wrap="" layout-align="center center">
+  <div class="bgc-white-4 push-sm" layout="" flex="100"  layout-wrap=""  >
+
+    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" flex="100">
+      <span class="push-left-sm">
+        <span class="md-title">Products</span>
+      </span>
+      <span flex></span>
+      <td-search-box class=" push-right-sm" placeholder="Search Here.."
+                     (searchDebounce)="search($event)" flex="" [showUnderline]="true" [debounce]="500"
+                     [alwaysVisible]="true">
+      </td-search-box>
+    </div>
+
+    <table td-data-table>
+      <th td-data-table-column
+          *ngFor="let column of columns"
+          [sortable]="column.sortable"
+          [numeric]="column.numeric"
+          (sort)="sortOrder"
+          (sortChange)="sort(column.name, sortOrder)">
+        {{column.label}}
+      </th>
+      <th td-data-table-column>edit</th>
+      <tr td-data-table-row *ngFor="let row of data">
+        <td td-data-table-cell  *ngFor="let column of columns"
+            [numeric]="column.numeric" >
+          <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
+        </td>
+        <td>
+            <button class="small-button" (click)="editProduct(row, data.indexOf(row))">
+              <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
+            </button>
+          <button class="small-button" *ngIf="row.is_enabled" (click)="toggleProduct(row, data.indexOf(row))">
+            <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
+          </button>
+          <button class="small-button" *ngIf="!row.is_enabled" (click)="toggleProduct(row, data.indexOf(row))">
+            <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
+          </button>
+
+
+        </td>
+      </tr>
+    </table>
+
+
   </div>
   <div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm" layout-align="center center">
     <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal" (change)="page($event)"></td-paging-bar>
   </div>
 
-  <a md-fab color="accent" class="md-fab-position-bottom-right">
+  <a md-fab color="accent" class="md-fab-position-bottom-right" (click)="addProduct()">
     <md-icon>add</md-icon>
   </a>
 </div>
-
 

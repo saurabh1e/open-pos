@@ -1,7 +1,7 @@
-<div class="md-content inset">
-  <div layout="row" layout-align="center center">
+<div class="md-content inset" layout="row">
+  <div layout="row" layout-align="start start" flex="95" *ngIf="!shop_id">
 
-    <template let-item let-last="last" ngFor [ngForOf]="shops">
+    <template let-item let-last="last"  ngFor [ngForOf]="shops">
 
       <md-card flex="25">
         <md-card-title class="tc-accent" layout="row" layout-wrap="">
@@ -36,4 +36,14 @@
       <md-divider *ngIf="!last"></md-divider>
     </template>
   </div>
+  <div flex="95" *ngIf="shop_id">
+    <app-carts [shop_id]="shop_id" ></app-carts>
+  </div>
+
+  <div flex="5" layout-align="end end" *ngIf="shop_id" class="push-left">
+    <button md-icon-button="" (click)="closeCart()">
+      <md-icon color="accent" class="md-48">close</md-icon>
+    </button>
+  </div>
+
 </div>

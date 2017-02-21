@@ -18,6 +18,7 @@ export class ShopComponent implements AfterViewInit {
   users: Object[];
   title: string;
   shops: RetailShop[];
+  shop_id: number;
 
   constructor(private _titleService: Title,
               private _shopService: RetailShopsService,
@@ -51,7 +52,7 @@ export class ShopComponent implements AfterViewInit {
   openShop(data: RetailShop): void {
     this._loadingService.register('shops');
     this._shopService.shop = data;
-    this._router.navigate(['home/dashboard/carts/'+stringify(data.id)]);
+    this.shop_id = data.id;
     this._loadingService.resolve('shops');
   }
   syncData(data: number): void {
@@ -63,8 +64,8 @@ export class ShopComponent implements AfterViewInit {
       console.log(error)
     });
   }
-  goBack():void {
-    window.history.back();
+  closeCart(): void {
+    this.shop_id = null;
   }
 
 }

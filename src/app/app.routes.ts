@@ -1,5 +1,4 @@
 import {Routes, RouterModule} from "@angular/router";
-import {MainComponent} from "./main/main.component";
 import {BillingComponent} from "./billing/billing.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {CartComponent} from "./dashboard/carts/carts.component";
@@ -12,38 +11,39 @@ import {TaxComponent} from "./inventory/tax/tax.component";
 import {DistributorComponent} from "./inventory/distributor/distributor.component";
 import {SaltComponent} from "./inventory/salt/salt.component";
 import {InventoryComponent} from "./inventory/inventory.component";
+import {MenuComponent} from "./inventory/menu/menu.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {
-    path: 'home', component: MainComponent,
+
+    path: 'dashboard', component: DashboardComponent,
     children: [
+      {path: 'shops', component: ShopComponent},
       {
-        path: 'dashboard', component: DashboardComponent,
+        path: 'carts',
         children: [
-          {path: 'shops', component: ShopComponent},
-          {
-            path: 'carts',
-            children: [
-              {path: ':id', component: CartComponent}
-            ]
-          },
+          {path: ':id', component: CartComponent}
         ]
       },
-      {path: 'billing/:id', component: BillingComponent},
     ]
   },
+
   {
-    path: 'inventory', component: InventoryComponent, children: [
-    {path: 'products', component: ProductComponent},
-    {path: 'brands', component: BrandComponent},
-    {path: 'distributors', component: DistributorComponent},
-    {path: 'tags', component: TagComponent},
-    {path: 'taxes', component: TaxComponent},
-    {path: 'salts', component: SaltComponent},
-  ]
-  }
-  ];
+    path: 'inventory', component: InventoryComponent,
+    children: [
+      {path: 'menu', component: MenuComponent},
+      {path: 'products', component: ProductComponent},
+      {path: 'brands', component: BrandComponent},
+      {path: 'distributors', component: DistributorComponent},
+      {path: 'tags', component: TagComponent},
+      {path: 'taxes', component: TaxComponent},
+      {path: 'salts', component: SaltComponent},
+    ]
+  },
+  {path: 'billing/:id', component: BillingComponent},
+
+];
 
 export const appRoutingProviders: any[] = [];
 

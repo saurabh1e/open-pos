@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TdLoadingService } from '@covalent/core';
 
 import {UsersService, AuthService, Auth } from '../../services'
+import {IUser} from "../../services/users.service";
 
 @Component({
   selector: 'qs-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit{
 
   username: string;
   password: string;
+  user: IUser;
 
   constructor(private _router: Router,
               private _loadingService: TdLoadingService,
@@ -24,7 +26,7 @@ export class LoginComponent implements OnInit{
     this._loadingService.register('main');
     this._authService.login(this.username, this.password).subscribe((data: Auth) => {
       this._authService.auth = data;
-      this._router.navigate(['home/dashboard/shops']);
+      this._router.navigate(['dashboard/shops']);
       this._loadingService.resolve('main');
     },(error) => {
       console.log(error);
@@ -33,10 +35,20 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(this._userService.user);
-    if (this._userService.user.active) {
-      this._router.navigate(['/home/dashboard/shops'])
-    }
+    this._loadingService.resolve('main');
+    this.user = this._userService.user;
+    this._userService.user$.subscribe((data:IUser)=> {
+      this.user = data;
+      this.checkUser();
+    });
+    this.checkUser();
   }
 
+
+  checkUser(): void {
+    if (this.user && this.user.active) {
+      this._router.navigate(['dashboard/shops']);
+    }
+    this._loadingService.resolve('main');
+  }
 }

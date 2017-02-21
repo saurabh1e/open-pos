@@ -1,0 +1,16 @@
+<div layout="row" layout-wrap="" layout-align="center" class="pad-xs">
+  <template ngFor [ngForOf]="routes" let-item>
+    <md-card flex="25">
+      <md-card-content layout="column" layout-align="center center">
+        <md-icon class="md-48" color="primary">{{item.icon}}</md-icon>
+      </md-card-content>
+      <md-divider></md-divider>
+      <md-toolbar layout="row" layout-align="center center" class="bgc-orange-50">
+        <a [routerLink]="[item.route]" style="text-decoration: none">
+          <span class="md-title tc-accent">{{item.title}}</span>
+        </a>
+
+      </md-toolbar>
+    </md-card>
+  </template>
+</div>
