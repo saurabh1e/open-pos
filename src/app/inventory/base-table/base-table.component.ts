@@ -101,7 +101,7 @@ export class BaseTableComponent implements OnInit {
         this.filteredData = resp.data;
         this.filteredTotal = resp.total;
         this._loadingService.resolve('tables');
-      });
+      }, ()=>this._loadingService.resolve('tables'));
   }
 
   edit(row: any, index: number):void {
