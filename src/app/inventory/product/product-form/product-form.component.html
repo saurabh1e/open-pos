@@ -4,21 +4,22 @@
     <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Product Form</md-card-title>
     <form flex="100" class="" #productForm="ngForm">
       <div layout="row" layout-margin>
-        <md-input-container flex>
+        <md-input-container flex="50">
           <input md-input placeholder="Product Name" minlength="1" maxlength="55" required [value]="product.name || ''"
                  [(ngModel)]="product.name" name="name">
           <md-hint align="end">{{product.name?product.name.length:0}} / 55</md-hint>
         </md-input-container>
-      </div>
-      <div layout="row" layout-margin>
-        <md-input-container flex>
-          <input md-input placeholder="Auto Discount" max="100" type="number" required [value]="product.auto_discount || 0"
-                 [(ngModel)]="product.auto_discount" name="auto_discount">
-        </md-input-container>
-        <md-input-container flex>
-          <input md-input placeholder="Min. Stock" min="0" type="number" required [value]="product.min_stock || 0"
-                 [(ngModel)]="product.min_stock" name="min_stock">
-        </md-input-container>
+          <span flex></span>
+          <md-input-container flex>
+            <input md-input placeholder="Auto Discount" max="100" type="number" required [value]="product.auto_discount || 0"
+                   [(ngModel)]="product.auto_discount" name="auto_discount">
+          </md-input-container>
+        <span flex></span>
+          <md-input-container flex>
+            <input md-input placeholder="Min. Stock" min="0" type="number" required [value]="product.min_stock || 0"
+                   [(ngModel)]="product.min_stock" name="min_stock">
+          </md-input-container>
+
       </div>
 
       <div layout="row" layout-margin>

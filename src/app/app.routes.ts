@@ -51,7 +51,7 @@ const routes: Routes = [
     children: [
       {path: 'sales', component: SaleComponent},
       {path: 'orders', component: OrderComponent},
-      {path: 'customer', component: CustomerComponent},
+      {path: 'customers', component: CustomerComponent},
     ]
   },
 

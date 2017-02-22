@@ -61,3 +61,26 @@ $theme: md-light-theme($primary, $accent, $warn);
     @include angular-material-theme($light-blue-red);
     @include covalent-theme($light-blue-red);
 }
+
+/* ------------------------------------------------------------------------------- */
+$foreground: map-get($theme, foreground);
+$background: map-get($theme, background);
+
+// Apply theme for this app
+
+// NGX Charts
+[ngx-charts-axis-label] text {
+  fill: md-color($foreground, secondary-text);
+}
+.tick text {
+  fill: md-color($foreground, disabled);
+}
+.gridline-path {
+  &.gridline-path-horizontal,
+  &.gridline-path-vertical {
+    stroke: rgba(black, 0.06);
+  }
+}
+.legend-title-text {
+  color: md-color($foreground, secondary-text);
+}
