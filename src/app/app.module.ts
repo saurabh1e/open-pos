@@ -58,6 +58,10 @@ import {TaxFormComponent} from "./inventory/tax/tax-form/tax-form.component";
 import {TagFormComponent} from "./inventory/tag/tag-form/tag-form.component";
 import {SaltFormComponent} from "./inventory/salt/salt-form/salt-form.component";
 import {DistributorFormComponent} from "./inventory/distributor/distributor-form/distributor-form.component";
+import {ReportingComponent} from "./reporting/reporting.component";
+import {SaleComponent} from "./reporting/sale/sale.component";
+import {OrderComponent} from "./reporting/order/order.component";
+import {CustomerComponent} from "./reporting/customer/customer.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -87,6 +91,10 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     MenuComponent,
     BrandFormComponent,
     BaseTableComponent,
+    ReportingComponent,
+    SaleComponent,
+    OrderComponent,
+    CustomerComponent,
     ProductFormComponent,
     DistributorFormComponent,
     TagFormComponent,

@@ -12,6 +12,10 @@ import {DistributorComponent} from "./inventory/distributor/distributor.componen
 import {SaltComponent} from "./inventory/salt/salt.component";
 import {InventoryComponent} from "./inventory/inventory.component";
 import {MenuComponent} from "./inventory/menu/menu.component";
+import {ReportingComponent} from "./reporting/reporting.component";
+import {SaleComponent} from "./reporting/sale/sale.component";
+import {OrderComponent} from "./reporting/order/order.component";
+import {CustomerComponent} from "./reporting/customer/customer.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -42,6 +46,14 @@ const routes: Routes = [
     ]
   },
   {path: 'billing/:id', component: BillingComponent},
+  {
+    path: 'reporting', component: ReportingComponent,
+    children: [
+      {path: 'sales', component: SaleComponent},
+      {path: 'orders', component: OrderComponent},
+      {path: 'customer', component: CustomerComponent},
+    ]
+  },
 
 ];
 
