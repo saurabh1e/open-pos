@@ -21,13 +21,13 @@
         (sortChange)="sort($event)">
       {{column.label}}
     </th>
-    <th td-data-table-column>edit</th>
+    <th td-data-table-column  *ngIf="editRow">edit</th>
     <tr td-data-table-row *ngFor="let row of filteredData">
       <td td-data-table-cell *ngFor="let column of columns"
           [numeric]="column.numeric">
         <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
       </td>
-      <td>
+      <td *ngIf="editRow">
         <button class="small-button" (click)="edit(row, filteredData.indexOf(row))">
           <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
         </button>
