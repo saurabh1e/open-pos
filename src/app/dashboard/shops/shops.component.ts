@@ -2,9 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 import { TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
 import {RetailShopsService, RetailShop} from "../../../services/index";
-import {Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
-import {stringify} from "@angular/common/src/facade/lang";
 
 
 @Component({
@@ -15,7 +13,6 @@ import {stringify} from "@angular/common/src/facade/lang";
 export class ShopComponent implements AfterViewInit {
 
   items: Object[];
-  users: Object[];
   title: string;
   shops: RetailShop[];
   shop_id: number;
@@ -23,8 +20,7 @@ export class ShopComponent implements AfterViewInit {
   constructor(private _titleService: Title,
               private _shopService: RetailShopsService,
               private _indexDBService: IndexDBServiceService,
-              private _loadingService: TdLoadingService,
-              private _router: Router) {
+              private _loadingService: TdLoadingService) {
     this.shops = this._shopService.shops;
 
     this._loadingService.create({

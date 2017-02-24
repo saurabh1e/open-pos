@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
-import { HttpInterceptorService, RESTService } from '@covalent/http';
-import { MOCK_API } from '../config/api.config';
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
+import {HttpInterceptorService, RESTService} from "@covalent/http";
+import {MOCK_API} from "../config/api.config";
 import {RetailShopsService, RetailShop} from "./shop.service";
 import {IndexDBServiceService} from "./indexdb.service";
 
@@ -39,40 +37,52 @@ export class UsersService extends RESTService<IUser> {
     });
 
   }
+
   set user(data: IUser) {
     this._user = data;
-    this._shopService.query({__id__in: data.retail_shop_ids, __include: ['total_sales'], __limit:100}).subscribe((data: {data:RetailShop[]}) => {
-      this._shopService.shops = data.data;
-    }, (error) => {
-      if (error.type === 'error') {
+    if (this.user.id && this.user.active){
+      this.getShops(this.user.retail_shop_ids);
+      this.updateUserDB();
+    }
+    this._user$.next(this.user);
+  }
 
-        this._indexDB.shops.where('id').anyOf(data.retail_shop_ids).toArray().then((data)=>{
-          this._shopService.shops = data;
-        })
-      }
-    });
+  get user(): IUser {
+    return this._user
+  }
 
-    this._indexDB.users.add(this.user).then(()=>{},
-      ()=>{
+  updateUserDB(): void {
+    this._indexDB.users.add(this.user).then(() => {
+      },
+      () => {
         this._indexDB.users.update(this.user.id, this.user).then()
       });
-
-    this._user$.next(this.user);
-
-  }
-  get user(): IUser{
-    return this._user
   }
 
   get user$(): Observable<IUser> {
     return this._user$.asObservable();
   }
 
-  staticQuery(): Observable<IUser[]> {
-    return this._http.get('')
-    .map((res: Response) => {
-      return res.json();
+  getShops(retail_shop_ids: number[]): void {
+    this._shopService.query({
+      __id__in: retail_shop_ids,
+      __include: ['total_sales'],
+      __limit: 100
+    }).subscribe((data: {data: RetailShop[]}) => {
+      this._shopService.shops = data.data;
+    }, (error) => {
+      if (error.type === 'error') {
+
+        this._indexDB.shops.where('id').anyOf(retail_shop_ids).toArray().then((data) => {
+          this._shopService.shops = data;
+        })
+      }
     });
+  }
+
+  logout(): boolean {
+    this.user = <IUser>{};
+    return true
   }
 }
 

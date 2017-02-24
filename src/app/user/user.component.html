@@ -1,3 +1,13 @@
-<p>
-  user works!
-</p>
+<span>
+      <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>person</md-icon><md-icon>more_vert</md-icon></button>
+      <md-menu #toolbarMenu="mdMenu">
+        <button md-menu-item (click)="openProfile()">
+          <md-icon>person_outline</md-icon>
+          <span>Profile</span>
+        </button>
+        <button md-menu-item (click)="logout()">
+          <md-icon>exit_to_app</md-icon>
+          <span>Logout</span>
+        </button>
+      </md-menu>
+</span>

@@ -38,7 +38,7 @@ export class BaseTableComponent implements OnInit {
   @Input()
   addRow:()=> Observable<any>;
 
-  shops: RetailShop[];
+  shops: RetailShop[] = [];
   currentPage: number = 1;
   pageSize: number = 50;
   sortBy: string = 'id';
@@ -65,12 +65,10 @@ export class BaseTableComponent implements OnInit {
   setShop(): void {
     if (this._shopService.shops && this._shopService.shops.length) {
       this.shops = this._shopService.shops;
-      this.getData();
     }
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
-    console.log(sortEvent);
     this.sortBy = sortEvent.name;
     this.sortOrder = sortEvent.order;
     this.getData();
@@ -82,7 +80,6 @@ export class BaseTableComponent implements OnInit {
   }
 
   page(pagingEvent: IPageChangeEvent): void {
-    console.log(pagingEvent);
     this.fromRow = pagingEvent.fromRow;
     this.currentPage = pagingEvent.page;
     this.pageSize = pagingEvent.pageSize;

@@ -8,7 +8,6 @@ import { TagInputModule } from 'ng2-tag-input';
 
 
 import { AppComponent } from './app.component';
-import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CartComponent } from './dashboard/carts/carts.component';
@@ -62,6 +61,7 @@ import {ReportingComponent} from "./reporting/reporting.component";
 import {SaleComponent} from "./reporting/sale/sale.component";
 import {OrderComponent} from "./reporting/order/order.component";
 import {CustomerComponent} from "./reporting/customer/customer.component";
+import {UserComponent} from "./user/user.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -71,7 +71,6 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent,
     LoginComponent,
     DashboardComponent,
     CartComponent,
@@ -81,6 +80,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     ProductInfoComponent,
     ProductComponent,
     BrandComponent,
+    UserComponent,
     TagComponent,
     SaltComponent,
     TaxComponent,
