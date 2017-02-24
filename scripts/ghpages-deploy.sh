@@ -12,7 +12,7 @@ git branch -f gh-pages
 git checkout gh-pages
 echo 'Created and Checked out gh-pages branch'
 
-git reset --hard origin/develop
+git reset --hard origin/master
 
 cp -r dist/* .
 echo 'Copied dist/ directory into root dir'
