@@ -8,3 +8,16 @@
 * Install Node packages `npm i`
 * Update Webdriver `webdriver-manager update` and `./node_modules/.bin/webdriver-manager update`
 * Run local build `ng serve`
+
+![Alt text](screenshots/Billing.png "Billing")
+![Alt text](screenshots/Checkout.png "Checkout")
+![Alt text](screenshots/Inventory.png "Inventory")
+
+
+
+
+### Demo:
+
+url: https://saurabh1e.github.io/open-pos-frontend/#/
+username: demo@demo.com
+password: demo
