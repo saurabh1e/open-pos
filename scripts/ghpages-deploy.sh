@@ -27,4 +27,4 @@ echo 'Commiting files'
 git commit -a -m 'gh-pages update'
 echo 'Pushing files into gh-pages branch'
 git push origin gh-pages --force
-git checkout origin/master
+git checkout master
