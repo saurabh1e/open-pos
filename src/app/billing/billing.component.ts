@@ -165,6 +165,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     else {
       this.selectedBrands.push(id)
     }
+    this.selectedBrands = this.selectedBrands.concat();
     return
   }
 
@@ -175,6 +176,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     else {
       this.selectedDistributors.push(id)
     }
+    this.selectedDistributors = this.selectedDistributors.concat();
     return
   }
 
@@ -185,6 +187,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     else {
       this.selectedTags.push(tag)
     }
+    this.selectedTags = this.selectedTags.concat();
     return
   }
 
@@ -195,6 +198,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     else {
       this.selectedSalts.push(salt)
     }
+    this.selectedSalts = this.selectedSalts.concat();
     return
   }
 

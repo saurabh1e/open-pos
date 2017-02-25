@@ -26,17 +26,16 @@ export class ProductSearchPipe implements PipeTransform {
 export class ProductTagPipe implements PipeTransform {
 
   transform(value: Product[], args?: Tag[]): any {
-
     if (args && value && args.length) {
       return value.filter((val) => {
         let flag = true;
         for (let tag in args) {
-          if (val.tags.indexOf(args[tag])<0){
+          if (val.tags.findIndex((t)=>{return t.id == args[tag].id})>-1){
             flag = false;
-            return false
+            break;
           }
         }
-        if (flag) {
+        if (!flag) {
           return val;
         }
 
