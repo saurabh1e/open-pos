@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._loadingService.resolve('login');
+    this._loadingService.register('login');
     this.user = this._userService.user;
     this._userService.user$.subscribe((data:IUser)=> {
       this.user = data;
