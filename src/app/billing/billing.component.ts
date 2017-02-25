@@ -1,5 +1,4 @@
-import {Component, AfterViewInit, OnInit, ChangeDetectorRef} from "@angular/core";
-import {Title} from "@angular/platform-browser";
+import {Component, AfterViewInit, OnInit} from "@angular/core";
 import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
 import {Router, ActivatedRoute} from "@angular/router";
@@ -11,6 +10,7 @@ import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialogConfig} from "@angular/material";
 import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
+import {stringify} from "@angular/core/src/facade/lang";
 
 @Component({
   selector: 'billing',
@@ -236,8 +236,9 @@ export class BillingComponent implements AfterViewInit, OnInit {
       }
     })
   }
-  discountItem(productId: number, stockId: number){
+  discountItem(productId: number, stockId: number, discount?: number){
     let _dialog = this._dialogService.open(ItemDiscountComponent, <MdDialogConfig>{height: '25%', width: '25%'});
+    _dialog.componentInstance.discount = stringify(discount);
     _dialog.afterClosed().subscribe((data)=>{
       this._cartService.updateDiscount(this.cart.local_id, productId, stockId, data.discount).then((cart)=>{
         this.cart = cart;

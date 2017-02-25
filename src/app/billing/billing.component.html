@@ -1,8 +1,6 @@
 <td-layout-nav logo="assets:logo" class="bgc-white-5" toolbarTitle="Postica">
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
-    Billing
-    <span flex></span>
     <app-user></app-user>
   </div>
 
@@ -187,7 +185,8 @@
                 <md-icon class=" tc-grey-600">keyboard_arrow_down</md-icon>
               </button>
               <span flex></span>
-              <button md-icon-button="" class="bgc-white-1" (click)="discountItem(item.product_id, item.stock_id)">
+              <button md-icon-button="" class="bgc-white-1" (click)="discountItem(item.product_id, item.stock_id,
+              item.discount)">
                 <md-icon class=" tc-grey-600">money_off</md-icon>
               </button>
               <span flex></span>
