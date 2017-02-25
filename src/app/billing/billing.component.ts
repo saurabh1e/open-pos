@@ -227,8 +227,11 @@ export class BillingComponent implements AfterViewInit, OnInit {
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       if (data && data === true){
-        this._cartService.deleteCart(this.cart.local_id).then(()=>{
-          this._router.navigate(['dashboard/shops']);
+        this._cartService.deleteCart(this.cart.local_id);
+        this._cartService.newCart(this.cart.retail_shop_id).then((data)=>{
+          this._indexDb.carts.get(data).then((data)=>{
+            this.cart = data
+          })
         });
       }
     })

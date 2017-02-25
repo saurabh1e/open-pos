@@ -113,20 +113,27 @@ export class CheckoutComponent implements OnInit {
       this._customerService.query({__id__equal: event.id, __include: ['addresses'], __limit: 1}).subscribe((data: {data: Customer[]})=>{
         this.customer = data.data[0];
         this.cart.customer = this.customer;
+        this.cart.customer_id = this.customer.id;
         this._cartService.setCart(this.cart, this.cart.local_id).then();
         this.addresses = this.customer.addresses;
         this.address = [];
       });
     }
     else {
-      this.customer = <Customer>{addresses: <Address[]>[]};
-      this.cart.customer = this.customer;
+      this.cart.customer = this.customer = <Customer>{addresses: <Address[]>[]};
+      this.cart.customer_id = this.customer.id;
       this.address = [];
       this._cartService.setCart(this.cart, this.cart.local_id).then();
     }
   }
   addAddress(event): void {
-    this.cart.address = {id: event.value, name: event.display};
+    if (parseInt(event.value) && event.value !== event.display) {
+      this.cart.address = {id: event.value, name: event.display};
+      this.cart.address_id = event.value;
+    }
+    else {
+      this.cart.address = {id:undefined, name: event.display};
+    }
     this._cartService.setCart(this.cart, this.cart.local_id).then()
   }
   removeAddress(): void {
