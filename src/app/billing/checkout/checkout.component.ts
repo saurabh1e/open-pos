@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {Order, OrdersService} from "../../../services/orders.service";
 import {MdDialogRef} from "@angular/material";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
@@ -7,6 +7,7 @@ import {RetailShop} from "../../../services/shop.service";
 import {Observable} from "rxjs";
 import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
 import {CartService} from "../../../services/cart.service";
+import {subscribeOn} from "rxjs/operator/subscribeOn";
 
 
 @Component({
@@ -19,12 +20,12 @@ export class CheckoutComponent implements OnInit {
 
   cart: Order;
   shop: RetailShop;
-  customers: Customer[];
+  customers: any[];
   customer: Customer = <Customer>{addresses: <Address[]>[]};
-  addresses: Address[];
-  address: any[];
+  addresses: Address[] = [];
+  address: Address = <Address>{};
   digitsArray: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  denominationArray: {} = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};
+  denominationArray: {} = {1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 500: 0, 1000: 0, 2000: 0};
   total: string = '0';
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
@@ -42,65 +43,73 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._indexDB.shops.get(this.cart.retail_shop_id).then((shop)=>{
+    this._indexDB.shops.get(this.cart.retail_shop_id).then((shop) => {
       this.shop = shop;
     });
     if (this.cart.customer) {
       this.customer = this.cart.customer;
+      if (this.customer.id) {
+        this.customers = [{display: this.customer.name, value: this.customer.id}];
+        this.addCustomer({value: this.customer.id});
+      }
     }
-    if (this.cart.address.hasOwnProperty('name')) {
-      this.address = [{display: this.cart.address.name, value: this.cart.address.id}]
-    }
+    this.cart.address_id = null;
   }
 
-  close():void {
+  close(): void {
     this.dialogRef.close();
   }
 
   enterAmount(digit: string): void {
-    this.total +=digit;
+    this.total += digit;
     this.cart.amount_paid = parseFloat(this.total);
   }
-  clearAmount(): void{
-    this.total=this.total.slice(0,-1);
-    if (this.total.slice(-1) === '.'){
-      this.total=this.total.slice(0,-1);
+
+  clearAmount(): void {
+    this.total = this.total.slice(0, -1);
+    if (this.total.slice(-1) === '.') {
+      this.total = this.total.slice(0, -1);
     }
-    if (this.total.slice(-2, -1) === '.'){
-      this.total=this.total.slice(0,-2);
+    if (this.total.slice(-2, -1) === '.') {
+      this.total = this.total.slice(0, -2);
     }
     this.cart.amount_paid = parseFloat(this.total);
   }
-  clearDenomination():void {
-    this.denominationArray = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 500:0, 1000:0, 2000:0};
+
+  clearDenomination(): void {
+    this.denominationArray = {1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 500: 0, 1000: 0, 2000: 0};
   }
 
 
-  getCustomers = (event):Observable<string[]> => {
+  getCustomers = (event: string): Observable<string[]> => {
     this._loadingService.register('checkout');
     if (parseInt(event)) {
-      return this._customerService.query({__retail_brand_id__equal: this.shop.retail_brand_id,
+      return this._customerService.query({
+        __retail_brand_id__equal: this.shop.retail_brand_id,
         __number__contains: event,
-        __limit:100,
-        __only: ['id', 'name', 'mobile_number']}).map(data => data.data.map((item) => {
+        __limit: 100,
+        __only: ['id', 'name', 'mobile_number']
+      }).map(data => data.data.map((item) => {
         this._loadingService.resolve('checkout');
-          return item
-        }), ()=>{
-          console.log('ddd')
+        return item
+      }), () => {
+        console.log('ddd')
 
-      }).catch((error)=>{
+      }).catch((error) => {
         this._loadingService.resolve('checkout');
         return Observable.throw(error.json().error)
-        })
+      })
     }
     else {
-      return this._customerService.query({__retail_brand_id__equal: this.shop.retail_brand_id, __name__contains: event,
-        __limit:100,
-        __only: ['id', 'name', 'mobile_number']})
+      return this._customerService.query({
+        __retail_brand_id__equal: this.shop.retail_brand_id, __name__contains: event,
+        __limit: 100,
+        __only: ['id', 'name', 'mobile_number']
+      })
         .map(data => data.data.map((item) => {
           this._loadingService.resolve('checkout');
           return item
-        })).catch((error)=>{
+        })).catch((error) => {
           this._loadingService.resolve('checkout');
           return Observable.throw(error.json().error)
         })
@@ -110,44 +119,68 @@ export class CheckoutComponent implements OnInit {
 
   addCustomer(event): void {
     if (event) {
-      this._customerService.query({__id__equal: event.id, __include: ['addresses'], __limit: 1}).subscribe((data: {data: Customer[]})=>{
-        this.customer = data.data[0];
-        this.cart.customer = this.customer;
+      this._customerService.query({
+        __id__equal: event.id,
+        __include: ['addresses'],
+        __limit: 1
+      }).subscribe((data: {data: Customer[]}) => {
+        this.cart.customer = this.customer = data.data[0];
         this.cart.customer_id = this.customer.id;
-        this._cartService.setCart(this.cart, this.cart.local_id).then();
+        this.saveCart();
         this.addresses = this.customer.addresses;
-        this.address = [];
       });
     }
     else {
-      this.cart.customer = this.customer = <Customer>{addresses: <Address[]>[]};
-      this.cart.customer_id = this.customer.id;
-      this.address = [];
-      this._cartService.setCart(this.cart, this.cart.local_id).then();
+      this.clearCustomer();
     }
-  }
-  addAddress(event): void {
-    if (parseInt(event.value) && event.value !== event.display) {
-      this.cart.address = {id: event.value, name: event.display};
-      this.cart.address_id = event.value;
-    }
-    else {
-      this.cart.address = {id:undefined, name: event.display};
-    }
-    this._cartService.setCart(this.cart, this.cart.local_id).then()
-  }
-  removeAddress(): void {
-    this.cart.address = null;
-    this._cartService.setCart(this.cart, this.cart.local_id).then()
   }
 
   checkOut(): void {
     this._loadingService.register('checkout');
-    this._orderService.create(this.cart).subscribe(()=>{
+    this._orderService.create(this.cart).subscribe((data: {data: Order[]}) => {
       this._loadingService.resolve('checkout');
-      this.dialogRef.close(true);
-    }, ()=> {
+      this.dialogRef.close(data.data[0].id);
+    }, () => {
       this._loadingService.resolve('checkout');
+    })
+  }
+
+  saveCustomer(): void {
+    this.customer.retail_brand_id = this.shop.retail_brand_id;
+    this._customerService.create(this.customer).subscribe((data: {data: Customer[]}) => {
+      console.log(data);
+        this.cart.customer_id = data.data[0].id;
+        this.customer = data.data[0];
+    });
+  }
+
+  clearCustomer(): void {
+    this.cart.customer = null;
+    this.cart.customer_id = null;
+    this.customer = <Customer>{retail_brand_id: this.shop.retail_brand_id};
+    this.customers = [];
+    this.addresses = [];
+    this.saveCart();
+  }
+
+
+  saveCart(): void {
+    this._cartService.setCart(this.cart, this.cart.local_id).then()
+  }
+  clearAddress():void {
+    this.cart.address_id = null;
+    this.address.name = null;
+  }
+
+  addAddress(): void {
+    this._loadingService.register('checkout');
+    this._customerService.addAddress(this.address).subscribe((data: {data: Address[]})=>{
+      this._customerService.addCustomerAddress(data.data[0].id, this.customer.id).subscribe(()=>{
+        this.address.id = data.data[0].id;
+        this.addresses = this.addresses.concat(this.address);
+        this.cart.address_id = this.address.id;
+        this._loadingService.resolve('checkout');
+      })
     })
   }
 }

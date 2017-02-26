@@ -1,13 +1,13 @@
 import {Component, AfterViewInit, OnInit} from "@angular/core";
 import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
-import {Router, ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {IndexDBServiceService} from "../../services/indexdb.service";
 import {Order} from "../../services/orders.service";
 import {TdDialogService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
-import {MdDialogConfig} from "@angular/material";
+import {MdDialogConfig, MdSnackBarRef, MdSnackBar} from "@angular/material";
 import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 import {stringify} from "@angular/core/src/facade/lang";
@@ -38,7 +38,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
   config = <MdDialogConfig>{height: '70%', width: '70%'};
 
 
-  constructor(private _router: Router,
+  constructor(
+              private _snackBarService: MdSnackBar,
               private _dialogService: TdDialogService,
               private _cartService: CartService,
               private _activatedRoute: ActivatedRoute,
@@ -230,7 +231,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
     let _dialog = this._dialogService.open(CheckoutComponent);
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
-      if (data && data === true){
+      if (data){
+        this.showSnackBar(data);
         this._cartService.deleteCart(this.cart.local_id);
         this._cartService.newCart(this.cart.retail_shop_id).then((data)=>{
           this._indexDb.carts.get(data).then((data)=>{
@@ -253,5 +255,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
     this._cartService.updateOrderDiscount(this.cart.local_id, discount).then((cart)=>{
       this.cart = cart;
     })
+  }
+  showSnackBar(orderId: number): void {
+    this._snackBarService.open('Order Placed Successfully ID#' + stringify(orderId), '', { duration: 3000 });
   }
 }

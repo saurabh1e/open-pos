@@ -62,6 +62,7 @@ import {SaleComponent} from "./reporting/sale/sale.component";
 import {OrderComponent} from "./reporting/order/order.component";
 import {CustomerComponent} from "./reporting/customer/customer.component";
 import {UserComponent} from "./user/user.component";
+import {MdSelect, MdSelectModule} from "@angular/material";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -112,6 +113,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   imports: [
     BrowserModule,
     Ng2PaginationModule,
+    MdSelectModule.forRoot(),
     CovalentCoreModule.forRoot(),
     CovalentDataTableModule.forRoot(),
     CovalentHttpModule.forRoot({

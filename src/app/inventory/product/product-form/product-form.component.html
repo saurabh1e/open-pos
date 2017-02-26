@@ -30,7 +30,7 @@
       </div>
 
       <div layout="row" layout-margin>
-        <div flex *ngIf="!product.retail_shop_id" layout-align="end end">
+        <div flex *ngIf="!product.retail_shop_id" layout-align="end end" layout="row">
           <md-select md-input placeholder="Select a Shop" [(ngModel)]="product.retail_shop" name="shop"  style="width: 100%"
                      >
             <md-option *ngFor="let shop of shops" [value]="shop">
@@ -38,9 +38,12 @@
             </md-option>
           </md-select>
         </div>
-        <md-input-container flex *ngIf="product.retail_shop_id">
-          <input md-input [value]="product.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
-        </md-input-container>
+        <div flex style="margin-top: 16px">
+          <md-input-container flex *ngIf="product.retail_shop_id" layout-align="start end" layout="row">
+            <input md-input [value]="product.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
+          </md-input-container>
+        </div>
+
         <div flex>
           <tag-input [(ngModel)]="distributors" name="distributor" placeholder="Enter Distributor..." (onAdd)="addDistributor()"
                      [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="1">

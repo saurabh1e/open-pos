@@ -10,7 +10,7 @@
   <md-card-content flex layout="row" layout-wrap="" layout-align="start start">
 
 
-    <div flex="30" layout="row" layout-wrap="" class="pad">
+    <div flex="30" layout="row" layout-wrap="" class="pad-xs">
 
       <md-card-subtitle class="tc-blue-700">Transaction Detail</md-card-subtitle>
 
@@ -70,29 +70,44 @@
       <form flex="100" layout="column" layout-fill="">
         <div layout="row" layout-margin>
           <md-input-container flex>
-            <input md-input placeholder="Name" name="customer_name" [ngModel]="cart.customer.name">
+            <input md-input placeholder="Name" name="customer_name" [(ngModel)]="customer.name">
           </md-input-container>
         </div>
         <div layout="row" layout-margin="">
           <md-input-container flex>
-            <input md-input placeholder="Number" type="number" min="0" name="mobile_number" [ngModel]="cart.customer.mobile_number">
+            <input md-input placeholder="Number" type="number" min="0" name="mobile_number" [(ngModel)]="customer.mobile_number">
           </md-input-container>
         </div>
+        <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="" style="margin: 0">
+          <button md-raised-button="" (click)="clearCustomer()" color="warn">Clear</button>
+          <button md-raised-button="" [disabled]="cart.customer_id"
+                  (click)="saveCustomer()" color="primary">Add Customer</button>
+        </md-card-actions>
 
-        <div layout="row" layout-margin>
-          <div flex>
-            <tag-input [(ngModel)]="address" name="address" placeholder="Search Address..." (onRemove)="removeAddress()"
-                       (onAdd)="addAddress($event)"
-                       [secondaryPlaceholder]="'Search Address...'"  [maxItems]="1" >
-              <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="addresses" [identifyBy]="'id'"
-                                  [displayBy]="'name'">
-                <template let-item="item" let-index="index">
-                  {{ item.name }}
-                </template>
-              </tag-input-dropdown>
-            </tag-input>
+        <span [hidden]="addresses.length===0">
+          <div layout="row" layout-margin >
+              <md-select flex="100" [(ngModel)]="cart.address_id" name="address" placeholder="Select Address" >
+                <md-option [value]="null">Select Address</md-option>
+                <md-option *ngFor="let address of addresses"
+                           (click)="saveCart()" [value]="address.id">{{address.name}}</md-option>
+              </md-select>
           </div>
+        </span>
+        <div layout="row" layout-margin="" *ngIf="addresses.length" layout-align="center center">
+          <small>or</small>
         </div>
+        <div layout="row" layout-margin="" >
+          <md-input-container flex>
+            <input md-input placeholder="New address" type="text" name="address"
+                   [(ngModel)]="address.name">
+          </md-input-container>
+        </div>
+        <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="" style="margin: 0">
+          <button md-raised-button="" (click)="clearAddress()" color="warn">Clear</button>
+          <button md-raised-button="" [disabled]="!cart.customer_id || cart.address_id"
+                  (click)="addAddress()" color="primary">Add Address</button>
+        </md-card-actions>
+
         <div layout="row" layout-margin *ngIf="false">
           <md-input-container flex>
             <input md-input placeholder="City">
@@ -241,7 +256,7 @@
 
 
   <md-divider flex></md-divider>
-  <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="">
+  <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="" style="margin: 0">
     <button md-raised-button="" color="accent">Print Bill</button>
     <button md-raised-button="" (click)="checkOut()" color="accent">Checkout</button>
   </md-card-actions>

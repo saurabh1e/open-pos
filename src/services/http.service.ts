@@ -26,26 +26,31 @@ export class HttpService {
   }
 
   query(url: string, params: {}): any {
-    return this.http.get(MOCK_API+url, {search: parameters(params)});
+    return this.http.get(MOCK_API+url, {search: parameters(params)}).map(res=>res.json());
   }
 
   get(url: string, id: string): any {
-    return this.http.get(MOCK_API+url+id+'/')
+    return this.http.get(MOCK_API+url+id+'/').map(res=>res.json())
 
   }
 
-  update(url: string, id: string, data: {}): any {
-    return this.http.put(MOCK_API+url+id+'/', data)
+  patch(url: string, id: string, data: {}): any {
+    return this.http.patch(MOCK_API+url+id+'/', data).map(res=>res.json())
+
+  }
+
+  update(url: string, data: {}): any {
+    return this.http.put(MOCK_API+url, data).map(res=>res.json())
 
   }
 
   post(url: string, data?: {}): any {
-    return this.http.post(MOCK_API+url, data)
+    return this.http.post(MOCK_API+url, data).map(res=>res.json())
 
   }
 
   save(url: string, data: {}): any {
-    return this.http.post(MOCK_API+url, data)
+    return this.http.post(MOCK_API+url, data).map(res=>res.json())
 
   }
 }

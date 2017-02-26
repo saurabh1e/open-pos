@@ -7,6 +7,7 @@ import {MOCK_API} from "../config/api.config";
 
 export interface Order {
 
+  id: number;
   sub_total: number;
   total: number;
   auto_discount: number;
