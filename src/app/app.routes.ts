@@ -25,11 +25,13 @@ const routes: Routes = [
     children: [
       {path: 'shops', component: ShopComponent},
       {
-        path: 'carts',
-        children: [
-          {path: ':id', component: CartComponent}
-        ]
+        path: 'carts/:id',
+        component: CartComponent
       },
+      {
+        path: 'carts',
+        component: CartComponent
+      }
     ]
   },
 

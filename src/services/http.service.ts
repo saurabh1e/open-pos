@@ -1,6 +1,3 @@
-/**
- * Created by saurabh on 27/1/17.
- */
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import  'rxjs/operator/map';

@@ -133,6 +133,7 @@ export class SaleComponent implements OnInit {
   // Chart
   single: any[];
   multi: any[];
+  days: number;
 
   view: any[] = [700, 400];
 
@@ -167,6 +168,10 @@ export class SaleComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  getInterVal(): number{
+    return 5
   }
 
 }

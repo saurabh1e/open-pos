@@ -2,7 +2,7 @@
                     class="bgc-white-1" >
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
-    <span>Dashboard</span>
+    <span>{{title}}</span>
     <span flex></span>
     <app-user></app-user>
   </div>
@@ -16,6 +16,14 @@
        [routerLink]="['/dashboard/shops']">
       <md-icon md-list-icon>dashboard</md-icon>
       <span class="tc-grey-800 md-body-1">Dashboard</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/dashboard/carts']">
+      <md-icon md-list-icon>dashboard</md-icon>
+      <span class="tc-grey-800 md-body-1">Pending Orders</span>
     </a>
     <a md-list-item
        md-ripple class="block relative"

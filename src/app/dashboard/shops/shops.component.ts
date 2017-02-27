@@ -2,7 +2,9 @@ import { Component, AfterViewInit } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 import { TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
 import {RetailShopsService, RetailShop} from "../../../services/index";
+import {Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
+import {stringify} from "@angular/core/src/facade/lang";
 
 
 @Component({
@@ -15,12 +17,12 @@ export class ShopComponent implements AfterViewInit {
   items: Object[];
   title: string;
   shops: RetailShop[];
-  shop_id: number;
 
   constructor(private _titleService: Title,
               private _shopService: RetailShopsService,
               private _indexDBService: IndexDBServiceService,
-              private _loadingService: TdLoadingService) {
+              private _loadingService: TdLoadingService,
+              private _router: Router) {
     this.shops = this._shopService.shops;
 
     this._loadingService.create({
@@ -52,7 +54,7 @@ export class ShopComponent implements AfterViewInit {
       if (count< 1) {
         this._shopService.syncData(data.id);
         this._indexDBService.db$.subscribe(() => {
-          this.shop_id = data.id;
+          this._router.navigate(['dashboard/carts/'+stringify(data.id)]);
           this._loadingService.resolve('shops');
         }, (error) => {
           console.log(error)
@@ -60,7 +62,7 @@ export class ShopComponent implements AfterViewInit {
 
       }
       else  {
-        this.shop_id = data.id;
+        this._router.navigate(['dashboard/carts/'+stringify(data.id)]);
         this._loadingService.resolve('shops');
       }
 
@@ -75,10 +77,6 @@ export class ShopComponent implements AfterViewInit {
     }, (error) => {
       console.log(error)
     });
-  }
-
-  closeCart(): void {
-    this.shop_id = null;
   }
 
 }

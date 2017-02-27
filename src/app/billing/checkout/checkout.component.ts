@@ -163,7 +163,6 @@ export class CheckoutComponent implements OnInit {
     this.saveCart();
   }
 
-
   saveCart(): void {
     this._cartService.setCart(this.cart, this.cart.local_id).then()
   }

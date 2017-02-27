@@ -1,10 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
-
+import {Component, OnInit} from '@angular/core';
 import {TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
-import { TdDialogService } from '@covalent/core';
 
 import {CartService} from "../../../services/cart.service";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Order} from "../../../services/orders.service";
 import {stringify} from "@angular/forms/src/facade/lang";
@@ -18,11 +16,10 @@ import {stringify} from "@angular/forms/src/facade/lang";
 export class CartComponent implements OnInit {
 
   carts: Order[];
-  @Input()
   shop_id: number;
-  title: string;
 
   constructor(private _cartService: CartService,
+              private _activatedRoute: ActivatedRoute,
               private _indexDB: IndexDBServiceService,
               private _route: Router,
               private _loadingService: TdLoadingService) {
@@ -36,10 +33,20 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title = 'Pending Orders';
+    this._activatedRoute.params.subscribe((params: {id: string}) => {
+      console.log(params);
+      if(params.id){
+        this.shop_id = parseInt(params.id);
         this._indexDB.carts.where({retail_shop_id: this.shop_id}).toArray().then((data)=>{
           this.carts = data;
         })
+      }
+      else {
+        this._indexDB.carts.toArray().then((data)=>{
+          this.carts = data;
+        })
+      }
+    });
   }
 
 
