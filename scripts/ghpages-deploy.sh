@@ -1,8 +1,7 @@
 #!/bin/bash
 
-
-git branch -f gh-pages
 git checkout gh-pages
+git reset --hard master
 
 echo 'Replace api endpoint with https://open-point-of-sale.herokuapp.com/api/v1/'
 
