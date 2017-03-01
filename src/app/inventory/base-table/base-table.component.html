@@ -16,9 +16,9 @@
         *ngFor="let column of columns"
         [sortable]="column.sortable"
         [numeric]="column.numeric"
-        (sortBy)="'id'"
-        (sort)="'ASC'"
-        (sortChange)="sort($event)">
+        (sortBy)="sortBy"
+        (sort)="sortOrder"
+        (sortChange)="sort(column.name, sortOrder)">
       {{column.label}}
     </th>
     <th td-data-table-column  *ngIf="editRow">edit</th>
@@ -27,26 +27,28 @@
           [numeric]="column.numeric">
         <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
       </td>
-      <td *ngIf="editRow">
+      <td>
         <button class="small-button" (click)="edit(row, filteredData.indexOf(row))">
           <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
         </button>
-        <span *ngIf="row.hasOwnProperty('is_disabled')">
-          <button class="small-button" *ngIf="!row.is_disabled"
-                  (click)="toggle(row, filteredData.indexOf(row))">
+          <span *ngIf="row.hasOwnProperty('is_disabled')">
+            <button class="small-button" *ngIf="!row.is_disabled"
+                    (click)="toggle(row, filteredData.indexOf(row))">
             <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
           </button>
           <button class="small-button" *ngIf="row.is_disabled"
                   (click)="toggle(row, filteredData.indexOf(row))">
             <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
           </button>
-        </span>
-        <span *ngIf="!row.hasOwnProperty('is_disabled')">
-          <button class="small-button"
-                  (click)="deleteRow(row, filteredData.indexOf(row))">
+
+          </span>
+          <span *ngIf="!row.hasOwnProperty('is_disabled')">
+            <button class="small-button"
+                    (click)="deleteRow(row, filteredData.indexOf(row))">
             <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">close</md-icon>
           </button>
-        </span>
+          </span>
+
 
       </td>
     </tr>

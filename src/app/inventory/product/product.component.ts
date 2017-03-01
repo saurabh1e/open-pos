@@ -9,7 +9,6 @@ import {Title} from "@angular/platform-browser";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {RetailShopsService, RetailShop} from "../../../services/shop.service";
 import {ProductFormComponent} from "./product-form/product-form.component";
-import {MdDialogConfig} from "@angular/material";
 
 
 @Component({
@@ -83,7 +82,6 @@ export class ProductComponent implements AfterViewInit {
   }
 
   sort(name: string, sortOrder: TdDataTableSortingOrder): void {
-    console.log(sortOrder, name);
     this.sortBy = name;
     if (sortOrder.toString() == 'ASC') {
       this.sortOrder = TdDataTableSortingOrder.Descending
@@ -114,7 +112,7 @@ export class ProductComponent implements AfterViewInit {
     }
     this._itemService.query({
       __retail_shop_id__in: this.shops.map(item => item.id), __include: ['brand', 'distributor', 'retail_shop'],
-      __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy
+      __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm
     })
       .subscribe((resp: {data: Product[], total: number}) => {
         this.data = resp.data;

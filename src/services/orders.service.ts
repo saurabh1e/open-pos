@@ -19,6 +19,7 @@ export interface Order {
   current_status_id: number;
   created_on: Date;
   additional_discount: number;
+  is_void: boolean;
 
   taxes: {total: number,};
   address: Address;
