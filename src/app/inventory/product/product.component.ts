@@ -148,15 +148,32 @@ export class ProductComponent implements AfterViewInit {
   }
 
 
-  toggleProduct(product: Product, index: number): void {
-    this._loadingService.register('products');
-    product.is_disabled = !product.is_disabled;
-    this._itemService.update(product.id, product).subscribe(()=> {
-      this._loadingService.resolve('products');
-    }, ()=>{
-      this.data[index].is_disabled = !this.data[index].is_disabled;
-      this._loadingService.resolve('products');
-    })
+  toggleProduct(product: Product): void {
+
+  let message = 'disable';
+
+    if (product.is_disabled) {
+    message = 'enable'
+  }
+
+  this._dialogService.openConfirm({
+    message: 'Are you sure you want ' + message + ' to  this Item?',
+    title: 'Confirm',
+    cancelButton: 'No, Cancel',
+    acceptButton: 'Yes, '+message,
+  }).afterClosed().subscribe((accept: boolean) => {
+    if (accept) {
+      this._loadingService.register('products');
+      this._itemService.update(product.id, <Product>{id: product.id, is_disabled: !product.is_disabled})
+        .subscribe(()=> {
+          this._loadingService.resolve('products');
+          product.is_disabled = !product.is_disabled;
+        },
+        () => {
+          this._loadingService.resolve('products');
+        })
+    }
+  });
   }
 
 }
