@@ -8,12 +8,6 @@ import {UsersService, IUser} from "./users.service";
 import {IndexDBServiceService} from "./indexdb.service";
 import {MOCK_API} from '../config/api.config'
 
-
-function setAuthCookies(id: string, token: string) {
-  Cookie.set('id', id, 7, MOCK_API);
-  Cookie.set('authentication_token', token, 7, MOCK_API);
-}
-
 function getAuthCookies(): Auth {
   return {id: Cookie.get('id'), 'authentication_token': Cookie.get('authentication_token')};
 }
@@ -68,12 +62,7 @@ export class AuthService {
   }
 
   login(email, password): Observable<Auth> {
-    return this._http.post('login/', {'email': email, 'password': password})
-      .map((res: Response) => {
-        let data = res.json();
-        setAuthCookies(data.id, data.authentication_token);
-        return data;
-      });
+    return this._http.post('login/', {'email': email, 'password': password});
   }
 
   logout(): void {
@@ -81,4 +70,10 @@ export class AuthService {
     this.auth = <Auth>{};
     this._userService.logout();
   }
+
+  setAuthCookies() {
+  Cookie.set('id', this.auth.id, 7, MOCK_API);
+  Cookie.set('authentication_token', this.auth.authentication_token, 7, MOCK_API);
+}
+
 }

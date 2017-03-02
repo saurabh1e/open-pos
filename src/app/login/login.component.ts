@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 
 import {TdLoadingService, LoadingType, LoadingMode} from '@covalent/core';
-
 import {UsersService, AuthService, Auth } from '../../services'
 import {IUser} from "../../services/users.service";
+
 
 @Component({
   selector: 'qs-login',
@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit{
     this._loadingService.register('login');
     this._authService.login(this.username, this.password).subscribe((data: Auth) => {
       this._authService.auth = data;
+      this._authService.setAuthCookies();
       this._router.navigate(['dashboard/shops']);
       this._loadingService.resolve('login');
     },(error) => {
