@@ -21,7 +21,7 @@
         (sortChange)="sort(column.name, sortOrder)">
       {{column.label}}
     </th>
-    <th td-data-table-column  *ngIf="editRow">edit</th>
+    <th td-data-table-column  *ngIf="editRow">Edit</th>
     <tr td-data-table-row *ngFor="let row of filteredData">
       <td td-data-table-cell *ngFor="let column of columns"
           [numeric]="column.numeric">

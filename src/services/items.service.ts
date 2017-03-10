@@ -38,8 +38,15 @@ export interface Stock {
   purchase_date: Date;
   selling_amount: number;
   units_purchased: number;
-  units_sold: number
+  units_sold: number,
+  product?: Product;
+  distributor_bill: DistributorBill;
+}
 
+export interface DistributorBill {
+  reference_number: string
+  distributor: Distributor;
+  purchase_date: Date;
 }
 
 export interface Tag {
@@ -429,6 +436,20 @@ export class TaxsService extends RESTService<any> {
     }, (err) => {
       console.error(err)
     })
+  }
+
+}
+
+
+@Injectable()
+export class StocksService extends RESTService<Stock> {
+
+  constructor(private _http: HttpInterceptorService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/stock',
+    });
+
   }
 
 }

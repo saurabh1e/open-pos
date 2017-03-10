@@ -45,7 +45,7 @@
         </div>
 
         <div flex>
-          <tag-input [(ngModel)]="distributors" name="distributor" placeholder="Enter Distributor..." (onAdd)="addDistributor()"
+          <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'" (onAdd)="addDistributor()"
                      [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="1">
             <tag-input-dropdown [autocompleteObservable]='getDistributors'  [appendToBody]="false">
               <template let-item="item" let-index="index">
@@ -55,7 +55,7 @@
           </tag-input>
         </div>
         <div flex>
-          <tag-input [(ngModel)]="brands" name="brand" placeholder="Enter Brand..." (onAdd)="addBrand()"
+          <tag-input [(ngModel)]="brands" name="brand" [placeholder]="'Enter Brand...'" (onAdd)="addBrand()"
                      [secondaryPlaceholder]="'Enter Brand...'" [onlyFromAutocomplete]="true" [maxItems]="1">
             <tag-input-dropdown [autocompleteObservable]='getBrands'  [appendToBody]="false">
               <template let-item="item" let-index="index">
@@ -76,7 +76,7 @@
             </template>
           </tag-input-dropdown>
         </tag-input>
-        <tag-input [(ngModel)]="taxes" name="taxes" flex="100" placeholder="Enter Taxes..."
+        <tag-input [(ngModel)]="taxes" name="taxes" flex="100" [placeholder]="'Enter Taxes...'"
                    [secondaryPlaceholder]="'Enter Taxes...'" [onlyFromAutocomplete]="true" (onAdd)="addTaxes()"
                    (onRemove)="addTaxes()">
           <tag-input-dropdown [autocompleteObservable]='getTaxes'  [appendToBody]="false">
@@ -87,7 +87,7 @@
         </tag-input>
       </div>
       <div layout="row" layout-margin>
-        <tag-input [(ngModel)]="salts" name="salts" flex="100" placehoder="Enter Salts.."
+        <tag-input [(ngModel)]="salts" name="salts" flex="100" [placeholder]="'Enter Salts..'"
                    [secondaryPlaceholder]="'Enter Salts...'" [onlyFromAutocomplete]="true" (onAdd)="addSalts()"
                    (onRemove)="addSalts()">
           <tag-input-dropdown [autocompleteObservable]='getSalts'  [appendToBody]="false">
@@ -98,10 +98,11 @@
         </tag-input>
       </div>
       <div layout="row" layout-margin>
-        <tag-input [(ngModel)]="product.description" name="description" flex="100" placehoder="Enter Description.."
-                   [secondaryPlaceholder]="'Enter Description...'" (onAdd)="addDescription()"
-                   [validators]="[validateDescription]"
+        <tag-input [(ngModel)]="product.description" name="description" flex="100" [placeholder]="'Enter Key : Value Description..'"
+                   [secondaryPlaceholder]="'Enter Description...'" (onAdd)="addDescription($event)"
+                   [validators]="validators"
                    [identifyBy]="'key'"
+                   [errorMessages]="errorMessages"
                    [displayBy]="'value'">
             <template let-item="item" let-index="index">
               {{ item.key }}:{{ item.value }}

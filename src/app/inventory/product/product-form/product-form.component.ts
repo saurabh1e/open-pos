@@ -29,7 +29,7 @@ export class ProductFormComponent implements OnInit {
   tags: {display: string, value: number}[] = [];
   distributors: {display: string, value: number}[] = [];
   shops: RetailShop[];
-
+  validators = [];
   productCopy: Product = <Product>{};
 
   constructor(private _itemService: ItemsService,
@@ -63,6 +63,7 @@ export class ProductFormComponent implements OnInit {
       return {display: value.name, value: value.id}
     });
     this.resetProduct();
+    this.validators = [this.validateDescription];
   }
 
   resetProduct(): void {
@@ -197,15 +198,23 @@ export class ProductFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  validateDescription(term?: FormControl): boolean {
-    console.log(term);
-    return term.value.indexOf(':')>-1;
-  }
-  addDescription(term?): void {
-    console.log(term);
-  }
+  validateDescription = (term?: FormControl) =>{
+    if(term.value.indexOf(':')<0){
+      return {'mustContain:': true}
+    }
+    return null
+  };
+
+  public errorMessages = {
+    'mustContain:': 'Your key value must be separated by ":" ',
+  };
+
+  addDescription = (event): void =>{
+    event.value = event.value.split(':') [0];
+    event.key = event.key.split(':') [1];
+  };
+
   removeDescription(item: {}, index: number): void {
-    console.log(item, index);
     this.product.description.splice(index, 1)
   }
 

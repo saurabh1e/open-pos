@@ -40,7 +40,7 @@ export class RequestInterceptor implements IHttpInterceptor {
     }
 
     this._dialogService.openAlert({
-      message: message['message'],
+      message: message['message'] || 'Unexpected Error Check Network Connection!!',
       disableClose: false,
       title: title,
       closeButton: 'Close',

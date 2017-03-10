@@ -1,43 +1,47 @@
 <td-layout-nav-list logo="assets:logo" toolbarTitle="Postica"
-                    class="bgc-white-1" >
+                    class="bgc-white-1">
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
-    <span>{{title}}</span>
+    <span>Stocks</span>
     <span flex></span>
     <app-user></app-user>
   </div>
 
 
+
   <md-nav-list td-sidenav-content>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/dashboard/shops']">
-      <md-icon md-list-icon class="md-18">DASHBOARD</md-icon>
-    </a>
-    <a md-list-item
+    <a md-list-item=""
        md-ripple class="block relative"
        [routerLinkActive]="['active']"
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/stock/stocks']">
-      <md-icon md-list-icon class="md-18">STOCKS</md-icon>
+      <md-icon md-list-icon class="md-18" >STOCKS</md-icon>
     </a>
-    <a md-list-item
+    <a md-list-item=""
        md-ripple class="block relative"
        [routerLinkActive]="['active']"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/menu']">
-      <md-icon md-list-icon class="md-18">INVENTORY</md-icon>
+       [routerLink]="['/stock/expiry']">
+      <md-icon md-list-icon class="md-18" >EXPIRY</md-icon>
     </a>
-    <a md-list-item
+    <a md-list-item=""
        md-ripple class="block relative"
        [routerLinkActive]="['active']"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/sales']">
-      <md-icon md-list-icon class="md-18">REPORTS</md-icon>
+       [routerLink]="['/stock/shortage']">
+      <md-icon md-list-icon class="md-18">SHORTAGE</md-icon>
     </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/stock/add-stocks']">
+      <md-icon md-list-icon class="md-18">ADD STOCKS</md-icon>
+    </a>
+    <md-divider flex="" class=" push-top-lg bgc-blue-100"></md-divider>
+    <div class="push-top-lg" layout-align="center center" layout="row">
+      <app-back-button></app-back-button>
+    </div>
   </md-nav-list>
   <router-outlet></router-outlet>
-
 </td-layout-nav-list>

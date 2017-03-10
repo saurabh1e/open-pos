@@ -11,27 +11,27 @@ export class MenuComponent implements OnInit {
   routes: Object[] = [{
     title: 'Products',
     route: '/inventory/products',
-    icon: 'dashboard',
+    icon: 'P',
   }, {
     title: 'Brands',
     route: '/inventory/brands',
-    icon: 'view_quilt',
+    icon: 'B',
   }, {
     title: 'Distributors',
     route: '/inventory/distributors',
-    icon: 'receipt',
+    icon: 'D',
   }, {
     title: 'Tags',
     route: '/inventory/tags',
-    icon: 'people',
+    icon: 'TG',
   }, {
     title: 'Taxes',
     route: '/inventory/taxes',
-    icon: 'view_module',
+    icon: 'TX',
   },  {
     title: 'Salts',
     route: '/inventory/salts',
-    icon: 'view_module',
+    icon: 'S',
   },
   ];
   constructor() { }

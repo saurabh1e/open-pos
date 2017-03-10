@@ -1,0 +1,44 @@
+<div class=" bgc-white-4 push-sm" flex="100" layout-wrap="" layout="row">
+
+  <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" flex="100">
+      <span class="push-left-sm">
+        <span class="md-title">{{title}}</span>
+      </span>
+    <span flex></span>
+    <td-search-box class=" push-right-sm" placeholder="Search Here.."
+                   (searchDebounce)="searchProduct($event)" flex="" [showUnderline]="true" [debounce]="500"
+                   [alwaysVisible]="true">
+    </td-search-box>
+    <td-search-box class=" push-right-sm" placeholder="Search Here.."
+                   (searchDebounce)="searchDistributor($event)" flex="" [showUnderline]="true" [debounce]="500"
+                   [alwaysVisible]="true">
+    </td-search-box>
+  </div>
+
+  <table td-data-table>
+    <th td-data-table-column
+        *ngFor="let column of columns"
+        [sortable]="column.sortable"
+        [numeric]="column.numeric"
+        (sortBy)="sortBy"
+        (sort)="sortOrder"
+        (sortChange)="sort(column.name, sortOrder)">
+      {{column.label}}
+    </th>
+    <th td-data-table-column  *ngIf="editRow">Edit</th>
+    <tr td-data-table-row *ngFor="let row of filteredData">
+      <td td-data-table-cell *ngFor="let column of columns"
+          [numeric]="column.numeric">
+        <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
+      </td>
+      <td>
+
+      </td>
+    </tr>
+  </table>
+
+</div>
+<div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm md-shadow-bottom-z-1"  layout-align="center center">
+  <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal"
+                 (change)="page($event)"></td-paging-bar>
+</div>

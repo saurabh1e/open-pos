@@ -16,21 +16,31 @@ import {ReportingComponent} from "./reporting/reporting.component";
 import {SaleComponent} from "./reporting/sale/sale.component";
 import {OrderComponent} from "./reporting/order/order.component";
 import {CustomerComponent} from "./reporting/customer/customer.component";
+import {StockManagementComponent} from "./stock-management/stock-management.component";
+import {ExpiryComponent} from "./stock-management/expiry/expiry.component";
+import {ShortageComponent} from "./stock-management/shortage/shortage.component";
+import {AddStockComponent} from "./stock-management/add-stock/add-stock.component";
+import {StockComponent} from "./stock-management/stock/stock.component";
+
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {
-
+    path: 'stock', component: StockManagementComponent,
+    children: [
+      {path: 'expiry', component: ExpiryComponent},
+      {path: 'shortage', component: ShortageComponent},
+      {path: 'stocks', component: StockComponent},
+      {path: 'add-stocks', component: AddStockComponent}
+    ]
+  },
+  {
     path: 'dashboard', component: DashboardComponent,
     children: [
       {path: 'shops', component: ShopComponent},
-      {
-        path: 'carts',
-        component: CartComponent
-      }
+      {path: 'carts', component: CartComponent}
     ]
   },
-
   {
     path: 'inventory', component: InventoryComponent,
     children: [

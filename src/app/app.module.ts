@@ -1,37 +1,37 @@
-import { NgModule, Type } from '@angular/core';
-import { BrowserModule, Title }  from '@angular/platform-browser';
-
-import {CovalentCoreModule, CovalentDataTableModule} from '@covalent/core';
-import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
-import { CovalentSearchModule } from '@covalent/core';
-import { TagInputModule } from 'ng2-tag-input';
-
-
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { CartComponent } from './dashboard/carts/carts.component';
-import { ShopComponent } from './dashboard/shops/shops.component';
-
-import { appRoutes, appRoutingProviders } from './app.routes';
-import {Ng2PaginationModule} from 'ng2-pagination';
-
-
-import { RequestInterceptor } from '../config/interceptors/request.interceptor';
-
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {NgModule, Type} from "@angular/core";
+import {BrowserModule, Title} from "@angular/platform-browser";
+import {CovalentCoreModule, CovalentDataTableModule, CovalentSearchModule} from "@covalent/core";
+import {CovalentHttpModule, IHttpInterceptor} from "@covalent/http";
+import {TagInputModule} from "ng2-tag-input";
+import {AppComponent} from "./app.component";
+import {LoginComponent} from "./login/login.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
+import {CartComponent} from "./dashboard/carts/carts.component";
+import {ShopComponent} from "./dashboard/shops/shops.component";
+import {appRoutes, appRoutingProviders} from "./app.routes";
+import {Ng2PaginationModule} from "ng2-pagination";
+import {RequestInterceptor} from "../config/interceptors/request.interceptor";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {HttpService} from "../services/http.service";
 import {AuthService} from "../services/auth.service";
 import {UsersService} from "../services/users.service";
 import {RetailShopsService} from "../services/shop.service";
 import {
-  ItemsService, DistributorService, TagsService, TaxsService, BrandsService,
+  ItemsService,
+  DistributorService,
+  TagsService,
+  TaxsService,
+  BrandsService,
   SaltsService
 } from "../services/items.service";
 import {
-  ProductSearchPipe, ProductBrandPipe, ProductDistributorPipe,
-  ProductTagPipe, ProductSaltPipe, KeysPipe
-} from '../pipes/product-search.pipe';
+  ProductSearchPipe,
+  ProductBrandPipe,
+  ProductDistributorPipe,
+  ProductTagPipe,
+  ProductSaltPipe,
+  KeysPipe
+} from "../pipes/product-search.pipe";
 import {IndexDBServiceService} from "../services/indexdb.service";
 import {CartService} from "../services/cart.service";
 import {OrdersService} from "../services/orders.service";
@@ -62,7 +62,13 @@ import {SaleComponent} from "./reporting/sale/sale.component";
 import {OrderComponent} from "./reporting/order/order.component";
 import {CustomerComponent} from "./reporting/customer/customer.component";
 import {UserComponent} from "./user/user.component";
-import {MdSelect, MdSelectModule} from "@angular/material";
+import {MdSelectModule} from "@angular/material";
+import {StockManagementComponent} from "./stock-management/stock-management.component";
+import {ExpiryComponent} from "./stock-management/expiry/expiry.component";
+import {ShortageComponent} from "./stock-management/shortage/shortage.component";
+import {AddStockComponent} from "./stock-management/add-stock/add-stock.component";
+import {StockComponent} from "./stock-management/stock/stock.component";
+import {BaseStockTableComponent} from "./stock-management/base-stock-table/base-stock-table.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -86,12 +92,18 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     SaltComponent,
     TaxComponent,
     DistributorComponent,
+    StockManagementComponent,
+    ExpiryComponent,
+    ShortageComponent,
+    AddStockComponent,
+    StockComponent,
     CheckoutComponent,
     BillingComponent,
     InventoryComponent,
     MenuComponent,
     BrandFormComponent,
     BaseTableComponent,
+    BaseStockTableComponent,
     ReportingComponent,
     SaleComponent,
     OrderComponent,
@@ -146,6 +158,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
     ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent,
     DistributorFormComponent],
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -35,6 +35,9 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   filter:()=> RESTService<any>;
 
   @Input()
+  include:string[]=[];
+
+  @Input()
   editRow:(any)=> Observable<any>;
   @Input()
   toggleRow:(any)=> Observable<any>;
@@ -112,7 +115,7 @@ export class BaseTableComponent implements OnInit, OnDestroy {
     if (this.shop && this.shop.id) {
       ids = [this.shop.id];
     }
-    this.filter().query({__retail_shop_id__in: ids, __include: ['retail_shop'],
+    this.filter().query({__retail_shop_id__in: ids, __include: this.include.concat(['retail_shop']),
       __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm})
       .subscribe((resp: {data: any[], total: number})=>{
         this.filteredData = resp.data;

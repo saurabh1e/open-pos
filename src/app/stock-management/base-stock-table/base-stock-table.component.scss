@@ -1,0 +1,21 @@
+.small-button {
+  box-shadow: none;
+  background: transparent;
+  border: 0;
+}
+.pagination {
+  position: fixed;
+  bottom: 10px;
+  width:90%;
+  border: 1px lightgray solid;
+  z-index: 3;
+  right: 125px;
+  left:100px;
+  font-size: 14px;
+
+}
+.md-fab-position-bottom-right {
+  bottom: 10px;
+  position: fixed;
+
+}
