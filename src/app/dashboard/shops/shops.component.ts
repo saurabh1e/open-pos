@@ -17,13 +17,16 @@ export class ShopComponent implements AfterViewInit {
   items: Object[];
   title: string;
   shops: RetailShop[];
+  shop: RetailShop;
 
   constructor(private _titleService: Title,
               private _shopService: RetailShopsService,
               private _indexDBService: IndexDBServiceService,
               private _loadingService: TdLoadingService,
               private _router: Router) {
+
     this.shops = this._shopService.shops;
+    this.shop = this._shopService.shop;
 
     this._loadingService.create({
       name: 'shops',
@@ -44,6 +47,9 @@ export class ShopComponent implements AfterViewInit {
     }, (error) => {
       console.log(error)
     });
+    this._shopService.shop$.subscribe((data: RetailShop) => {
+      this.shop = data;
+    });
     this._loadingService.resolve('shops');
   }
 
@@ -54,7 +60,8 @@ export class ShopComponent implements AfterViewInit {
       if (count< 1) {
         this._shopService.syncData(data.id);
         this._indexDBService.db$.subscribe(() => {
-          this._router.navigate(['dashboard/carts/'+stringify(data.id)]);
+          this._shopService.shop = data;
+          this._router.navigate(['dashboard/carts/']);
           this._loadingService.resolve('shops');
         }, (error) => {
           console.log(error)
@@ -62,7 +69,8 @@ export class ShopComponent implements AfterViewInit {
 
       }
       else  {
-        this._router.navigate(['dashboard/carts/'+stringify(data.id)]);
+        this._shopService.shop = data;
+        this._router.navigate(['dashboard/carts/']);
         this._loadingService.resolve('shops');
       }
 

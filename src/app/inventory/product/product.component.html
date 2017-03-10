@@ -23,7 +23,7 @@
           (sortChange)="sort(column.name, sortOrder)">
         {{column.label}}
       </th>
-      <th td-data-table-column>edit</th>
+      <th td-data-table-column>Edit</th>
       <tr td-data-table-row *ngFor="let row of data">
         <td td-data-table-cell  *ngFor="let column of columns"
             [numeric]="column.numeric" >

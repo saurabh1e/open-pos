@@ -136,9 +136,9 @@
                 </tr>
                 <tr>
                   <td class="text-center" *ngIf="shop.address">
-                    {{shop.address.name}},<br>
-                    {{shop.address.locality.name}},<br>
-                    {{shop.address.locality.city.name}},
+                    {{shop.address?.name}},<br>
+                    {{shop.address?.locality?.name}},<br>
+                    {{shop.address?.locality?.city?.name}},
                   </td>
                 </tr>
                 <tr>

@@ -25,10 +25,6 @@ const routes: Routes = [
     children: [
       {path: 'shops', component: ShopComponent},
       {
-        path: 'carts/:id',
-        component: CartComponent
-      },
-      {
         path: 'carts',
         component: CartComponent
       }

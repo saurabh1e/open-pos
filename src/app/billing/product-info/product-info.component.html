@@ -28,7 +28,7 @@
       <div layout="row" layout-wrap="" class="info-dialog">
         <md-list flex="50">
           <h4>Description</h4>
-          <template let-entry ngFor [ngForOf]="product.description | keys">
+          <template let-entry ngFor [ngForOf]="product.description">
             <md-list-item>
               <md-icon class="tc-orange-A400" md-list-avatar="">description</md-icon>
               <span class="md-body-1" md-line>{{entry.value}}</span>

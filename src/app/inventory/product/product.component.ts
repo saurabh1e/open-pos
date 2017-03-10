@@ -1,4 +1,4 @@
-import {Component, AfterViewInit} from "@angular/core";
+import {Component, AfterViewInit, OnDestroy} from "@angular/core";
 import {
   TdDataTableSortingOrder, TdLoadingService, LoadingType, LoadingMode, IPageChangeEvent,
   TdDialogService
@@ -9,6 +9,7 @@ import {Title} from "@angular/platform-browser";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {RetailShopsService, RetailShop} from "../../../services/shop.service";
 import {ProductFormComponent} from "./product-form/product-form.component";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -18,12 +19,12 @@ import {ProductFormComponent} from "./product-form/product-form.component";
   entryComponents: [ProductFormComponent]
 })
 
-export class ProductComponent implements AfterViewInit {
+export class ProductComponent implements AfterViewInit, OnDestroy{
 
   data: Product[] = [];
 
   columns: TdDataTableColumn[] = [
-    {name: 'id', label: 'id', sortable: true},
+    {name: 'id', label: 'ID', sortable: true},
     {name: 'name', label: 'Product Name', sortable: true, editable: true},
     {name: 'brand.name', label: 'Brand', sortable: false, nested: true},
     {name: 'distributor.name', label: 'Distributor', sortable: false, nested: true},
@@ -38,19 +39,21 @@ export class ProductComponent implements AfterViewInit {
     },
     {name: 'retail_shop.name', label: 'Shop', sortable: false},
     {name: 'available_stock', label: 'Stock', numeric: true, sortable: false},
-    {name: 'min_stock', label: 'min qty', numeric: true, sortable: true},
+    {name: 'min_stock', label: 'Min.Qty', numeric: true, sortable: true},
   ];
 
   filteredData: any[] = this.data;
   filteredTotal: number = this.data.length;
   shops: RetailShop[];
+  shop: RetailShop;
+  shopsSub: Subscription;
+  shopSub: Subscription;
   title: string;
   searchTerm: string = '';
   fromRow: number = 1;
   currentPage: number = 1;
   pageSize: number = 50;
   sortBy: string = 'id';
-  edit: boolean = false;
   product: Product;
 
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Ascending;
@@ -72,13 +75,23 @@ export class ProductComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this._titleService.setTitle('Product');
     this.title = 'Products';
-    if (this._userService.user) {
-      this.shops = this._shopService.shops;
-    }
-    this._shopService.shops$.subscribe((data) => {
+
+    this.shop = this._shopService.shop;
+    this.shops = this._shopService.shops;
+
+    this.shopsSub = this._shopService.shops$.subscribe((data: RetailShop[]) => {
       this.shops = data;
     });
+    this.shopSub = this._shopService.shop$.subscribe((data: RetailShop) => {
+      this.shop = data;
+      this.filter();
+    });
 
+  }
+
+  ngOnDestroy(){
+    this.shopsSub.unsubscribe();
+    this.shopSub.unsubscribe();
   }
 
   sort(name: string, sortOrder: TdDataTableSortingOrder): void {
@@ -110,14 +123,22 @@ export class ProductComponent implements AfterViewInit {
     if (this.sortOrder.toString() == 'DESC') {
       sortBy = '-'.concat(sortBy);
     }
+
+    let ids = this.shops.map(item=>item.id);
+    if (this.shop && this.shop.id) {
+      ids = [this.shop.id];
+    }
+
     this._itemService.query({
-      __retail_shop_id__in: this.shops.map(item => item.id), __include: ['brand', 'distributor', 'retail_shop'],
+      __retail_shop_id__in: ids, __include: ['brand', 'distributor', 'retail_shop'],
       __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm
     })
       .subscribe((resp: {data: Product[], total: number}) => {
         this.data = resp.data;
         this.filteredData = resp.data;
         this.filteredTotal = resp.total;
+        this._loadingService.resolve('products');
+      }, ()=>{
         this._loadingService.resolve('products');
       });
   }

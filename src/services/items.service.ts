@@ -10,7 +10,7 @@ export interface Product {
   available_stock: number,
   available_stocks: Stock[],
   similar_products?: number[],
-  description?: {},
+  description?: {key:string, value: string}[],
   sub_description: string;
   is_disabled: boolean;
   id: number,

@@ -10,8 +10,9 @@ import {
   Product
 } from "../../../../services/items.service";
 import {Observable} from "rxjs";
-import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
+import {TdLoadingService, LoadingType, LoadingMode, TdDialogService} from "@covalent/core";
 import {MdDialogRef} from "@angular/material";
+import {FormControl} from "@angular/forms";
 
 
 @Component({
@@ -39,6 +40,7 @@ export class ProductFormComponent implements OnInit {
               public dialogRef: MdDialogRef<ProductFormComponent>,
               private _shopService: RetailShopsService,
               private _tagService: TagsService,
+              private _dialogService: TdDialogService,
               private _loadingService: TdLoadingService) {
     this._loadingService.create({
       name: 'product-form',
@@ -56,6 +58,7 @@ export class ProductFormComponent implements OnInit {
 
   ngOnInit() {
     this.productCopy = Object.assign({}, this.product);
+    console.log(this.product.description);
     this.tags = this.product.tags.map((value) => {
       return {display: value.name, value: value.id}
     });
@@ -138,6 +141,8 @@ export class ProductFormComponent implements OnInit {
       this._itemService.update(this.product.id, this.product).subscribe(() => {
         this.dialogRef.close(this.product);
         this._loadingService.resolve('product-form');
+      }, ()=>{
+        this._loadingService.resolve('product-form');
       })
     }
     else {
@@ -191,5 +196,19 @@ export class ProductFormComponent implements OnInit {
   close():void {
     this.dialogRef.close();
   }
+
+  validateDescription(term?: FormControl): boolean {
+    console.log(term);
+    return term.value.indexOf(':')>-1;
+  }
+  addDescription(term?): void {
+    console.log(term);
+  }
+  removeDescription(item: {}, index: number): void {
+    console.log(item, index);
+    this.product.description.splice(index, 1)
+  }
+
+
 
 }

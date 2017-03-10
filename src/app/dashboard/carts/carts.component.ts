@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Order} from "../../../services/orders.service";
 import {stringify} from "@angular/forms/src/facade/lang";
+import {RetailShop, RetailShopsService} from "../../../services/shop.service";
 
 
 @Component({
@@ -19,9 +20,9 @@ export class CartComponent implements OnInit {
   shop_id: number;
 
   constructor(private _cartService: CartService,
-              private _activatedRoute: ActivatedRoute,
               private _indexDB: IndexDBServiceService,
               private _route: Router,
+              private _shopService: RetailShopsService,
               private _loadingService: TdLoadingService) {
     this._loadingService.create({
       name: 'cart',
@@ -33,22 +34,22 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._activatedRoute.params.subscribe((params: {id: string}) => {
-      console.log(params);
-      if(params.id){
-        this.shop_id = parseInt(params.id);
-        this._indexDB.carts.where({retail_shop_id: this.shop_id}).toArray().then((data)=>{
-          this.carts = data;
-        })
-      }
-      else {
-        this._indexDB.carts.toArray().then((data)=>{
-          this.carts = data;
-        })
-      }
+    this.setShop();
+    this._shopService.shop$.subscribe(() => {
+      this.setShop();
     });
   }
 
+  setShop():void{
+    this.shop_id = this._shopService.shop.id;
+    this.getCarts([this.shop_id]);
+  }
+
+  getCarts(ids: number[]):void {
+    this._indexDB.carts.where({retail_shop_id: ids}).toArray().then((data)=>{
+      this.carts = data;
+    })
+  }
 
   openCart(id: number): void {
     this._loadingService.register('cart');

@@ -20,7 +20,7 @@ export interface Customer {
 
 export interface Address {
   id: number;
-  name: string;
+  name?: string;
   locality?: Locality;
 }
 

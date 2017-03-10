@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {
   TdDataTableSortingOrder, TdLoadingService, LoadingType, LoadingMode,
   TdDialogService,
@@ -7,7 +7,7 @@ import { IPageChangeEvent } from '@covalent/core';
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {RESTService} from "@covalent/http";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 
 @Component({
@@ -15,7 +15,7 @@ import {Observable} from "rxjs";
   templateUrl: './base-table.component.html',
   styleUrls: ['./base-table.component.scss']
 })
-export class BaseTableComponent implements OnInit {
+export class BaseTableComponent implements OnInit, OnDestroy {
 
   @Input()
   columns: TdDataTableColumn[];
@@ -42,6 +42,9 @@ export class BaseTableComponent implements OnInit {
   addRow:()=> Observable<any>;
 
   shops: RetailShop[] = [];
+  shop: RetailShop;
+  shopsSub: Subscription;
+  shopSub: Subscription;
   currentPage: number = 1;
   pageSize: number = 50;
   sortBy: string = 'id';
@@ -59,18 +62,23 @@ export class BaseTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setShop();
-    this._shopService.shops$.subscribe(()=>{
-      this.setShop();
+    this.shop = this._shopService.shop;
+    this.shops = this._shopService.shops;
+
+    this.shopsSub = this._shopService.shops$.subscribe((data: RetailShop[]) => {
+      this.shops = data;
+    });
+    this.shopSub = this._shopService.shop$.subscribe((data: RetailShop) => {
+      this.shop = data;
+      this.getData();
     });
 
   }
-
-  setShop(): void {
-    if (this._shopService.shops && this._shopService.shops.length) {
-      this.shops = this._shopService.shops;
-    }
+  ngOnDestroy(){
+    this.shopsSub.unsubscribe();
+    this.shopSub.unsubscribe();
   }
+
 
   sort(name: string, sortOrder: TdDataTableSortingOrder): void {
     this.sortBy = name;
@@ -100,7 +108,11 @@ export class BaseTableComponent implements OnInit {
     if (this.sortOrder.toString() == 'DESC') {
       sortBy = '-'.concat(sortBy);
     }
-    this.filter().query({__retail_shop_id__in: this.shops.map(item=>item.id), __include: ['retail_shop'],
+    let ids = this.shops.map(item=>item.id);
+    if (this.shop && this.shop.id) {
+      ids = [this.shop.id];
+    }
+    this.filter().query({__retail_shop_id__in: ids, __include: ['retail_shop'],
       __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm})
       .subscribe((resp: {data: any[], total: number})=>{
         this.filteredData = resp.data;

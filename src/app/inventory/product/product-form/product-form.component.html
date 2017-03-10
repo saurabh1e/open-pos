@@ -76,7 +76,7 @@
             </template>
           </tag-input-dropdown>
         </tag-input>
-        <tag-input [(ngModel)]="taxes" name="taxes" flex="100" placeholder="Enter taxes..."
+        <tag-input [(ngModel)]="taxes" name="taxes" flex="100" placeholder="Enter Taxes..."
                    [secondaryPlaceholder]="'Enter Taxes...'" [onlyFromAutocomplete]="true" (onAdd)="addTaxes()"
                    (onRemove)="addTaxes()">
           <tag-input-dropdown [autocompleteObservable]='getTaxes'  [appendToBody]="false">
@@ -98,7 +98,16 @@
         </tag-input>
       </div>
       <div layout="row" layout-margin>
-
+        <tag-input [(ngModel)]="product.description" name="description" flex="100" placehoder="Enter Description.."
+                   [secondaryPlaceholder]="'Enter Description...'" (onAdd)="addDescription()"
+                   [validators]="[validateDescription]"
+                   [identifyBy]="'key'"
+                   [displayBy]="'value'">
+            <template let-item="item" let-index="index">
+              {{ item.key }}:{{ item.value }}
+              <delete-icon (click)="removeDescription(item, index)"></delete-icon>
+            </template>
+        </tag-input>
       </div>
 
 
@@ -123,3 +132,4 @@
 
   </div>
 </div>
+
