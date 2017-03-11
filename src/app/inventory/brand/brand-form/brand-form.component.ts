@@ -39,15 +39,20 @@ export class BrandFormComponent implements OnInit {
 
   saveState(): void {
     this._loadingService.register('brand-form');
+    this.brand.retail_shop_id = this.brand.retail_shop.id;
     if (this.brand.id) {
       this._brandService.update(this.brand.id, this.brand).subscribe(() => {
         this.dialogRef.close(this.brand);
+        this._loadingService.resolve('brand-form');
+      }, ()=>{
         this._loadingService.resolve('brand-form');
       })
     }
     else {
       this._brandService.create(this.brand).subscribe(() => {
         this.dialogRef.close(this.brand);
+        this._loadingService.resolve('brand-form');
+      }, ()=>{
         this._loadingService.resolve('brand-form');
       })
     }

@@ -21,7 +21,6 @@ export class ProductComponent implements AfterViewInit {
   include: string[] = ['brand', 'distributor'];
 
   columns: TdDataTableColumn[] = [
-    {name: 'id', label: 'ID', sortable: true},
     {name: 'name', label: 'Product Name', sortable: true, editable: true},
     {name: 'brand.name', label: 'Brand', sortable: false, nested: true},
     {name: 'distributor.name', label: 'Distributor', sortable: false, nested: true},

@@ -24,7 +24,7 @@
         <md-card-content class="md-content filter-card-height">
           <div layout="row" layout-wrap="">
             <template let-tag ngFor [ngForOf]="tags">
-              <md-checkbox class="" flex="20" layout-padding=""
+              <md-checkbox flex="20" layout-padding=""
                            ([checked])="checkTag(tag)" (change)="toggleTag(tag)">
                 {{tag.name}}
               </md-checkbox>
@@ -64,7 +64,7 @@
         <md-card-content class="md-content filter-card-height">
           <div layout="row" layout-wrap="">
             <template let-distributor ngFor [ngForOf]="distributors">
-              <md-checkbox class="" flex="20" layout-padding ([checked])="checkDistributor(distributor.id)"
+              <md-checkbox flex="20" layout-padding ([checked])="checkDistributor(distributor.id)"
                            (change)="toggleDistributor(distributor.id)">
                 {{distributor.name}}
               </md-checkbox>
@@ -98,7 +98,7 @@
       </md-card>
     </div>
     <span flex></span>
-    <div flex="30" class="">
+    <div flex="30">
       <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
                      [alwaysVisible]="true"
                      (search)="searchInputTerm = $event" (clear)="searchInputTerm = ''">
@@ -115,8 +115,8 @@
     <span flex></span>
     <button md-button class="font-bold-500" flex="10"
             layout-margin="" (click)="checkOut()">
-        <span *ngIf="cart" class="tc-accent md-title font-bold-500">
-        {{cart.total - cart.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
+        <span  class="tc-accent md-title font-bold-500">
+        {{cart?.total - cart?.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
         </span>
     </button>
     <button md-raised-button="" color="accent" class="font-bold-500" flex="10"
@@ -128,29 +128,30 @@
 
 
   <div layout="row" layout-wrap="" class="push-sm" flex>
-    <div layout="row" layout-wrap="" flex="" class="" layout-align="start">
+    <div layout="row" layout-wrap="" flex="" layout-align="start">
       <!--<div class="md-content md-shadow-bottom-z-1" flex="100" md-scroll-y="" layout-fill="" layout="row" layout-wrap=""-->
       <!--layout-align="center center">-->
       <template let-product ngFor let-last
                 [ngForOf]="products |  productDistributor: selectedDistributors | productSearch: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |
-                    productSalt: selectedSalts | paginate : {itemsPerPage: 63, currentPage: p}">
+                    productSalt: selectedSalts | paginate : {itemsPerPage: 48, currentPage: p}">
 
-        <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="10"
-             layout="row" layout-wrap="" layout-align="center start">
-          <div flex="100" layout="row" class="">
-            <span flex></span>
+        <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="15"
+             layout="row" layout-wrap="" layout-align="center start"
+             [ngClass]="{'out-of-stock': product.available_stock<1}">
+          <div flex="100" layout="row">
+            <div flex="90" layout="column" class="pad-xs product-click text-center"
+                 (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">
+              <span class="tc-primary md-caption font-bold-500" [md-tooltip]="product.name">
+              {{product.name | truncate: 30}}
+              </span>
+            </div>
             <span (click)="showInfo(product)" class="info-click pad-top-xs pad-right-xs"><md-icon
               class="md-18 tc-accent">info_outline</md-icon>
-              </span>
+            </span>
           </div>
-          <div layout="column" class="pad-left-sm pad-right-sm pad-bottom-sm product-click text-center"
-               (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">
-              <span class="tc-primary md-body-1 font-bold-500">
-              {{product.name}}
-              </span>
-            <span class="md-caption tc-grey-600" *ngIf="product.brand">{{product.brand.name}}</span>
-          </div>
+          <span class="md-caption tc-grey-600 pad-bottom-xs">({{ product.available_stock<1?'Out of Stock':product.brand?.name}})</span>
+
         </div>
       </template>
 
@@ -158,10 +159,10 @@
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
     </div>
-    <div layout="column" class="" flex="20" flex-gt-lg-auto="">
+    <div layout="column" flex="20" flex-gt-lg-auto="">
       <div class="md-content bgc-white-4 pad-xs" md-scroll-y="" flex-grow>
-        <md-list *ngIf="cart">
-          <template let-item ngFor let-last [ngForOf]="cart.items">
+        <md-list >
+          <template let-item ngFor let-last [ngForOf]="cart?.items">
             <div layout="row" layout-wrap="" class="pad-xs product-list">
               <span md-line flex="55" class="tc-grey-700 md-body-2">{{item.name}}</span>
               <span flex></span>
@@ -195,20 +196,20 @@
               </button>
 
             </div>
-            <!--<md-divider *ngIf="!!last" class=""></md-divider>-->
+            <!--<md-divider *ngIf="!!last"></md-divider>-->
           </template>
         </md-list>
       </div>
       <div class="bgc-white-4 md-content pad-sm tc-grey-700 md-caption font-bold-500" flex="35"
            md-scroll-y="" layout="row"
-           layout-wrap="" *ngIf="cart">
+           layout-wrap="" >
         <div flex="100" layout-wrap="" layout="row" class="font-bold-500">
 
           <span>Sub Total</span>
           <span flex></span>
-          <span>{{cart.sub_total | currency:'INR':true:'1.2-2'}}</span>
+          <span>{{cart?.sub_total | currency:'INR':true:'1.2-2'}}</span>
         </div>
-        <template let-entry ngFor [ngForOf]="cart.taxes | keys">
+        <template let-entry ngFor [ngForOf]="cart?.taxes | keys">
           <div flex="100" layout-wrap="" layout="row" *ngIf="entry.key!=='total'">
             <span>{{entry.key}}</span>
             <span flex></span>
@@ -219,13 +220,13 @@
         <div flex="100" layout-wrap="" layout="row">
           <span>Discount</span>
           <span flex></span>
-          <span>{{cart.auto_discount | currency:'INR':true:'1.2-2'}}</span>
+          <span>{{cart?.auto_discount | currency:'INR':true:'1.2-2'}}</span>
         </div>
-        <div flex="100" layout-wrap="" layout="row" class="font-bold-500" *ngIf="cart.discounts">
-          <label class="">Add. %</label>
+        <div flex="100" layout-wrap="" layout="row" class="font-bold-500" >
+          <label>Add. %</label>
           <span flex></span>
           <input md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value"
-                 [(ngModel)]="cart.discounts[0].value" class="text-right"
+                 [(ngModel)]="cart?.discounts[0].value" class="text-right"
                  (change)="updateOrderDiscount(cart.discounts[0].value)"/>
         </div>
 
@@ -233,7 +234,7 @@
           <md-divider class="pad-xs" flex="100"></md-divider>
           <span>Total</span>
           <span flex></span>
-          <span>{{cart.total | currency:'INR':true:'1.2-2'}}</span>
+          <span>{{cart?.total | currency:'INR':true:'1.2-2'}}</span>
         </div>
       </div>
 

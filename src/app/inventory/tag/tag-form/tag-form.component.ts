@@ -39,15 +39,20 @@ export class TagFormComponent implements OnInit {
 
   saveState(): void {
     this._loadingService.register('tag-form');
+    this.tag.retail_shop_id = this.tag.retail_shop.id;
     if (this.tag.id) {
       this._tagService.update(this.tag.id, this.tag).subscribe(() => {
         this.dialogRef.close(this.tag);
         this._loadingService.resolve('tag-form');
+      }, ()=>{
+        this._loadingService.resolve('tag-form');
       })
     }
     else {
-      this._tagService.create(this.tag).subscribe(() => {
-        this.dialogRef.close(this.tag);
+      this._tagService.create(this.tag).subscribe((data: {data: Tag[]}) => {
+        this.dialogRef.close(data.data[0]);
+        this._loadingService.resolve('tag-form');
+      }, ()=>{
         this._loadingService.resolve('tag-form');
       })
     }

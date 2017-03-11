@@ -20,7 +20,7 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   @Input()
   columns: TdDataTableColumn[];
 
-  filteredData: any[];
+  filteredData: any[] = [];
   filteredTotal: number;
 
   @Input()

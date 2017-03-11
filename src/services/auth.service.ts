@@ -46,7 +46,7 @@ export class AuthService {
       this._userService.user = data;
     }, (error)=>{
       if (error.type == 'error') {
-        this._indexDB.users.get(parseInt(id)).then((data)=>{
+        this._indexDB.users.get(id).then((data)=>{
           this._userService.user = data;
         })
       }

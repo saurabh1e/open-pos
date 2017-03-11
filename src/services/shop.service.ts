@@ -21,9 +21,9 @@ import {Address} from "./customer.service";
 
 
 export interface RetailShop {
-  id: number;
+  id: string;
   name: string;
-  retail_brand_id?: number;
+  retail_brand_id?: string;
   products?: Product[];
   registration_details?: RegistrationDetail[];
   total_sales: {
@@ -48,7 +48,7 @@ export interface RegistrationDetail {
 
 export interface RetailBrand {
   name: string;
-  id: number;
+  id: string;
 }
 
 @Injectable()
@@ -108,7 +108,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
   }
 
 
-  syncData(retailShopId: number): void {
+  syncData(retailShopId: string): void {
     let params = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1};
     let product_params = params;
     product_params['__include'] = ['similar_products', 'available_stocks', 'brand', 'distributor'];

@@ -1,11 +1,11 @@
 
 <div layout="column">
   <div layout="row" class="bgc-white-4" layout-wrap="">
-    <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Brand Form</md-card-title>
+    <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Salt Form</md-card-title>
     <form flex="100" class="" #saltForm="ngForm">
       <div layout="row" layout-margin>
         <md-input-container flex>
-          <input md-input placeholder="Product Name" minlength="1" maxlength="55" required [value]="salt.name || ''"
+          <input md-input placeholder="Salt Name" minlength="1" maxlength="55" required [value]="salt.name || ''"
                  [(ngModel)]="salt.name" name="name">
           <md-hint align="end">{{salt.name?salt.name.length:0}} / 55</md-hint>
         </md-input-container>
@@ -14,7 +14,7 @@
 
       <div layout="row" layout-margin>
         <div flex *ngIf="!salt.retail_shop_id" layout-align="end end">
-          <md-select md-input placeholder="Select a Shop" [(ngModel)]="salt.retail_shop" name="shop">
+          <md-select md-input placeholder="Select a Shop" [(ngModel)]="salt.retail_shop" name="shop" required>
             <md-option *ngFor="let shop of shops" [value]="shop">
               {{shop.name}}
             </md-option>

@@ -4,6 +4,7 @@ import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Product, Tax, Stock} from "./items.service";
 import {Customer, Address} from "./customer.service";
+import {stringify} from "@angular/core/src/facade/lang";
 
 function round(value, precision) {
   let multiplier = Math.pow(10, precision || 0);
@@ -32,7 +33,7 @@ export class CartService {
     return this._cart$.asObservable();
   }
 
-  getProduct(items: Item[], productId: number, stockId: number): Item{
+  getProduct(items: Item[], productId: string, stockId: string): Item{
     return items.find((value)=> {
       if (value.product_id == productId && value.stock_id == stockId) {
         return true
@@ -94,38 +95,34 @@ export class CartService {
     return item
   }
 
-  async setCart(data: Order, localId: number): Promise<boolean>{
+  async setCart(data: Order, localId: string): Promise<boolean>{
     return await this._indexDB.carts.update(localId, data).then(()=>{
       return true
     })
   }
-  async getCart(localId: number): Promise<Order> {
+  async getCart(localId: string): Promise<Order> {
     return await this._indexDB.carts.get(localId).then((cart)=>{
       return cart;
     })
   }
 
-  async newCart(id: number): Promise<number>{
-    return await this._indexDB.carts.orderBy('local_id').last().then((cart)=>{
-      let localId = 1;
-      if (cart)
-         localId = cart.local_id+1;
-      let discount = <Discount>{value:0, type:'PERCENTAGE'};
-      let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date() ,items: <Item[]>[], total:0,
-        discounts:[discount], amount_paid:0, customer: <Customer>{}, address: <Address>{}};
-      return  this._indexDB.carts.add(order).then(()=>{
+  async newCart(id: string): Promise<string>{
+    let localId = stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
+    let discount = <Discount>{value:0, type:'PERCENTAGE'};
+    let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date(),
+      discounts:[discount], customer: <Customer>{}, address: <Address>{}};
+    return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;
       });
-    });
   }
 
-  async deleteCart(cartId: number): Promise<boolean>{
+  async deleteCart(cartId: string): Promise<boolean>{
     return this._indexDB.carts.delete(cartId).then(()=>{
       return true
     })
   }
 
-  async addProduct(cartId: number, product: Product, stock: Stock, qty?: number): Promise<Order> {
+  async addProduct(cartId: string, product: Product, stock: Stock, qty?: number): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, product.id, stock.id);
       let units_available = stock.units_purchased-stock.units_sold;
@@ -139,7 +136,7 @@ export class CartService {
     })
   }
 
-  async updateQuantity(cartId: number, productId: number, stockId: number, qty?: number): Promise<Order>{
+  async updateQuantity(cartId: string, productId: string, stockId: string, qty?: number): Promise<Order>{
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       item.quantity = qty&&qty<=item.max_units?qty:item.quantity<item.max_units?item.quantity+1:item.max_units;
@@ -147,21 +144,21 @@ export class CartService {
     })
   }
 
-  async removeProduct(cartId: number, productId: number, stockId: number): Promise<Order> {
+  async removeProduct(cartId: string, productId: string, stockId: string): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       cart.items.splice(cart.items.indexOf(item), 1);
       return this.calcTotal(cart);
     })
   }
-  async updateDiscount(cartId: number, productId: number, stockId: number, discount: number): Promise<Order> {
+  async updateDiscount(cartId: string, productId: string, stockId: string, discount: number): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       item.discount = discount;
       return this.calcTotal(cart);
     })
   }
-  async updateOrderDiscount(cartId: number, discount: number): Promise<Order> {
+  async updateOrderDiscount(cartId: string, discount: number): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       cart.discounts[0].value = discount;
       return this.calcTotal(cart);

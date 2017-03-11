@@ -9,7 +9,7 @@ import {IndexDBServiceService} from "./indexdb.service";
 
 export interface IUser {
 
-  id: number;
+  id: string;
   name: string;
   email: string;
   mobile_number: string;

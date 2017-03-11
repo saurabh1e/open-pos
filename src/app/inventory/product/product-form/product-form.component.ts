@@ -23,11 +23,11 @@ import {FormControl} from "@angular/forms";
 export class ProductFormComponent implements OnInit {
 
   product: Product;
-  brands: {display: string, value: number}[] = [];
-  taxes: {display: string, value: number}[] = [];
-  salts: {display: string, value: number}[] = [];
-  tags: {display: string, value: number}[] = [];
-  distributors: {display: string, value: number}[] = [];
+  brands: {display: string, value: string}[] = [];
+  taxes: {display: string, value: string}[] = [];
+  salts: {display: string, value: string}[] = [];
+  tags: {display: string, value: string}[] = [];
+  distributors: {display: string, value: string}[] = [];
   shops: RetailShop[];
   validators = [];
   productCopy: Product = <Product>{};
@@ -58,24 +58,27 @@ export class ProductFormComponent implements OnInit {
 
   ngOnInit() {
     this.productCopy = Object.assign({}, this.product);
-    console.log(this.product.description);
-    this.tags = this.product.tags.map((value) => {
-      return {display: value.name, value: value.id}
-    });
+
     this.resetProduct();
     this.validators = [this.validateDescription];
   }
 
   resetProduct(): void {
-    this.salts = this.product.salts.map((value) => {
-      return {display: value.name, value: value.id}
-    });
-    this.taxes = this.product.taxes.map((value) => {
-      return {display: value.name, value: value.id}
-    });
-    this.tags = this.product.tags.map((value) => {
-      return {display: value.name, value: value.id}
-    });
+    if (this.product.salts) {
+      this.salts = this.product.salts.map((value) => {
+        return {display: value.name, value: value.id}
+      });
+    }
+    if (this.product.taxes) {
+      this.taxes = this.product.taxes.map((value) => {
+        return {display: value.name, value: value.id}
+      });
+    }
+    if (this.product.tags) {
+      this.tags = this.product.tags.map((value) => {
+        return {display: value.name, value: value.id}
+      });
+    }
     this.distributors = this.product.distributor && this.product.distributor.id ?
       [{display: this.product.distributor.name, value: this.product.distributor.id}] : [];
     this.brands = this.product.brand && this.product.brand.id ?

@@ -77,7 +77,7 @@ export class ProductSaltPipe implements PipeTransform {
 })
 export class ProductBrandPipe implements PipeTransform {
 
-  transform(value: Product[], args?: number[]): any {
+  transform(value: Product[], args?: string[]): any {
 
     if (args && value && args.length) {
       return value.filter((val) => {
@@ -99,7 +99,7 @@ export class ProductBrandPipe implements PipeTransform {
 })
 export class ProductDistributorPipe implements PipeTransform {
 
-  transform(value: Product[], args?: number[]): any {
+  transform(value: Product[], args?: string[]): any {
     if (args && value && args.length) {
       return value.filter((val) => {
         if (args.indexOf(val.distributor_id) > -1){
@@ -120,5 +120,17 @@ export class KeysPipe implements PipeTransform {
       keys.push({key: key, value: value[key]});
     }
     return keys;
+  }
+}
+
+@Pipe({
+  name: 'truncate'
+})
+
+export class TruncatePipe implements PipeTransform{
+  transform(value: string, arg1: number) : string {
+    let limit = arg1 || 10;
+    let trail = '...';
+    return value.length > limit ? value.substring(0, limit) + trail : value;
   }
 }

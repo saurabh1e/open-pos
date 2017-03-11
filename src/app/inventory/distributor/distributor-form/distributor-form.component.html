@@ -1,11 +1,11 @@
 
 <div layout="column">
   <div layout="row" class="bgc-white-4" layout-wrap="">
-    <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Brand Form</md-card-title>
+    <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Distributor Form</md-card-title>
     <form flex="100" class="" #distributorForm="ngForm">
       <div layout="row" layout-margin>
         <md-input-container flex>
-          <input md-input placeholder="Product Name" minlength="1" maxlength="55" required [value]="distributor.name || ''"
+          <input md-input placeholder="Distributor Name" minlength="1" maxlength="55" required [value]="distributor.name || ''"
                  [(ngModel)]="distributor.name" name="name">
           <md-hint align="end">{{distributor.name?distributor.name.length:0}} / 55</md-hint>
         </md-input-container>

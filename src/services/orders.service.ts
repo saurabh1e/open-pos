@@ -7,16 +7,16 @@ import {MOCK_API} from "../config/api.config";
 
 export interface Order {
 
-  id: number;
-  sub_total: number;
+  id?: string;
+  sub_total?: number;
   total: number;
-  auto_discount: number;
-  local_id: number;
-  customer_id: number;
-  amount_paid: number
-  address_id: number;
-  retail_shop_id: number;
-  current_status_id: number;
+  auto_discount?: number;
+  local_id: string;
+  customer_id?: string;
+  amount_paid?: number
+  address_id?: string;
+  retail_shop_id?: string;
+  current_status_id?: string;
   created_on: Date;
   additional_discount: number;
   is_void: boolean;
@@ -35,12 +35,12 @@ export interface Order {
 export interface Item {
 
   name: string;
-  product_id: number;
+  product_id: string;
   unit_price: number;
   quantity: number;
   discount: number;
-  order_id: number;
-  stock_id: number;
+  order_id: string;
+  stock_id: string;
   discounted_total_price: number;
   discounted_unit_price: number;
   children: Item[];
@@ -56,8 +56,8 @@ export interface ItemTax {
 
   tax_value: number;
   tax_amount: number
-  order_item_id: number;
-  tax_id: number;
+  order_item_id: string;
+  tax_id: string;
   tax: Tax
 }
 

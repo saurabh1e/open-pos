@@ -39,15 +39,20 @@ export class SaltFormComponent implements OnInit {
 
   saveState(): void {
     this._loadingService.register('salt-form');
+    this.salt.retail_shop_id = this.salt.retail_shop.id;
     if (this.salt.id) {
       this._saltService.update(this.salt.id, this.salt).subscribe(() => {
         this.dialogRef.close(this.salt);
+        this._loadingService.resolve('salt-form');
+      }, ()=>{
         this._loadingService.resolve('salt-form');
       })
     }
     else {
       this._saltService.create(this.salt).subscribe(() => {
         this.dialogRef.close(this.salt);
+        this._loadingService.resolve('salt-form');
+      }, ()=>{
         this._loadingService.resolve('salt-form');
       })
     }

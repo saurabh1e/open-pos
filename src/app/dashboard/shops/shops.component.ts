@@ -77,7 +77,7 @@ export class ShopComponent implements AfterViewInit {
     });
 
   }
-  syncData(data: number): void {
+  syncData(data: string): void {
     this._loadingService.register('shops');
     this._shopService.syncData(data);
     this._indexDBService.db$.subscribe(() => {

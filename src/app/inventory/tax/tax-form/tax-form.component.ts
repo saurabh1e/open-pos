@@ -39,15 +39,20 @@ export class TaxFormComponent implements OnInit {
 
   saveState(): void {
     this._loadingService.register('tax-form');
+    this.tax.retail_shop_id = this.tax.retail_shop.id;
     if (this.tax.id) {
       this._taxService.update(this.tax.id, this.tax).subscribe(() => {
         this.dialogRef.close(this.tax);
+        this._loadingService.resolve('tax-form');
+      }, ()=>{
         this._loadingService.resolve('tax-form');
       })
     }
     else {
       this._taxService.create(this.tax).subscribe(() => {
         this.dialogRef.close(this.tax);
+        this._loadingService.resolve('tax-form');
+      }, ()=>{
         this._loadingService.resolve('tax-form');
       })
     }

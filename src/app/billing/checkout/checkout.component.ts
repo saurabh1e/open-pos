@@ -7,7 +7,6 @@ import {RetailShop} from "../../../services/shop.service";
 import {Observable} from "rxjs";
 import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
 import {CartService} from "../../../services/cart.service";
-import {subscribeOn} from "rxjs/operator/subscribeOn";
 
 
 @Component({

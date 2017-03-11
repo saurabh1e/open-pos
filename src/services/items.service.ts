@@ -9,22 +9,25 @@ export interface Product {
 
   available_stock: number,
   available_stocks: Stock[],
-  similar_products?: number[],
+  similar_products?: string[],
   description?: {key:string, value: string}[],
   sub_description: string;
   is_disabled: boolean;
-  id: number,
+  id: string,
   min_stock: number,
   mrp: number,
+  last_selling_amount?: number;
+  stock_required?: number;
+  last_purchase_amount?: number
   auto_discount: number;
   name: string,
   tags?: Tag[],
   salts?: Salt[],
   taxes?: Tax[]
-  brand_id: number;
+  brand_id: string;
   brand_name: string;
-  distributor_id: number;
-  retail_shop_id: number;
+  distributor_id: string;
+  retail_shop_id: string;
   brand: Brand;
   distributor: Distributor;
   retail_shop: RetailShop;
@@ -32,54 +35,63 @@ export interface Product {
 
 export interface Stock {
 
-  id: number;
+  id: string;
   expiry_date: Date;
   purchase_amount: number;
   purchase_date: Date;
   selling_amount: number;
   units_purchased: number;
   units_sold: number,
+  product_id: string;
   product?: Product;
-  distributor_bill: DistributorBill;
+  distributor_bill?: DistributorBill;
 }
 
 export interface DistributorBill {
+  id: string;
   reference_number: string
   distributor: Distributor;
   purchase_date: Date;
+  distributor_id:string;
+  purchased_items?: Stock[];
 }
 
 export interface Tag {
-  id: number;
+  id: string;
   name: string;
-  retail_shop_id?: number;
+  retail_shop_id?: string;
+  retail_shop?: RetailShop;
 }
 
 export interface Salt {
-  id: number;
+  id: string;
   name: string;
-  retail_shop_id?: number;
+  retail_shop_id?: string;
+  retail_shop?: RetailShop;
 }
 
 export interface Tax {
-  id: number;
+  id: string;
   name: string;
   is_disabled?: boolean;
-  retail_shop_id?: number;
+  retail_shop_id?: string;
   value?: number;
+  retail_shop?: RetailShop;
 }
 
 
 export interface Distributor {
-  id: number;
+  id: string;
   name: string
-  retail_shop_id?: number;
+  retail_shop_id?: string;
+  retail_shop?: RetailShop;
 }
 
 export interface Brand {
-  id: number;
+  id: string;
   name: string
-  retail_shop_id?: number;
+  retail_shop_id?: string;
+  retail_shop?: RetailShop;
 }
 
 
@@ -448,6 +460,19 @@ export class StocksService extends RESTService<Stock> {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/stock',
+    });
+
+  }
+
+}
+
+@Injectable()
+export class DistributorBillsService extends RESTService<DistributorBill> {
+
+  constructor(private _http: HttpInterceptorService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/distributor_bill',
     });
 
   }

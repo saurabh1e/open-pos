@@ -17,7 +17,7 @@ import {RetailShop, RetailShopsService} from "../../../services/shop.service";
 export class CartComponent implements OnInit {
 
   carts: Order[];
-  shop_id: number;
+  shop_id: string;
 
   constructor(private _cartService: CartService,
               private _indexDB: IndexDBServiceService,
@@ -42,16 +42,16 @@ export class CartComponent implements OnInit {
 
   setShop():void{
     this.shop_id = this._shopService.shop.id;
-    this.getCarts([this.shop_id]);
+    this.getCarts(this.shop_id);
   }
 
-  getCarts(ids: number[]):void {
-    this._indexDB.carts.where({retail_shop_id: ids}).toArray().then((data)=>{
+  getCarts(id: string):void {
+    this._indexDB.carts.where({retail_shop_id: id}).toArray().then((data)=>{
       this.carts = data;
     })
   }
 
-  openCart(id: number): void {
+  openCart(id: string): void {
     this._loadingService.register('cart');
     this._indexDB.carts.get(id).then((cart)=>{
       this.routeCart(cart.local_id);
@@ -67,13 +67,21 @@ export class CartComponent implements OnInit {
 
   newCart(): void {
     this._loadingService.register('cart');
+    if (!this.shop_id) {
+
+      this._route.navigate(['dashboard/shops']).then(()=>{
+        this._loadingService.resolve('cart');
+      });
+      return
+    }
+
     this._cartService.newCart(this.shop_id).then((cartId)=>{
       this.routeCart(cartId);
     });
   }
 
-  routeCart(cartId: number): void {
-    this._route.navigate(['billing/'+stringify(cartId)]).then(()=>{
+  routeCart(cartId: string): void {
+    this._route.navigate(['billing/'+cartId]).then(()=>{
     this._loadingService.resolve('cart');
 
     })

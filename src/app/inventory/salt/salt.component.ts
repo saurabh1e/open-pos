@@ -16,7 +16,6 @@ import {Observable} from "rxjs";
 export class SaltComponent implements AfterViewInit {
 
   columns: TdDataTableColumn[] = [
-    {name: 'id', label: 'id', sortable: true},
     {name: 'name', label: 'Name', sortable: true},
     {name: 'retail_shop.name', 'label': 'Shop', nested: true}
   ];

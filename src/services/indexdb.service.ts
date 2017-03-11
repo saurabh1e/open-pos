@@ -16,17 +16,17 @@ export interface Status {
 
 @Injectable()
 export class IndexDBServiceService extends Dexie {
-  products: Dexie.Table<Product, number>;
-  distributors: Dexie.Table<Distributor, number>;
-  brands: Dexie.Table<Brand, number>;
-  tags: Dexie.Table<Tag, number>;
-  salts: Dexie.Table<Salt, number>;
-  taxes: Dexie.Table<Tax, number>;
-  shops: Dexie.Table<RetailShop, number>;
-  orders: Dexie.Table<Order, number>;
-  localities: Dexie.Table<Locality, number>;
-  carts: Dexie.Table<Order, number>;
-  users: Dexie.Table<IUser, number>;
+  products: Dexie.Table<Product, string>;
+  distributors: Dexie.Table<Distributor, string>;
+  brands: Dexie.Table<Brand, string>;
+  tags: Dexie.Table<Tag, string>;
+  salts: Dexie.Table<Salt, string>;
+  taxes: Dexie.Table<Tax, string>;
+  shops: Dexie.Table<RetailShop, string>;
+  orders: Dexie.Table<Order, string>;
+  localities: Dexie.Table<Locality, string>;
+  carts: Dexie.Table<Order, string>;
+  users: Dexie.Table<IUser, string>;
 
   _db$: Subject<Status> = <Subject<Status>> new Subject;
 
@@ -42,7 +42,7 @@ export class IndexDBServiceService extends Dexie {
         taxes: "++id,name,retail_shop_id",
         shops: "++id, name",
         orders: "++id",
-        carts: "++local_id,id,retail_shop_id",
+        carts: "++local_id,retail_shop_id",
         localities: "++id, name",
         users: "++id, mobile_number, email"
       });

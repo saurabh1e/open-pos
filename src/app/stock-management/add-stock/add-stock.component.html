@@ -9,7 +9,7 @@
             <template ngFor [ngForOf]="shops" let-item >
               <md-card class="md-shadow-bottom-z-2" flex>
                 <md-card-content layout="column" layout-align="center center">
-                  <md-icon class="md-48" color="primary">{{item.name}}</md-icon>
+                  <md-icon class="md-48" color="primary">{{item.name| truncate:1}}</md-icon>
                 </md-card-content>
                 <md-toolbar layout="row" layout-align="center center" class="bgc-orange-50"
                             (click)="setShop(item);step1.close()" style="cursor: pointer">
@@ -21,6 +21,9 @@
               </md-card>
             </template>
           </div>
+        </template>
+        <template td-step-summary="" class="tc-grey-500">
+          Shop Selected: {{shop.name}}
         </template>
       </td-step>
       <td-step #step2  [state]="stateStep2" [disabled]="disabled" [active]="state===2">
@@ -53,11 +56,14 @@
             </md-card>
           </div>
         </template>
+        <template td-step-summary="">
+          Entry Mode Selected: {{entryType}}
+        </template>
       </td-step>
-      <td-step #step3 label="Complete State" sublabel="Toggle between active and inactive while in complete state."
+      <td-step #step3 label="Add Stock"
                [state]="stateStep3" [disabled]="disabled" [active]="state===3">
 
-        <form layout="row" layout-wrap="" flex="100">
+        <form layout="row" layout-wrap="" flex="100" *ngIf="shop?.id && entryType =='distributor'">
 
           <div layout="row" layout-margin="" flex="100">
             <div layout-margin="" flex>
@@ -76,39 +82,57 @@
             </div>
             <div layout-margin="" flex>
               <md-input-container flex="100"  layout-margin>
-                <input md-input type="textarea" [placeholder]="'Enter Reference Number'">
+                <input md-input type="textarea" [placeholder]="'Enter Reference Number'" name="reference_number"
+                [(ngModel)]="bill.reference_number">
               </md-input-container>
             </div>
             <div layout-margin="" flex>
               <md-input-container  layout-margin flex="100">
-                <input md-input type="date" [placeholder]="'Bill Date'">
+                <input md-input type="date" [placeholder]="'Bill Date'" name="bill_date" [(ngModel)]="bill.purchase_date">
               </md-input-container>
             </div>
 
           </div>
 
-          <template ngFor [ngForOf]="products" let-item>
-            <div layout="row" layout-wrap="" flex="100">
+          <template ngFor [ngForOf]="stocks" let-item let-i="index">
+            <div layout="row" layout-wrap="" flex="100" >
               <md-input-container flex layout-margin>
-                <input md-input [disabled]="true" [readOnly]="true" [value]="item.name" />
+                <input md-input [disabled]="true" [readOnly]="true" [value]="item.product.name" />
               </md-input-container>
               <md-input-container flex layout-margin>
-                <input md-input  [placeholder]="'Enter Quantity'" type="number" min="0" />
+                <input md-input  placeholder="Enter Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
+                       [(ngModel)]="item.units_purchased" min="0" />
               </md-input-container>
               <md-input-container flex layout-margin>
-                <input md-input  [placeholder]="'Enter Purchase Amount'" type="number" min="0" />
+                <input md-input  placeholder="Enter Purchase Amount" type="number" [name]="'purchase_amount'+i"
+                       [(ngModel)]="item.purchase_amount" min="0" [value]="item.purchase_amount"/>
               </md-input-container>
               <md-input-container flex layout-margin>
-                <input md-input [placeholder]="'Enter Selling Amount'" type="number" min="0" />
+                <input md-input placeholder="Enter Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
+                       [(ngModel)]="item.selling_amount" [value]="item.selling_amount" />
               </md-input-container>
               <md-input-container flex layout-margin>
-                <input md-input [placeholder]="'Enter Expiry'" type="date"  />
+                <input md-input placeholder="Enter Expiry" type="date" [name]="'expiry'+i"
+                       [(ngModel)]="item.expiry_date" />
               </md-input-container>
             </div>
 
           </template>
-        </form>
+          <div layout="row" layout-margin="" layout-align="center center" flex="100" *ngIf="distributors.length">
+            <md-card-actions layout="row" layout-align="center center" flex class="push-top">
+              <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
+                      (click)="close()" class="pad-xs push-xs" color="accent">
+                <md-icon  class="md-24" >close</md-icon>
+              </button>
+              <span class="pad"></span>
+              <button md-icon-button="" md-fab="" md-raised-button=""
+                      (click)="saveBill()" class="pad-xs push-xs"  color="primary" md-tooltip="save"
+              ><md-icon class="md-24" >done</md-icon>
+              </button>
 
+            </md-card-actions>
+          </div>
+        </form>
       </td-step>
     </td-steps>
   </div>

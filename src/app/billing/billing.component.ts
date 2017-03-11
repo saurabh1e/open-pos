@@ -50,7 +50,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params: {id: string}) => {
       if (params.id) {
-        this._indexDb.carts.get(parseInt(params.id)).then((data) => {
+        this._indexDb.carts.get((params.id)).then((data) => {
           this.cart = data;
           this.setInitialData(this.cart.retail_shop_id);
         })
@@ -114,7 +114,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     return
   }
 
-  setInitialData(retail_shop_id: number): void {
+  setInitialData(retail_shop_id: string): void {
     this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
       this.distributors = data;
     });
@@ -209,12 +209,12 @@ export class BillingComponent implements AfterViewInit, OnInit {
       this.cart = cart;
     })
   }
-  updateProductQuantity(productId: number, stockId: number, qty?: number): void {
+  updateProductQuantity(productId: string, stockId: string, qty?: number): void {
     this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart)=>{
       this.cart = cart;
     })
   }
-  removeProduct(productId: number, stockId: number): void {
+  removeProduct(productId: string, stockId: string): void {
     this._cartService.removeProduct(this.cart.local_id, productId, stockId).then((cart)=>{
       this.cart = cart;
     })
@@ -240,7 +240,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
       }
     })
   }
-  discountItem(productId: number, stockId: number, discount?: number){
+  discountItem(productId: string, stockId: string, discount?: number){
     let _dialog = this._dialogService.open(ItemDiscountComponent, <MdDialogConfig>{height: '25%', width: '25%'});
     _dialog.componentInstance.discount = stringify(discount);
     _dialog.afterClosed().subscribe((data)=>{
@@ -254,7 +254,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
       this.cart = cart;
     })
   }
-  showSnackBar(orderId: number): void {
-    this._snackBarService.open('Order Placed Successfully ID#' + stringify(orderId), '', { duration: 3000 });
+  showSnackBar(orderId: string): void {
+    this._snackBarService.open('Order Placed Successfully ID#' + orderId, '', { duration: 3000 });
   }
 }

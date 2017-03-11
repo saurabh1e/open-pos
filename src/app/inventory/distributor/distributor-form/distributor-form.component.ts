@@ -40,15 +40,20 @@ export class DistributorFormComponent implements OnInit {
 
   saveState(): void {
     this._loadingService.register('distributor-form');
+    this.distributor.retail_shop_id = this.distributor.retail_shop.id;
     if (this.distributor.id) {
       this._distributorService.update(this.distributor.id, this.distributor).subscribe(() => {
         this.dialogRef.close(this.distributor);
+        this._loadingService.resolve('distributor-form');
+      }, ()=>{
         this._loadingService.resolve('distributor-form');
       })
     }
     else {
       this._distributorService.create(this.distributor).subscribe(() => {
         this.dialogRef.close(this.distributor);
+        this._loadingService.resolve('distributor-form');
+      }, ()=>{
         this._loadingService.resolve('distributor-form');
       })
     }

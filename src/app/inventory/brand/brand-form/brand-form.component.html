@@ -5,7 +5,7 @@
     <form flex="100" class="" #brandForm="ngForm">
       <div layout="row" layout-margin>
         <md-input-container flex>
-          <input md-input placeholder="Product Name" minlength="1" maxlength="55" required [value]="brand.name || ''"
+          <input md-input placeholder="Brand Name" minlength="1" maxlength="55" required [value]="brand.name || ''"
                  [(ngModel)]="brand.name" name="name">
           <md-hint align="end">{{brand.name?brand.name.length:0}} / 55</md-hint>
         </md-input-container>
