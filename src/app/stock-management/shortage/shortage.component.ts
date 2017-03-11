@@ -13,7 +13,6 @@ import {RESTService} from "@covalent/http";
 export class ShortageComponent implements OnInit {
 
   columns: TdDataTableColumn[] = [
-    { name: 'id', label: 'ID', sortable: true },
     { name: 'name', label: 'Product Name', sortable: true, nested: true },
     { name: 'distributor.name', label: 'Distributor', sortable: false, nested: true },
     {name: 'retail_shop.name', label: 'Shop', sortable: false},
@@ -22,8 +21,9 @@ export class ShortageComponent implements OnInit {
   ];
 
   title: string;
+  only: string[] = ['id', 'name', 'distributor', 'retail_shop', 'available_stock', 'min_stock', 'is_short', 'stock_required'];
   include: string[] = ['distributor'];
-  filters: any = {__is_short__bool: true};
+  filters: any = {__stock_required__gte: 1, __is_disabled_bool: false};
 
   constructor(private _titleService: Title,
               private _itemService: ItemsService) {

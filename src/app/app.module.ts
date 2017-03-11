@@ -69,6 +69,7 @@ import {ShortageComponent} from "./stock-management/shortage/shortage.component"
 import {AddStockComponent} from "./stock-management/add-stock/add-stock.component";
 import {StockComponent} from "./stock-management/stock/stock.component";
 import {BaseStockTableComponent} from "./stock-management/base-stock-table/base-stock-table.component";
+import {DistributorBillComponent} from "./stock-management/distributor-bill/distributor-bill.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -107,6 +108,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     ReportingComponent,
     SaleComponent,
     OrderComponent,
+    DistributorBillComponent,
     CustomerComponent,
     ProductFormComponent,
     DistributorFormComponent,

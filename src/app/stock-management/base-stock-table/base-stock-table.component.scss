@@ -5,12 +5,11 @@
 }
 .pagination {
   position: fixed;
-  bottom: 10px;
-  width:90%;
-  border: 1px lightgray solid;
+  bottom: 0;
   z-index: 3;
-  right: 125px;
-  left:100px;
+  width: 40%;
+  left: 30%;
+  right: 25%;
   font-size: 14px;
 
 }
@@ -18,4 +17,7 @@
   bottom: 10px;
   position: fixed;
 
+}
+.table {
+  margin-bottom: 75px;
 }

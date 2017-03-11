@@ -133,6 +133,68 @@
             </md-card-actions>
           </div>
         </form>
+
+
+        <form layout="row" layout-wrap="" flex="100" *ngIf="shop?.id && entryType =='item'" #stockForm="ngForm">
+
+          <div layout="row" layout-margin="" flex="100">
+            <div layout-margin="" flex>
+              <tag-input [(ngModel)]="products" name="product" [placeholder]="'Enter Product...'"
+                         (onAdd)="addProduct($event)" (onRemove)="removeProduct($event)"
+                         [secondaryPlaceholder]="'Enter Product...'" [onlyFromAutocomplete]="true" [maxItems]="1"
+              >
+                <tag-input-dropdown [autocompleteObservable]='getProducts'  [appendToBody]="false"
+                                    [identifyBy]="'id'"
+                                    [displayBy]="'name'">
+                  <template let-item="item" let-index="index">
+                    {{ item.name }}
+                  </template>
+                </tag-input-dropdown>
+              </tag-input>
+            </div>
+
+          </div>
+
+          <template ngFor [ngForOf]="stocks" let-item let-i="index">
+            <div layout="row" layout-wrap="" flex="100" >
+              <md-input-container flex layout-margin>
+                <input md-input [disabled]="true" [readOnly]="true" [value]="item.product.name" />
+              </md-input-container>
+              <md-input-container flex layout-margin>
+                <input md-input  placeholder="Enter Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
+                       [(ngModel)]="item.units_purchased" min="0" required/>
+              </md-input-container>
+              <md-input-container flex layout-margin>
+                <input md-input  placeholder="Enter Purchase Amount" type="number" [name]="'purchase_amount'+i"
+                       [(ngModel)]="item.purchase_amount" min="0" [value]="item.purchase_amount" required/>
+              </md-input-container>
+              <md-input-container flex layout-margin>
+                <input md-input placeholder="Enter Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
+                       [(ngModel)]="item.selling_amount" [value]="item.selling_amount" required />
+              </md-input-container>
+              <md-input-container flex layout-margin>
+                <input md-input placeholder="Enter Expiry" type="date" [name]="'expiry'+i" required
+                       [(ngModel)]="item.expiry_date" />
+              </md-input-container>
+            </div>
+
+          </template>
+          <div layout="row" layout-margin="" layout-align="center center" flex="100" *ngIf="products.length">
+            <md-card-actions layout="row" layout-align="center center" flex class="push-top">
+              <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
+                      (click)="close()" class="pad-xs push-xs" color="accent">
+                <md-icon  class="md-24" >close</md-icon>
+              </button>
+              <span class="pad"></span>
+              <button md-icon-button="" md-fab="" md-raised-button=""  [disabled]="!stockForm.form.valid"
+                      (click)="saveProductStock()" class="pad-xs push-xs"  color="primary" md-tooltip="save"
+              ><md-icon class="md-24" >done</md-icon>
+              </button>
+
+            </md-card-actions>
+          </div>
+        </form>
+
       </td-step>
     </td-steps>
   </div>

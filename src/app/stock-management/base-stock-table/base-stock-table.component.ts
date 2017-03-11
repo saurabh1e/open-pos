@@ -33,6 +33,9 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
   @Input()
   include: string[] = [];
   @Input()
+  only: string[] = [];
+
+  @Input()
   filters: any = {};
 
   @Input()
@@ -49,7 +52,7 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   pageSize: number = 50;
   sortBy: string = 'id';
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Ascending;
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
   constructor(private _loadingService: TdLoadingService,
               private _shopService: RetailShopsService) {
@@ -113,6 +116,9 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
       __retail_shop_id__in: ids, __include: this.include.concat(['retail_shop']),
       __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm
     };
+    if (this.only.length) {
+      filters['__only'] = this.only;
+    }
     Object.keys(this.filters).forEach((k)=>{
       filters[k] = this.filters[k]
     });

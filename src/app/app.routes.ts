@@ -21,6 +21,7 @@ import {ExpiryComponent} from "./stock-management/expiry/expiry.component";
 import {ShortageComponent} from "./stock-management/shortage/shortage.component";
 import {AddStockComponent} from "./stock-management/add-stock/add-stock.component";
 import {StockComponent} from "./stock-management/stock/stock.component";
+import {DistributorBillComponent} from "./stock-management/distributor-bill/distributor-bill.component";
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
       {path: 'expiry', component: ExpiryComponent},
       {path: 'shortage', component: ShortageComponent},
       {path: 'stocks', component: StockComponent},
-      {path: 'add-stocks', component: AddStockComponent}
+      {path: 'add-stocks', component: AddStockComponent},
+      {path: 'bills', component: DistributorBillComponent}
     ]
   },
   {

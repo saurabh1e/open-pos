@@ -138,7 +138,7 @@
 
         <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="15"
              layout="row" layout-wrap="" layout-align="center start"
-             [ngClass]="{'out-of-stock': product.available_stock<1}">
+             [ngClass]="{'out-of-stock': product.available_stock<1}" *ngIf="!product.is_disabled">
           <div flex="100" layout="row">
             <div flex="90" layout="column" class="pad-xs product-click text-center"
                  (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">

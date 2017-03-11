@@ -339,7 +339,7 @@ export class TagsService extends RESTService<Tag> {
 
 
 @Injectable()
-export class SaltsService extends RESTService<any> {
+export class SaltsService extends RESTService<Salt> {
 
   _salt: Salt = <Salt>{};
   _salts: Salt[];
@@ -396,7 +396,7 @@ export class SaltsService extends RESTService<any> {
 
 
 @Injectable()
-export class TaxsService extends RESTService<any> {
+export class TaxsService extends RESTService<Tax> {
 
   _tax: Tax = <Tax>{};
   _taxes: Tax[];

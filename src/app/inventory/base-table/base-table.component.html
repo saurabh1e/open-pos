@@ -1,9 +1,10 @@
-<div class=" bgc-white-4 push-sm" flex="100" layout-wrap="" layout="row">
+
+<div class="table bgc-white-4 push-sm" flex="100" layout-wrap=""  md-scroll-y="" md-content="">
 
   <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" flex="100">
-      <span class="push-left-sm">
-        <span class="md-title">{{title}}</span>
-      </span>
+    <span class="push-left-sm">
+      <span class="md-title">{{title}}</span>
+    </span>
     <span flex></span>
     <td-search-box class=" push-right-sm" placeholder="Search Here.."
                    (searchDebounce)="search($event)" flex="" [showUnderline]="true" [debounce]="500"
@@ -31,23 +32,23 @@
         <button class="small-button" (click)="edit(row, filteredData.indexOf(row))">
           <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
         </button>
-          <span *ngIf="row.hasOwnProperty('is_disabled')">
-            <button class="small-button" *ngIf="!row.is_disabled"
-                    (click)="toggle(row, filteredData.indexOf(row))">
-            <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
-          </button>
-          <button class="small-button" *ngIf="row.is_disabled"
+        <span *ngIf="row.hasOwnProperty('is_disabled')">
+          <button class="small-button" *ngIf="!row.is_disabled"
                   (click)="toggle(row, filteredData.indexOf(row))">
-            <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
-          </button>
+          <md-icon md-tooltip="disable" color="primary" style="cursor: pointer">sync</md-icon>
+        </button>
+        <button class="small-button" *ngIf="row.is_disabled"
+                (click)="toggle(row, filteredData.indexOf(row))">
+          <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">sync_disabled</md-icon>
+        </button>
 
-          </span>
-          <span *ngIf="!row.hasOwnProperty('is_disabled')">
-            <button class="small-button"
-                    (click)="deleteRow(row, filteredData.indexOf(row))">
-            <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">close</md-icon>
-          </button>
-          </span>
+        </span>
+        <span *ngIf="!row.hasOwnProperty('is_disabled')">
+          <button class="small-button"
+                  (click)="deleteRow(row, filteredData.indexOf(row))">
+          <md-icon md-tooltip="disable" color="warn" style="cursor: pointer">close</md-icon>
+        </button>
+        </span>
 
 
       </td>
@@ -55,8 +56,8 @@
   </table>
 
 </div>
-<div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm">
-  <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal"
+<div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm md-shadow-bottom-z-1" layout-align="center">
+  <td-paging-bar [pageSizes]="[50, 75, 100]" [total]="filteredTotal"
                  (change)="page($event)"></td-paging-bar>
 </div>
 <a md-fab color="accent" class="md-fab-position-bottom-right" (click)="add()">

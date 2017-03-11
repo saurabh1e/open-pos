@@ -110,7 +110,7 @@ export class CartService {
     let localId = stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
     let discount = <Discount>{value:0, type:'PERCENTAGE'};
     let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date(),
-      discounts:[discount], customer: <Customer>{}, address: <Address>{}};
+      discounts:[discount], customer: <Customer>{}, address: <Address>{}, items: <Item[]>[]};
     return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;
       });

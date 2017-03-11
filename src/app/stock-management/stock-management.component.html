@@ -38,6 +38,13 @@
        [routerLink]="['/stock/add-stocks']">
       <md-icon md-list-icon class="md-18">ADD STOCKS</md-icon>
     </a>
+    <a md-list-item=""
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/stock/bills']">
+      <md-icon md-list-icon class="md-18">BILLS</md-icon>
+    </a>
     <md-divider flex="" class=" push-top-lg bgc-blue-100"></md-divider>
     <div class="push-top-lg" layout-align="center center" layout="row">
       <app-back-button></app-back-button>

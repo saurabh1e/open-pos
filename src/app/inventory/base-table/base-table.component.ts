@@ -154,6 +154,7 @@ export class BaseTableComponent implements OnInit, OnDestroy {
             this._loadingService.resolve('tables');
           },
           () => {
+            row.is_disabled = !row.is_disabled;
             this._loadingService.resolve('tables');
           })
       }
