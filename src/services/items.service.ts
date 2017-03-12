@@ -138,7 +138,8 @@ export class ItemsService extends RESTService<Product> {
   }
 
   saveProducts(params?): void {
-
+    let status: Status = <Status>{};
+    status.status = true;
     this.query(params).subscribe((data: {data: Product[], count: number})=>{
       data.data.forEach((value)=>{
         this._indexDB.products.add(value).then(()=>{},
@@ -152,14 +153,15 @@ export class ItemsService extends RESTService<Product> {
           this.saveProducts(params);
         }
         else {
-          let status: Status = <Status>{};
-          status.status = true;
+
           this._indexDB._db$.next(status);
         }
       }
 
     }, (err) => {
-      console.error(err)
+      console.error(err);
+      status.status = false;
+      this._indexDB._db$.next(status);
     })
   }
 

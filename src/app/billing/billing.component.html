@@ -12,10 +12,10 @@
     </div>
 
 
-    <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(1)" flex>Tags</button>
-    <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(2)" flex>Brands</button>
-    <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(3)" flex>Distributors</button>
-    <button md-button="" color="primary" class="font-bold-600" (click)="toggleFilter(4)" flex>Salts</button>
+    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(1)" flex>Tags</button>
+    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(2)" flex>Brands</button>
+    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(3)" flex>Distributors</button>
+    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(4)" flex>Salts</button>
 
     <div class="filter-card-parent" [hidden]="filterType!=1">
       <md-card flex="70">
@@ -105,24 +105,24 @@
       </td-search-box>
     </div>
     <span flex></span>
-    <span layout-align="center center" layout="row">
-        <md-slide-toggle [color]="'accent'" layout="row">
-          <span class="font-bold-500 tc-accent">
-            Combo's
-          </span>
-        </md-slide-toggle>
-      </span>
-    <span flex></span>
-    <button md-button class="font-bold-500" flex="10"
-            layout-margin="" (click)="checkOut()">
-        <span  class="tc-accent md-title font-bold-500">
-        {{cart?.total - cart?.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
-        </span>
-    </button>
-    <button md-raised-button="" color="accent" class="font-bold-500" flex="10"
-            layout-margin="" (click)="checkOut()">
-      <md-icon class="md-24">add_shopping_cart</md-icon>
-    </button>
+    <!--<button md-button class="font-bold-500" flex="10"-->
+            <!--layout-margin="" (click)="checkOut()">-->
+        <!--<span  class="tc-accent md-title font-bold-500">-->
+        <!--{{cart?.total - cart?.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/- -->
+        <!--</span>-->
+    <!--</button>-->
+    <div class="pad-xs" layout="row" layout-align="center">
+      <button md-raised-button="" color="accent" class="font-bold-600" flex="45"
+              layout-margin="" (click)="quickCheckOut()" [disabled]="cart?.items.length">
+        <md-icon class="md-24">add_shopping_cart</md-icon>
+      </button>
+      <span class="pad"></span>
+      <button md-raised-button="" color="primary" class="font-bold-600" flex="45" [disabled]="cart?.items.length"
+              layout-margin="" (click)="checkOut()">
+        <md-icon class="md-24">account_box</md-icon>
+      </button>
+    </div>
+
 
   </div>
 

@@ -3,8 +3,8 @@ import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/item
 import {RetailShop} from "../../services/shop.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IndexDBServiceService} from "../../services/indexdb.service";
-import {Order} from "../../services/orders.service";
-import {TdDialogService} from "@covalent/core";
+import {Order, OrdersService} from "../../services/orders.service";
+import {TdDialogService, TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialogConfig, MdSnackBar} from "@angular/material";
@@ -41,18 +41,27 @@ export class BillingComponent implements AfterViewInit, OnInit {
               private _snackBarService: MdSnackBar,
               private _dialogService: TdDialogService,
               private _cartService: CartService,
+              private _orderService: OrdersService,
               private _activatedRoute: ActivatedRoute,
+              private _loadingService: TdLoadingService,
               private _indexDb: IndexDBServiceService,
               private _router: Router) {
-
+    this._loadingService.create({
+      name: 'billing',
+      type: LoadingType.Circular,
+      mode: LoadingMode.Indeterminate,
+      color: 'warn',
+    });
   }
 
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params: {id: string}) => {
       if (params.id) {
+        this._loadingService.register('billing');
         this._indexDb.carts.get((params.id)).then((data) => {
           this.cart = data;
           this.setInitialData(this.cart.retail_shop_id);
+          this._loadingService.resolve('billing');
         })
       }
     });
@@ -235,7 +244,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
     _dialog.afterClosed().subscribe((data)=>{
       if (data){
         this.showSnackBar(data);
-        let shop_id = this.cart.retail_shop_id;
         this._cartService.deleteCart(this.cart.local_id).then(()=>{
           this._router.navigate(['dashboard/carts/']);
         });
@@ -258,5 +266,22 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
   showSnackBar(orderId: string): void {
     this._snackBarService.open('Order Placed Successfully ID#' + orderId, '', { duration: 3000 });
+  }
+  quickCheckOut(): void {
+    this._loadingService.register('billing');
+    this._orderService.create(this.cart).subscribe((data: {data: Order[]}) => {
+      this._cartService.updateStock(this.cart).then((status)=>{
+        this._loadingService.resolve('billing');
+        if (data){
+          this.showSnackBar(stringify(data.data[0].invoice_number));
+          this._cartService.deleteCart(this.cart.local_id).then(()=>{
+            this._router.navigate(['dashboard/carts/']);
+          });
+        }
+      });
+
+    }, () => {
+      this._loadingService.resolve('billing');
+    })
   }
 }
