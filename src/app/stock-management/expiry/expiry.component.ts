@@ -14,7 +14,6 @@ import {RESTService} from "@covalent/http";
 export class ExpiryComponent implements OnInit {
 
   columns: TdDataTableColumn[] = [
-    { name: 'id', label: 'ID', sortable: true },
     { name: 'product.name', label: 'Product Name', sortable: true, nested: true },
     { name: 'distributor_bill.distributor.name', label: 'Distributor', sortable: false, nested: true },
     { name: 'purchase_amount', label: 'Purchase (INR)', numeric: true, format: v => v.toFixed(2), sortable: false },

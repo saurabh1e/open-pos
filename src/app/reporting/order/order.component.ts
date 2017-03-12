@@ -12,22 +12,22 @@ import {OrdersService, Order} from "../../../services/orders.service";
 import {DateFormatter} from "@angular/common/src/pipes/intl";
 import {Title} from "@angular/platform-browser";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
-import {UsersService} from "../../../services/users.service";
 import {Subscription} from "rxjs";
-;
+import {OrderDetailComponent} from "./order-detail/order-detail.component";
 
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  styleUrls: ['./order.component.scss'],
+  entryComponents: [OrderDetailComponent]
 })
 export class OrderComponent implements OnInit, OnDestroy {
 
   data: Order[]=[];
 
   columns: TdDataTableColumn[] = [
-    {name: 'id', label: 'id', sortable: true},
+    {name: 'invoice_number', label: 'Invoice', numeric: false, format: v => '#'+v, sortable: true},
     {name: 'customer.name', label: 'Customer', sortable: true, nested: true},
     {name: 'customer.mobile_number', label: 'Number', sortable: true, nested: true},
     {name: 'retail_shop.name', 'label': 'Shop', nested: true},
@@ -36,6 +36,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     {name: 'items_count', label: 'Items', numeric: true},
     {name: 'auto_discount', label: 'Discount', numeric: true},
     {name: 'created_on', label: 'Date', format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')},
+    {name: 'created_by.name', label: 'Created By', nested: true},
   ];
 
   ngOnInit() {
@@ -52,10 +53,10 @@ export class OrderComponent implements OnInit, OnDestroy {
   fromRow: number = 1;
   currentPage: number = 1;
   pageSize: number = 50;
-  sortBy: string = 'id';
+  sortBy: string = 'invoice_number';
   order: Order;
 
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Ascending;
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
   constructor(private _titleService: Title,
               private _loadingService: TdLoadingService,
@@ -162,5 +163,17 @@ export class OrderComponent implements OnInit, OnDestroy {
 
       }
     })
+  }
+
+  showDetail(order: Order): void {
+    this._loadingService.register('orders');
+    this._orderService.query({__id__equal: order.id, __include:['customer', 'address', 'items', 'discounts']})
+      .subscribe((data: {data: Order[]})=>{
+        this.order = data.data[0];
+        this._loadingService.resolve('orders');
+        let _dialog = this._dialogService.open(OrderDetailComponent);
+        _dialog.componentInstance.order = this.order;
+        _dialog.afterClosed();
+      })
   }
 }

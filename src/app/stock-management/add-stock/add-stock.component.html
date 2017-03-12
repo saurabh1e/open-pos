@@ -182,12 +182,12 @@
           <div layout="row" layout-margin="" layout-align="center center" flex="100" *ngIf="products.length">
             <md-card-actions layout="row" layout-align="center center" flex class="push-top">
               <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
-                      (click)="close()" class="pad-xs push-xs" color="accent">
+                      (click)="step3.close()()" class="pad-xs push-xs" color="warn">
                 <md-icon  class="md-24" >close</md-icon>
               </button>
               <span class="pad"></span>
               <button md-icon-button="" md-fab="" md-raised-button=""  [disabled]="!stockForm.form.valid"
-                      (click)="saveProductStock()" class="pad-xs push-xs"  color="primary" md-tooltip="save"
+                      (click)="saveProductStock()" class="pad-xs push-xs"  color="accent" md-tooltip="save"
               ><md-icon class="md-24" >done</md-icon>
               </button>
 

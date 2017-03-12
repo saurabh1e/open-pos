@@ -43,7 +43,9 @@
   </template>
 </div>
 
-<a md-fab color="accent" class="md-fab-position-bottom-right" (click)="newCart()">
-  <md-icon>add</md-icon>
+<a md-fab color="accent" class="md-fab-position-bottom-right"
+   (click)="newCart()" style="text-align: center" layout-align="center center"
+[md-tooltip]="'Create New Order'" mdTooltipPosition="before">
+  <md-icon class="md-48" style="padding-top: 40px">add</md-icon>
 </a>
 

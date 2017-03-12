@@ -3,6 +3,7 @@ import {RESTService, HttpInterceptorService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
 import {HttpService} from "./http.service";
 import {Observable} from "rxjs";
+import {Order} from "./orders.service";
 
 
 export interface Customer {
@@ -14,6 +15,19 @@ export interface Customer {
   mobile_number: string;
   loyalty_points?: number;
   addresses?: Address[];
+  total_order: number;
+  total_billing: number;
+  amount_due: number;
+  transactions: CustomerTransaction[];
+  orders: Order[];
+}
+
+export interface CustomerTransaction {
+
+  id?: string;
+  customer_id: string
+  customer: Customer;
+  amount: number;
 }
 
 export interface Address {
@@ -52,5 +66,16 @@ export class CustomerService extends RESTService<Customer> {
       customer_id: customerId,
       address_id: addressId
     }])
+  }
+}
+
+@Injectable()
+export class CustomerTransactionsService extends RESTService<CustomerTransaction> {
+
+  constructor(private _http: HttpInterceptorService, private _httpService: HttpService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/customer_transaction',
+    });
   }
 }

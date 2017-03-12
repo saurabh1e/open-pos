@@ -4,6 +4,7 @@ import {Address, Customer} from "./customer.service";
 import {Tax} from "./items.service";
 import {RESTService, HttpInterceptorService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
+import {IUser} from "./users.service";
 
 export interface Order {
 
@@ -14,7 +15,9 @@ export interface Order {
   local_id: string;
   customer_id?: string;
   amount_paid?: number
+  invoice_number?: number
   address_id?: string;
+  created_by?: IUser;
   retail_shop_id?: string;
   current_status_id?: string;
   created_on: Date;

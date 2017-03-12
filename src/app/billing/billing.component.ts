@@ -237,7 +237,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
         this.showSnackBar(data);
         let shop_id = this.cart.retail_shop_id;
         this._cartService.deleteCart(this.cart.local_id).then(()=>{
-          this._router.navigate(['dashboard/carts/'+stringify(shop_id)]);
+          this._router.navigate(['dashboard/carts/']);
         });
       }
     })

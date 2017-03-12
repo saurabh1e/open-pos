@@ -28,7 +28,7 @@
           [numeric]="column.numeric">
         <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
       </td>
-      <td>
+      <td td-data-table-cell>
         <button class="small-button" (click)="edit(row, filteredData.indexOf(row))">
           <md-icon md-tooltip="edit" color="accent"  style="cursor: pointer">edit</md-icon>
         </button>

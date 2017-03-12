@@ -33,14 +33,14 @@ export class RequestInterceptor implements IHttpInterceptor {
   openAlert(message: {}, status: number): void {
     let title = 'Error!!';
     switch (status) {
-      case 400: title = 'Bad Request'; break;
-      case 401: title = 'Unauthorized: You don\'t Access'; break;
-      case 403: title = 'Forbidden: Access Not Allowed'; break;
-      case 404: title = 'Resource Not Found'; break;
+      case 400: title = 'Bad request'; break;
+      case 401: title = 'Unauthorized: you don\'t access'; break;
+      case 403: title = 'Forbidden: access not allowed'; break;
+      case 404: title = 'Resource not found'; break;
     }
 
     this._dialogService.openAlert({
-      message: message['message'] || 'Unexpected Error Check Network Connection!!',
+      message: message['message'] || 'Unexpected error check network connection!!',
       disableClose: false,
       title: title,
       closeButton: 'Close',

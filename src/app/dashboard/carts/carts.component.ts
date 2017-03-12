@@ -7,6 +7,7 @@ import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Order} from "../../../services/orders.service";
 import {stringify} from "@angular/forms/src/facade/lang";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
+import {MdSnackBar} from "@angular/material";
 
 
 @Component({
@@ -20,6 +21,7 @@ export class CartComponent implements OnInit {
   shop_id: string;
 
   constructor(private _cartService: CartService,
+              private _snackBarService: MdSnackBar,
               private _indexDB: IndexDBServiceService,
               private _route: Router,
               private _shopService: RetailShopsService,
@@ -68,7 +70,7 @@ export class CartComponent implements OnInit {
   newCart(): void {
     this._loadingService.register('cart');
     if (!this.shop_id) {
-
+      this._snackBarService.open('No outlet selected', '', { duration: 3000 });
       this._route.navigate(['dashboard/shops']).then(()=>{
         this._loadingService.resolve('cart');
       });

@@ -70,6 +70,8 @@ import {AddStockComponent} from "./stock-management/add-stock/add-stock.componen
 import {StockComponent} from "./stock-management/stock/stock.component";
 import {BaseStockTableComponent} from "./stock-management/base-stock-table/base-stock-table.component";
 import {DistributorBillComponent} from "./stock-management/distributor-bill/distributor-bill.component";
+import {CustomerDetailComponent} from "./reporting/customer/customer-detail/customer-detail.component";
+import {OrderDetailComponent} from "./reporting/order/order-detail/order-detail.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -111,6 +113,8 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     DistributorBillComponent,
     CustomerComponent,
     ProductFormComponent,
+    OrderDetailComponent,
+    CustomerDetailComponent,
     DistributorFormComponent,
     TagFormComponent,
     TaxFormComponent,
@@ -160,7 +164,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   ], // additional providers needed for this module
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
     ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent,
-    DistributorFormComponent],
+    DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {

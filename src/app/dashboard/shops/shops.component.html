@@ -3,7 +3,7 @@
 
     <template let-item let-last="last"  ngFor [ngForOf]="shops">
 
-      <md-card flex="25">
+      <md-card flex="33">
         <md-card-title layout="row" layout-wrap="">
           <span class="tc-accent">{{item.name}}</span>&nbsp;
           <small class="tc-grey-500 md-body-1" *ngIf="shop.id===item.id">(default)</small>
