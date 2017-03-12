@@ -38,14 +38,14 @@ export class RequestInterceptor implements IHttpInterceptor {
       case 403: title = 'Forbidden: access not allowed'; break;
       case 404: title = null; break;
     }
-    if (title) {
-      this._dialogService.openAlert({
-        message: message['message'] || 'Unexpected error check network connection!!',
-        disableClose: false,
-        title: title,
-        closeButton: 'Close',
-      });
-    }
+    // if (title) {
+    //   this._dialogService.openAlert({
+    //     message: message['message'] || 'Unexpected error check network connection!!',
+    //     disableClose: false,
+    //     title: title,
+    //     closeButton: 'Close',
+    //   });
+    // }
 
   }
 }

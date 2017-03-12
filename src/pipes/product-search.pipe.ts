@@ -27,6 +27,7 @@ export class ProductTagPipe implements PipeTransform {
 
   transform(value: Product[], args?: Tag[]): any {
     if (args && value && args.length) {
+
       return value.filter((val) => {
         let flag = true;
         for (let tag in args) {
@@ -78,12 +79,10 @@ export class ProductSaltPipe implements PipeTransform {
 export class ProductBrandPipe implements PipeTransform {
 
   transform(value: Product[], args?: string[]): any {
-
     if (args && value && args.length) {
       return value.filter((val) => {
 
         if (args.indexOf(val.brand_id) > -1){
-          console.log(val.brand_id);
           return val
         }
       });

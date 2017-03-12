@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnInit} from "@angular/core";
+import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from "@angular/core";
 import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -16,7 +16,8 @@ import {stringify} from "@angular/core/src/facade/lang";
   selector: 'billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent]
+  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 
 })
 export class BillingComponent implements AfterViewInit, OnInit {
@@ -32,8 +33,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
   selectedTags: Tag[] = [];
   selectedSalts: Salt[] = [];
-  selectedBrands: number[] = [];
-  selectedDistributors: number[] = [];
+  selectedBrands: string[] = [];
+  selectedDistributors: string[] = [];
   config = <MdDialogConfig>{height: '70%', width: '70%'};
 
 
@@ -42,6 +43,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
               private _dialogService: TdDialogService,
               private _cartService: CartService,
               private _orderService: OrdersService,
+              private _cd: ChangeDetectorRef,
               private _activatedRoute: ActivatedRoute,
               private _loadingService: TdLoadingService,
               private _indexDb: IndexDBServiceService,
@@ -55,6 +57,11 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+
+
+  }
+
+  ngAfterViewInit(): void {
     this._activatedRoute.params.subscribe((params: {id: string}) => {
       if (params.id) {
         this._loadingService.register('billing');
@@ -65,11 +72,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
         })
       }
     });
-
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
   set distributors(data: Distributor[]) {
@@ -124,8 +126,12 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
   clearFilter (value: number) {
     switch (value) {
-      case 0: this.selectedTags = [].concat([]);break;
+      case 0: this.selectedTags = [].concat();break;
+      case 1: this.selectedBrands = [].concat();break;
+      case 2: this.selectedDistributors = [];break;
+      case 3: this.selectedSalts = [].concat();break;
     }
+    this._cd.markForCheck();
   }
 
   setInitialData(retail_shop_id: string): void {
@@ -153,12 +159,12 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
   }
 
-  checkBrand(id: number): boolean {
+  checkBrand(id: string): boolean {
     return this.selectedBrands.indexOf(id) > -1;
 
   }
 
-  checkDistributor(id: number): boolean {
+  checkDistributor(id: string): boolean {
     return this.selectedDistributors.indexOf(id) > -1;
 
   }
@@ -173,7 +179,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
   }
 
-  toggleBrand(id: number): void {
+  toggleBrand(id: string): void {
     if (this.checkBrand(id)) {
       this.selectedBrands.splice(this.selectedBrands.indexOf(id), 1);
     }
@@ -184,7 +190,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     return
   }
 
-  toggleDistributor(id: number): void {
+  toggleDistributor(id: string): void {
     if (this.checkDistributor(id)) {
       this.selectedDistributors.splice(this.selectedDistributors.indexOf(id), 1);
     }
