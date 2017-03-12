@@ -122,6 +122,11 @@ export class BillingComponent implements AfterViewInit, OnInit {
     this.filterType = value;
     return
   }
+  clearFilter (value: number) {
+    switch (value) {
+      case 0: this.selectedTags = [].concat([]);break;
+    }
+  }
 
   setInitialData(retail_shop_id: string): void {
     this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {

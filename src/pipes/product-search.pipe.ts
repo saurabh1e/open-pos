@@ -134,3 +134,18 @@ export class TruncatePipe implements PipeTransform{
     return value.length > limit ? value.substring(0, limit) + trail : value;
   }
 }
+
+@Pipe({
+  name:'filter',
+  pure:false
+})
+export class SearchPipe implements PipeTransform {
+
+  transform(items :any ,term :any): any {
+    if(term === undefined || term === null) return items;
+
+    return items.filter( function(item){
+      return item.name.toLowerCase().includes(term.toLowerCase());
+    })
+  }
+}

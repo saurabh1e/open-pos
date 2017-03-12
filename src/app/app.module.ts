@@ -30,7 +30,7 @@ import {
   ProductDistributorPipe,
   ProductTagPipe,
   ProductSaltPipe,
-  KeysPipe, TruncatePipe
+  KeysPipe, TruncatePipe, SearchPipe
 } from "../pipes/product-search.pipe";
 import {IndexDBServiceService} from "../services/indexdb.service";
 import {CartService} from "../services/cart.service";
@@ -125,6 +125,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     ProductDistributorPipe,
     ProductTagPipe,
     TruncatePipe,
+    SearchPipe,
     ProductSaltPipe,
     KeysPipe,
     GoBackDirective
