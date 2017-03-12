@@ -165,4 +165,42 @@ export class CartService {
     })
   }
 
+  async updateStock(cart: Order): Promise<boolean>{
+    try {
+      cart.items.forEach((value)=>{
+        return this._indexDB.products.get(value.product_id).then((data)=>{
+          let stocks = data.available_stocks;
+          let emptyStocks: number[] = [];
+          stocks.forEach((stock, index)=>{
+            if (stock.id == value.stock_id) {
+              data.available_stock -= value.quantity;
+              stock.units_sold += value.quantity;
+            }
+            if (stock.units_sold >= stock.units_purchased) {
+              emptyStocks.push(index)
+            }
+          });
+          emptyStocks.forEach((emptyStock)=>{
+            stocks.splice(emptyStock, 1);
+          });
+          data.available_stocks = stocks;
+          this._indexDB.products.update(data.id, data).then(()=>{
+            return true
+          },(err)=>{
+            console.log(err);
+          });
+          return true
+        }, (err)=>{
+          console.log(err);
+        })
+      });
+      return true
+    }
+    catch (err) {
+      console.log(err);
+      return false
+    }
+
+  }
+
 }

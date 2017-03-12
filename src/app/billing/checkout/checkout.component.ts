@@ -137,8 +137,12 @@ export class CheckoutComponent implements OnInit {
   checkOut(): void {
     this._loadingService.register('checkout');
     this._orderService.create(this.cart).subscribe((data: {data: Order[]}) => {
-      this._loadingService.resolve('checkout');
-      this.dialogRef.close(data.data[0].invoice_number);
+      this._cartService.updateStock(this.cart).then((status)=>{
+        console.log(status);
+        this._loadingService.resolve('checkout');
+        this.dialogRef.close(data.data[0].invoice_number);
+      });
+
     }, () => {
       this._loadingService.resolve('checkout');
     })
