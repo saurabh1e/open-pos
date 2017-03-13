@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 
-import {TdLoadingService, LoadingType, LoadingMode} from '@covalent/core';
+import {TdLoadingService, LoadingType, LoadingMode, TdDialogService} from '@covalent/core';
 import {UsersService, AuthService, Auth } from '../../services'
 import {IUser} from "../../services/users.service";
 
@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit{
   constructor(private _router: Router,
               private _loadingService: TdLoadingService,
               private _userService: UsersService,
+              private _dialogService: TdDialogService,
               private _authService: AuthService) {
     this._loadingService.create({
       name: 'login',
@@ -36,8 +37,13 @@ export class LoginComponent implements OnInit{
       this._authService.auth = data;
       this._router.navigate(['dashboard/shops']);
       this._loadingService.resolve('login');
-    },(error) => {
-      console.log(error);
+    },() => {
+      this._dialogService.openAlert({
+        message: 'Unable to login incorrect username or password.',
+        disableClose: false,
+        title: 'Login Error!',
+        closeButton: 'Close',
+      });
       this._loadingService.resolve('login');
     });
   }
