@@ -37,6 +37,13 @@
        [routerLink]="['/reporting/sales']">
       <span class="md-subhead tc-grey-800 font-bold-600">REPORTS</span>
     </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/staff']">
+      <span class="md-subhead tc-grey-800 font-bold-600">STAFF</span>
+    </a>
   </md-nav-list>
   <router-outlet></router-outlet>
 

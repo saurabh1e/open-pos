@@ -22,6 +22,7 @@ import {ShortageComponent} from "./stock-management/shortage/shortage.component"
 import {AddStockComponent} from "./stock-management/add-stock/add-stock.component";
 import {StockComponent} from "./stock-management/stock/stock.component";
 import {DistributorBillComponent} from "./stock-management/distributor-bill/distributor-bill.component";
+import {StaffComponent} from "./staff/staff.component";
 
 
 const routes: Routes = [
@@ -56,6 +57,7 @@ const routes: Routes = [
     ]
   },
   {path: 'billing/:id', component: BillingComponent},
+  {path: 'staff', component: StaffComponent},
   {
     path: 'reporting', component: ReportingComponent,
     children: [

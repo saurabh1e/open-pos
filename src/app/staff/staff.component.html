@@ -1,0 +1,103 @@
+<td-layout-nav-list logo="assets:logo" toolbarTitle="Postica"
+                    class="bgc-white-1" >
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span flex></span>
+    <span>{{title}}</span>
+    <span flex></span>
+    <app-user></app-user>
+  </div>
+
+
+  <md-nav-list td-sidenav-content>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/dashboard/shops']">
+      <span class="md-subhead tc-grey-800 font-bold-600">DASHBOARD</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/stock/stocks']">
+      <span class="md-subhead tc-grey-800 font-bold-600">STOCKS</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/inventory/menu']">
+      <span class="md-subhead tc-grey-800 font-bold-600">INVENTORY</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/reporting/sales']">
+      <span class="md-subhead tc-grey-800 font-bold-600">REPORTS</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/staff']">
+      <span class="md-subhead tc-grey-800 font-bold-600">STAFF</span>
+    </a>
+  </md-nav-list>
+
+  <div class=" bgc-white-4 push-sm table" flex="100" layout-wrap="" layout="row">
+
+    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" flex="100">
+      <span class="push-left-sm">
+        <span class="md-title">{{title}}</span>
+      </span>
+      <span flex></span>
+      <td-search-box class=" push-right-sm" placeholder="Search Here.."
+                     (searchDebounce)="search($event)" flex="" [showUnderline]="true" [debounce]="500"
+                     [alwaysVisible]="true">
+      </td-search-box>
+    </div>
+
+    <table td-data-table>
+      <th td-data-table-column
+          *ngFor="let column of columns"
+          [sortable]="column.sortable"
+          [numeric]="column.numeric"
+          (sortBy)="sortBy"
+          (sort)="sortOrder"
+          (sortChange)="sort(column.name, sortOrder)">
+        {{column.label}}
+      </th>
+      <th td-data-table-column>Details</th>
+      <tr td-data-table-row *ngFor="let row of filteredData">
+        <td td-data-table-cell *ngFor="let column of columns"
+            [numeric]="column.numeric">
+          <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
+        </td>
+        <td td-data-table-cell>
+
+          <button class="small-button" *ngIf="row.active"
+                  (click)="toggle(row, filteredData.indexOf(row))">
+            <md-icon md-tooltip="deactivate" color="warn" style="cursor: pointer">close</md-icon>
+          </button>
+          <button class="small-button" *ngIf="!row.active"
+                  (click)="toggle(row, filteredData.indexOf(row))">
+            <md-icon md-tooltip="activate" color="primary" style="cursor: pointer">check</md-icon>
+          </button>
+          <button class="small-button"
+                  (click)="showDetail(row)">
+            <md-icon md-tooltip="detail" color="accent" style="cursor: pointer">info_outline</md-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+  <div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm">
+    <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal"
+                   (change)="page($event)"></td-paging-bar>
+  </div>
+</td-layout-nav-list>
+
+

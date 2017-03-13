@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
-import {RetailShopsService, RetailShop} from "./shop.service";
+import {RetailShopsService, RetailShop, RetailBrand} from "./shop.service";
 import {IndexDBServiceService} from "./indexdb.service";
 
 
@@ -14,9 +14,10 @@ export interface IUser {
   email: string;
   mobile_number: string;
   roles: string[];
-  retail_shop_ids: number[];
-  brand_ids: number[];
+  retail_shop_ids: string[];
+  brand_id: string;
   retail_shops: RetailShop[];
+  retail_brand: RetailBrand[];
   _links: {}
   active: boolean;
 
@@ -63,7 +64,7 @@ export class UsersService extends RESTService<IUser> {
     return this._user$.asObservable();
   }
 
-  getShops(retail_shop_ids: number[]): void {
+  getShops(retail_shop_ids: string[]): void {
     this._shopService.query({
       __id__in: retail_shop_ids,
       __include: ['total_sales'],
