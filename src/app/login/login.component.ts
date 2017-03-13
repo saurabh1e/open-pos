@@ -32,8 +32,8 @@ export class LoginComponent implements OnInit{
   login(): void {
     this._loadingService.register('login');
     this._authService.login(this.username, this.password).subscribe((data) => {
+      this._authService.setAuthCookies(data.id, data.authentication_token);
       this._authService.auth = data;
-      this._authService.setAuthCookies();
       this._router.navigate(['dashboard/shops']);
       this._loadingService.resolve('login');
     },(error) => {

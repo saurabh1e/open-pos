@@ -13,7 +13,7 @@ export class RequestInterceptor implements IHttpInterceptor {
   }
 
   onRequest(requestOptions: RequestOptionsArgs): RequestOptionsArgs {
-    // you add headers or do something before a request here.
+
     if(Cookie.get('authentication_token')) {
       let headers = new Headers();
       headers.append('authorization', Cookie.get('authentication_token'));
@@ -26,7 +26,16 @@ export class RequestInterceptor implements IHttpInterceptor {
     return error;
   };
   onResponseError (error: Response): Response {
-    this.openAlert(error.json(), error.status);
+    let data;
+
+    try {
+       data = error.json()
+    }
+    catch (err) {
+      data = {}
+    }
+
+    this.openAlert(data, error.status);
     return error;
   };
 
@@ -38,14 +47,14 @@ export class RequestInterceptor implements IHttpInterceptor {
       case 403: title = 'Forbidden: access not allowed'; break;
       case 404: title = null; break;
     }
-    // if (title) {
-    //   this._dialogService.openAlert({
-    //     message: message['message'] || 'Unexpected error check network connection!!',
-    //     disableClose: false,
-    //     title: title,
-    //     closeButton: 'Close',
-    //   });
-    // }
+    if (title) {
+      this._dialogService.openAlert({
+        message: message['message'] || 'Unexpected error check network connection!!',
+        disableClose: false,
+        title: title,
+        closeButton: 'Close',
+      });
+    }
 
   }
 }

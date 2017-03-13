@@ -71,9 +71,9 @@ export class AuthService {
     this._userService.logout();
   }
 
-  setAuthCookies() {
-  Cookie.set('id', this.auth.id, 7, MOCK_API);
-  Cookie.set('authentication_token', this.auth.authentication_token, 7, MOCK_API);
-}
+  setAuthCookies = (id: string, token: string) => {
+    Cookie.set('id', id, 7, MOCK_API);
+    Cookie.set('authentication_token', token, 7, MOCK_API);
+  }
 
 }
