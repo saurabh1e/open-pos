@@ -60,7 +60,6 @@ export class ShopComponent implements AfterViewInit {
       if (count< 1) {
         this._shopService.syncData(data.id);
         this._indexDBService.db$.subscribe(() => {
-          this._shopService.shop = data;
           this._router.navigate(['dashboard/carts/']);
           this._loadingService.resolve('shops');
         }, (error) => {
@@ -70,7 +69,6 @@ export class ShopComponent implements AfterViewInit {
       }
       else  {
         this._shopService.getUpdate(data.id).then(()=>{
-          this._shopService.shop = data;
           this._router.navigate(['dashboard/carts/']).then(()=>{
             this._loadingService.resolve('shops');
           });

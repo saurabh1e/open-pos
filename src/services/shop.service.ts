@@ -112,9 +112,9 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
   async getUpdate(retailShopId: string): Promise<boolean> {
     return await this._indexDB.configs.get(retailShopId).then((data)=>{
-      this.getProductUpdate(data.stock_time, retailShopId).then();
+      this.getProductUpdate(retailShopId, data.stock_time).then();
       this.getStockUpdate(data.stock_time, retailShopId).then();
-      this.getOrderItemUpdate(data.stock_time, retailShopId).then();
+      this.getOrderItemUpdate(retailShopId, data.stock_time).then();
       this.updateStockTime(retailShopId);
       return true
     });

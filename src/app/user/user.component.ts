@@ -37,6 +37,7 @@ export class UserComponent implements OnInit {
   }
 
   setShop(shop?: RetailShop): void {
+    console.log(shop);
     if (!shop) {
       shop = <RetailShop>{};
     }
