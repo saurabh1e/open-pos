@@ -137,10 +137,8 @@ export class ItemsService extends RESTService<Product> {
     return this._product$.asObservable();
   }
 
-  saveProducts(params?): void {
-    let status: Status = <Status>{};
-    status.status = true;
-    this.query(params).subscribe((data: {data: Product[], count: number})=>{
+  async saveProducts(params?): Promise<boolean> {
+    return await this.query(params).subscribe((data: {data: Product[], count: number})=>{
       data.data.forEach((value)=>{
         this._indexDB.products.add(value).then(()=>{},
           ()=>{
@@ -150,19 +148,22 @@ export class ItemsService extends RESTService<Product> {
       if (params && '__limit' in params && '__page' in params) {
         if (params['__limit']==data.data.length) {
           params['__page']+=1;
-          this.saveProducts(params);
+          return this.saveProducts(params).then(()=>{
+            return true
+          });
         }
         else {
 
-          this._indexDB._db$.next(status);
+          this._indexDB._db$.next({status: true});
         }
       }
+      return true
 
     }, (err) => {
       console.error(err);
-      status.status = false;
-      this._indexDB._db$.next(status);
-    })
+      this._indexDB._db$.next({status: false});
+      return false
+    }).closed
   }
 
 }

@@ -89,3 +89,15 @@ export class OrdersService extends RESTService<Order> {
   }
 
 }
+
+@Injectable()
+export class OrderItemsService extends RESTService<Item> {
+
+  constructor(private _http: HttpInterceptorService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/item',
+    });
+  }
+
+}

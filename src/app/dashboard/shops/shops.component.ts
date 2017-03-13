@@ -69,9 +69,13 @@ export class ShopComponent implements AfterViewInit {
 
       }
       else  {
-        this._shopService.shop = data;
-        this._router.navigate(['dashboard/carts/']);
-        this._loadingService.resolve('shops');
+        this._shopService.getUpdate(data.id).then(()=>{
+          this._shopService.shop = data;
+          this._router.navigate(['dashboard/carts/']).then(()=>{
+            this._loadingService.resolve('shops');
+          });
+        });
+
       }
 
     });

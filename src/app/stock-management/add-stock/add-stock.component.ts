@@ -67,6 +67,8 @@ export class AddStockComponent implements OnInit {
     this.entryType = event;
     this.state = 3;
     this.stateStep2 = StepState.Complete;
+    this.stocks = [];
+
   }
 
   setShop(data: RetailShop) {
@@ -146,11 +148,16 @@ export class AddStockComponent implements OnInit {
     });
     this._distributorBillService.create(this.bill).subscribe((data: {data: DistributorBill[]})=>{
       this.stateStep3 = StepState.Complete;
-      this.stocks = [];
-      this.distributors = [];
-      this.entryType = null;
-      this._snackBarService.open('Stock updated with bill ID#' + stringify(data.data[0].id), '', { duration: 3000 });
-      this._loadingService.resolve('distributor-bill');
+      this._shopService.getProductUpdate(this.shop.id, null, {__id__in: this.stocks.map((data)=>{
+        return data.product_id;
+      })}).then(()=>{
+        this.stocks = [];
+        this.distributors = [];
+        this.entryType = null;
+        this._snackBarService.open('Stock updated with bill ID#' + stringify(data.data[0].id), '', { duration: 3000 });
+        this._loadingService.resolve('distributor-bill');
+      });
+
     }, ()=>{
       this._loadingService.resolve('distributor-bill');
     })
@@ -160,11 +167,13 @@ export class AddStockComponent implements OnInit {
   saveProductStock(): void {
 
     this._stockService.create(this.stocks[0]).subscribe((data: {data: Stock[]})=>{
-      this.stocks = [];
-      this.distributors = [];
-      this.products = [];
-      this._snackBarService.open('Stock updated with ID#' + stringify(data.data[0].id), '', { duration: 3000 });
-      this._loadingService.resolve('distributor-bill');
+      this._shopService.getProductUpdate(this.shop.id, null, {__id__in: [this.stocks[0].product_id]}).then(()=>{
+        this.stocks = [];
+        this.distributors = [];
+        this.products = [];
+        this._snackBarService.open('Stock updated with ID#' + stringify(data.data[0].id), '', { duration: 3000 });
+        this._loadingService.resolve('distributor-bill');
+      });
     }, ()=>{
       this._loadingService.resolve('distributor-bill');
     })

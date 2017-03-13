@@ -22,7 +22,7 @@ import {
   TagsService,
   TaxsService,
   BrandsService,
-  SaltsService
+  SaltsService, StocksService
 } from "../services/items.service";
 import {
   ProductSearchPipe,
@@ -34,7 +34,7 @@ import {
 } from "../pipes/product-search.pipe";
 import {IndexDBServiceService} from "../services/indexdb.service";
 import {CartService} from "../services/cart.service";
-import {OrdersService} from "../services/orders.service";
+import {OrdersService, OrderItemsService} from "../services/orders.service";
 import {BillingComponent} from "./billing/billing.component";
 import {ProductInfoComponent} from "./billing/product-info/product-info.component";
 import {CheckoutComponent} from "./billing/checkout/checkout.component";
@@ -155,9 +155,13 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     UsersService,
     RetailShopsService,
     ItemsService,
-    DistributorService, TagsService, SaltsService,
+    OrderItemsService,
+    DistributorService,
+    TagsService,
+    SaltsService,
     TaxsService,
     BrandsService,
+    StocksService,
     CartService,
     OrdersService,
     IndexDBServiceService

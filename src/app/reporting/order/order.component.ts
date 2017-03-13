@@ -154,7 +154,10 @@ export class OrderComponent implements OnInit, OnDestroy {
         this._loadingService.register('orders');
         order.is_void = !order.is_void;
         this._orderService.update(order.id, <Order>{is_void: order.is_void, id: order.id}).subscribe(() => {
-          this._loadingService.resolve('orders');
+          this._shopService.getOrderItemUpdate(order.retail_shop_id, null, 1 , {__order_id__equal: order.id}).then(()=>{
+            this._loadingService.resolve('orders');
+          });
+
         }, () => {
           this.data[index].is_void = !this.data[index].is_void;
           this._loadingService.resolve('orders');

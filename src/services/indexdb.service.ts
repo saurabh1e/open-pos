@@ -14,6 +14,12 @@ export interface Status {
 
 }
 
+
+export interface Config {
+  stock_time: string;
+  shop_id: string;
+}
+
 @Injectable()
 export class IndexDBServiceService extends Dexie {
   products: Dexie.Table<Product, string>;
@@ -25,6 +31,7 @@ export class IndexDBServiceService extends Dexie {
   shops: Dexie.Table<RetailShop, string>;
   orders: Dexie.Table<Order, string>;
   localities: Dexie.Table<Locality, string>;
+  configs: Dexie.Table<Config, string>;
   carts: Dexie.Table<Order, string>;
   users: Dexie.Table<IUser, string>;
 
@@ -44,7 +51,8 @@ export class IndexDBServiceService extends Dexie {
         orders: "++id",
         carts: "++local_id,retail_shop_id",
         localities: "++id, name",
-        users: "++id, mobile_number, email"
+        users: "++id, mobile_number, email",
+        configs: "++shop_id,key,value"
       });
   }
   get db$():Observable<Status>{
