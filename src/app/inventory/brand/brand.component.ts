@@ -5,6 +5,7 @@ import {BrandFormComponent} from "./brand-form/brand-form.component";
 import {RESTService} from "@covalent/http";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {Observable} from "rxjs";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -20,13 +21,16 @@ export class BrandComponent implements AfterViewInit {
     {name: 'retail_shop.name', 'label': 'Shop', nested: true}
   ];
 
-  constructor(
+  title: string;
+
+  constructor(private _titleService: Title,
               private _brandService: BrandsService,
               private _dialogService: TdDialogService) {
   }
 
   ngAfterViewInit(): void {
-
+    this._titleService.setTitle('Brand');
+    this.title = 'Brand';
   }
 
   filter = (): RESTService<any> => {

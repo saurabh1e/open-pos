@@ -5,6 +5,7 @@ import {TagFormComponent} from "./tag-form/tag-form.component";
 import {RESTService} from "@covalent/http";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {Observable} from "rxjs";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -19,14 +20,17 @@ export class TagComponent implements AfterViewInit {
     {name: 'name', label: 'Name', sortable: true},
     {name: 'retail_shop.name', 'label': 'Shop', nested: true}
   ];
+  title: string = '';
 
   constructor(
+    private _titleService: Title,
     private _tagService: TagsService,
     private _dialogService: TdDialogService) {
   }
 
   ngAfterViewInit(): void {
-
+    this._titleService.setTitle('Tag');
+    this.title = 'Tag';
   }
 
   filter = (): RESTService<any> => {

@@ -5,6 +5,7 @@ import {RESTService} from "@covalent/http";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {Observable} from "rxjs";
 import {DistributorService, Distributor} from "../../../services/items.service";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -19,13 +20,17 @@ export class DistributorComponent implements AfterViewInit {
     {name: 'name', label: 'Name', sortable: true},
     {name: 'retail_shop.name', 'label': 'Shop', nested: true}
   ];
+  title: string;
 
   constructor(
+    private _titleService: Title,
     private _distributorService: DistributorService,
     private _dialogService: TdDialogService) {
   }
 
   ngAfterViewInit(): void {
+    this._titleService.setTitle('Distributor');
+    this.title = 'Distributor';
 
   }
 

@@ -1,5 +1,6 @@
-<td-layout-nav logo="assets:logo" class="bgc-white-5" toolbarTitle="Postica">
+<td-layout-nav logo="assets:logo" class="bgc-white-5" >
   <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span hide-xs>Postica</span>
     <span flex></span>
     <app-user></app-user>
   </div>
@@ -7,30 +8,30 @@
 
 
   <div td-toolbar-button layout="row" class="bgc-white-4 md-shadow-bottom-z-1 push-sm" layout-wrap="">
-    <div layout="row" layout-align="center center" flex>
+    <div layout="row" layout-align="center center" flex="">
       <app-back-button></app-back-button>
     </div>
 
 
-    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(1)" flex>Tags</button>
-    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(2)" flex>Brands</button>
-    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(3)" flex>Distributors</button>
-    <button md-button="" color="primary" flex class="font-bold-600" (click)="toggleFilter(4)" flex>Salts</button>
+    <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(1)">Tags</button>
+    <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(2)">Brands</button>
+    <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(3)">Distributors</button>
+    <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(4)">Salts</button>
 
     <div class="filter-card-parent" [hidden]="filterType!=1">
-      <md-card flex="70">
+      <md-card  flex-xs="33" flex-gt-xs="100">
         <md-card-title class="font-bold-500">Tags</md-card-title>
         <md-divider></md-divider>
         <md-card-content class="md-content filter-card-height">
           <div layout="" layout-wrap="" layout-align="start">
             <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="40"
+                            [alwaysVisible]="true" flex="100"
                             (search)="term = $event" (clear)="term = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-tag ngFor [ngForOf]="tags | filter: term">
-              <div layout="row" layout-wrap="" flex="20">
+              <div layout="row" layout-wrap="" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
               <input layout-padding="" type="checkbox" [value]="tag.name" class="push-sm"
                            [checked]="checkTag(tag)" (change)="toggleTag(tag)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{tag.name |truncate:15}}</span>
@@ -46,19 +47,19 @@
       </md-card>
     </div>
     <div class="filter-card-parent" [hidden]="filterType!=2">
-      <md-card flex="70">
+      <md-card flex-xs="33" flex-gt-xs="100">
         <md-card-title class="font-bold-500">Brands</md-card-title>
         <md-divider></md-divider>
         <md-card-content class="md-content filter-card-height">
           <div layout="" layout-wrap="" layout-align="start">
             <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="40"
+                            [alwaysVisible]="true" flex="100"
                             (search)="term = $event" (clear)="term = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-brand ngFor [ngForOf]="brands | filter: term">
-              <div layout="row" flex="20">
+              <div layout="row" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
                 <input class="push-sm"  [checked]="checkBrand(brand.id)" type="checkbox"
                        (change)="toggleBrand(brand.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{brand.name |truncate:15}}</span>
@@ -74,19 +75,19 @@
       </md-card>
     </div>
     <div class="filter-card-parent" [hidden]="filterType!=3">
-      <md-card flex="70">
+      <md-card flex-xs="33" flex-gt-xs="100" class="filter-card">
         <md-card-title class="font-bold-500">Distributor</md-card-title>
         <md-divider></md-divider>
         <md-card-content class="md-content filter-card-height">
           <div layout="" layout-wrap="" layout-align="start">
             <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="40"
+                            [alwaysVisible]="true" flex="100"
                             (search)="termD = $event" (clear)="termD = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-distributor ngFor [ngForOf]="distributors | filter: termD">
-              <div layout="row" flex="20">
+              <div layout="row" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
                 <input class="push-sm"  [checked]="checkDistributor(distributor.id)" type="checkbox" [value]="distributor.name"
                        (change)="toggleDistributor(distributor.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{distributor.name |truncate:15}}</span>
@@ -102,19 +103,19 @@
       </md-card>
     </div>
     <div class="filter-card-parent" [hidden]="filterType!=4">
-      <md-card class="filter-card" flex="70">
+      <md-card class="filter-card" flex-xs="33" flex-gt-xs="100">
         <md-card-title class="font-bold-500">Salts</md-card-title>
         <md-divider></md-divider>
         <md-card-content class="md-content filter-card-height">
           <div layout="" layout-wrap="" layout-align="start">
             <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="40"
+                            [alwaysVisible]="true" flex="100"
                             (search)="term = $event" (clear)="term = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-salt ngFor [ngForOf]="salts | filter: term">
-              <div layout="row" flex="20">
+              <div layout="row" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
                 <input class="push-sm"  [checked]="checkSalt(salt.id)" type="checkbox"
                        (change)="toggleSalt(salt.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{salt.name |truncate:15}}</span>
@@ -129,27 +130,27 @@
         </md-card-actions>
       </md-card>
     </div>
-    <span flex></span>
-    <div flex="30">
+    <span flex hide-xs></span>
+    <div flex-gt-xs="30" flex-xs="70">
       <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
                      [alwaysVisible]="true"
                      (search)="searchInputTerm = $event" (clear)="searchInputTerm = null">
       </td-search-box>
     </div>
-    <span flex></span>
-    <!--<button md-button class="font-bold-500" flex="10"-->
-            <!--layout-margin="" (click)="checkOut()">-->
-        <!--<span  class="tc-accent md-title font-bold-500">-->
-        <!--{{cart?.total - cart?.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/- -->
-        <!--</span>-->
-    <!--</button>-->
-    <div class="pad-xs" layout="row" layout-align="center">
-      <button md-raised-button="" color="accent" class="font-bold-600" flex="45"
+    <span flex hide-xs></span>
+    <button md-button class="font-bold-500" flex-xs="40" hide-gt-xs=""
+            layout-margin="" (click)="checkOut()">
+        <span  class="tc-accent md-title font-bold-500">
+        {{cart?.total - cart?.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
+        </span>
+    </button>
+    <div class="" layout="row" layout-align="end" flex-gt-xs="20" flex-xs="60">
+      <button md-raised-button="" color="accent" class="font-bold-600" flex="50" style="border-radius: 0"
               layout-margin="" (click)="quickCheckOut()" [disabled]="!cart?.items.length">
         <md-icon class="md-24">add_shopping_cart</md-icon>
       </button>
-      <span class="pad"></span>
-      <button md-raised-button="" color="primary" class="font-bold-600" flex="45" [disabled]="!cart?.items.length"
+      <button md-raised-button="" color="primary" class="font-bold-600" flex="50"
+              style="border-radius: 0" [disabled]="!cart?.items.length"
               layout-margin="" (click)="checkOut()">
         <md-icon class="md-24">account_box</md-icon>
       </button>
@@ -160,17 +161,18 @@
 
 
   <div layout="row" layout-wrap="" class="push-sm" flex>
-    <div layout="row" layout-wrap="" flex="" layout-align="start">
+    <div layout="row" layout-wrap="" flex layout-align="start">
       <!--<div class="md-content md-shadow-bottom-z-1" flex="100" md-scroll-y="" layout-fill="" layout="row" layout-wrap=""-->
       <!--layout-align="center center">-->
       <template let-product ngFor let-last
                 [ngForOf]="products  | filter: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |  productDistributor: selectedDistributors|
-                    productSalt: selectedSalts | paginate : {itemsPerPage: 48, currentPage: p}">
+                    productSalt: selectedSalts | paginate : {itemsPerPage: itemsPerPage, currentPage: p}">
 
-        <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1" flex="15"
+        <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1"
              layout="row" layout-wrap="" layout-align="center start"
-             [ngClass]="{'out-of-stock': product.available_stock<1}" *ngIf="!product.is_disabled">
+             [ngClass]="{'out-of-stock': product.available_stock<1}" *ngIf="!product.is_disabled"
+             flex-xs="30" flex-sm="33" flex-gt-md="15">
           <div flex="100" layout="row">
             <div flex="90" layout="column" class="pad-xs product-click text-center"
                  (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">
@@ -193,7 +195,7 @@
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
     </div>
-    <div layout="column" flex="20" flex-gt-lg-auto="">
+    <div layout="column"  flex="20" flex-gt-lg="25" flex-gt-sm="25" flex-sm="50" flex-xs="100">
       <div class="md-content bgc-white-4 pad-xs" md-scroll-y="" flex-grow>
         <md-list >
           <template let-item ngFor let-last [ngForOf]="cart?.items">

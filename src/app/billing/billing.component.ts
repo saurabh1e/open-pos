@@ -4,13 +4,14 @@ import {RetailShop} from "../../services/shop.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IndexDBServiceService} from "../../services/indexdb.service";
 import {Order, OrdersService} from "../../services/orders.service";
-import {TdDialogService, TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
+import {TdDialogService, TdLoadingService, LoadingType, LoadingMode, TdMediaService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialogConfig, MdSnackBar} from "@angular/material";
 import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 import {stringify} from "@angular/core/src/facade/lang";
+import {async} from "@angular/core/testing";
 
 @Component({
   selector: 'billing',
@@ -36,6 +37,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   selectedBrands: string[] = [];
   selectedDistributors: string[] = [];
   config = <MdDialogConfig>{height: '70%', width: '70%'};
+  itemsPerPage: number = 48;
 
 
   constructor(
@@ -47,6 +49,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
               private _activatedRoute: ActivatedRoute,
               private _loadingService: TdLoadingService,
               private _indexDb: IndexDBServiceService,
+              public media: TdMediaService,
               private _router: Router) {
     this._loadingService.create({
       name: 'billing',
@@ -72,6 +75,42 @@ export class BillingComponent implements AfterViewInit, OnInit {
         })
       }
     });
+    this.media.registerQuery('xs').subscribe((data: boolean)=>{
+      if (data) {
+        console.log(data);
+        this.itemsPerPage = 12;
+        this._cd.markForCheck();
+      }
+    });
+    this.media.registerQuery('sm').subscribe((data: boolean)=>{
+      if (data) {
+        console.log(data);
+        this.itemsPerPage = 24;
+        this._cd.markForCheck();
+      }
+    });
+    this.media.registerQuery('md').subscribe((data: boolean)=>{
+      if (data) {
+        console.log(data);
+        this.itemsPerPage = 36;
+        this._cd.markForCheck();
+      }
+    });
+    this.media.registerQuery('lg').subscribe((data: boolean)=>{
+      if (data) {
+        console.log(data);
+        this.itemsPerPage = 48;
+        this._cd.markForCheck();
+      }
+    });
+    this.media.registerQuery('gt-lg').subscribe((data: boolean)=>{
+      if (data) {
+        console.log(data);
+        this.itemsPerPage = 54;
+        this._cd.markForCheck();
+      }
+    });
+    this.media.broadcast();
   }
 
   set distributors(data: Distributor[]) {
@@ -250,7 +289,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     })
   }
   checkOut(): void {
-    let _dialog = this._dialogService.open(CheckoutComponent);
+    let _dialog = this._dialogService.open(CheckoutComponent,  <MdDialogConfig>{ width: '80%'});
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       if (data){

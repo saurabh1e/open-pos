@@ -1,5 +1,7 @@
 <td-layout-nav-list logo="assets:logo" toolbarTitle="Postica"
-                    class="bgc-white-1">
+                    [opened]="media.registerQuery('gt-sm') | async"
+                    [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'over'"
+                    class="bgc-white-1"  [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '200px' : '100%'">
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
     <span>Stocks</span>
@@ -43,7 +45,7 @@
        [routerLinkActive]="['active']"
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/stock/bills']">
-      <span class="tc-grey-800 font-bold-600">BILLS</span>
+      <span class="tc-grey-800 font-bold-600">PURCHASE HISTORY</span>
     </a>
     <md-divider flex="" class=" push-top-lg bgc-blue-100"></md-divider>
     <div class="push-top-lg" layout-align="center center" layout="row">

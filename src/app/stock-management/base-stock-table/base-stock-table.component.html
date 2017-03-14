@@ -1,4 +1,4 @@
-<div class=" bgc-white-4 push-sm table" flex="100" layout-wrap="" layout="row">
+<div class=" bgc-white-4 push-sm table" flex="100" layout-wrap="" layout="row" layout-align="center">
 
   <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" flex="100">
       <span class="push-left-sm">
@@ -36,9 +36,11 @@
       </td>
     </tr>
   </table>
+  <div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm md-shadow-bottom-z-1"
+       layout-align="center center" flex="100">
+    <td-paging-bar [pageSizes]="[50, 75, 100]" [total]="filteredTotal"
+                   (change)="page($event)"></td-paging-bar>
+  </div>
 
-</div>
-<div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm md-shadow-bottom-z-1"  layout-align="center center">
-  <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal"
-                 (change)="page($event)"></td-paging-bar>
+
 </div>

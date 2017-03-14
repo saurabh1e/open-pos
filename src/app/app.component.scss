@@ -39,4 +39,26 @@
     background: #f4f4f4!important;
     width: 200px;
   }
+  .small-button {
+    box-shadow: none;
+    background: transparent;
+    border: 0;
+  }
+  .pagination {
+    position: fixed;
+    bottom: 0;
+    z-index: 3;
+    font-size: 14px;
+
+  }
+  .md-fab-position-bottom-right {
+    bottom: 10px;
+    position: fixed;
+
+  }
+  .table {
+    margin-bottom: 75px;
+    overflow: overlay;
+  }
+
 }
