@@ -32,6 +32,12 @@ export class DistributorFormComponent implements OnInit {
     this._shopService.shops$.subscribe((data) => {
       this.shops = data;
     });
+    if (!this.distributor.emails) {
+      this.distributor.emails = [];
+    }
+    if (!this.distributor.phone_numbers) {
+      this.distributor.phone_numbers = [];
+    }
     this.distributorCopy = Object.assign({}, this.distributor);
   }
   cancelState(): void {

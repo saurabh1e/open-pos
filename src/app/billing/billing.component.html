@@ -1,10 +1,9 @@
-<td-layout-nav logo="assets:logo" class="bgc-white-5" >
+<td-layout-nav logo="assets:logo" class="bgc-white-5">
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span hide-xs>Postica</span>
     <span flex></span>
     <app-user></app-user>
   </div>
-
 
 
   <div td-toolbar-button layout="row" class="bgc-white-4 md-shadow-bottom-z-1 push-sm" layout-wrap="">
@@ -15,27 +14,29 @@
 
     <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(1)">Tags</button>
     <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(2)">Brands</button>
-    <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(3)">Distributors</button>
+    <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(3)">Distributors
+    </button>
     <button md-button="" color="primary" flex-gt-xs="" class="font-bold-600" (click)="toggleFilter(4)">Salts</button>
 
     <div class="filter-card-parent" [hidden]="filterType!=1">
-      <md-card  flex-xs="33" flex-gt-xs="100">
+      <md-card flex-xs="33" flex-gt-xs="100">
         <md-card-title class="font-bold-500">Tags</md-card-title>
         <md-divider></md-divider>
-        <md-card-content class="md-content filter-card-height">
+        <md-card-content class="md-content filter-card-height"
+                         [ngClass]="{'filter-card-mobile': media.registerQuery('xs') | async}">
           <div layout="" layout-wrap="" layout-align="start">
-            <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="100"
-                            (search)="term = $event" (clear)="term = null">
+            <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
+                           [alwaysVisible]="true" flex="100"
+                           (search)="term = $event" (clear)="term = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-tag ngFor [ngForOf]="tags | filter: term">
-              <div layout="row" layout-wrap="" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
-              <input layout-padding="" type="checkbox" [value]="tag.name" class="push-sm"
-                           [checked]="checkTag(tag)" (change)="toggleTag(tag)"/>
+              <label layout="row" layout-wrap="" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
+                <input layout-padding="" type="checkbox" [value]="tag.name" class="push-sm"
+                       [checked]="checkTag(tag)" (change)="toggleTag(tag)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{tag.name |truncate:15}}</span>
-              </div>
+              </label>
             </template>
           </div>
         </md-card-content>
@@ -50,20 +51,21 @@
       <md-card flex-xs="33" flex-gt-xs="100">
         <md-card-title class="font-bold-500">Brands</md-card-title>
         <md-divider></md-divider>
-        <md-card-content class="md-content filter-card-height">
+        <md-card-content class="md-content filter-card-height"
+                         [ngClass]="{'filter-card-mobile': media.registerQuery('xs') | async}">
           <div layout="" layout-wrap="" layout-align="start">
-            <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="100"
-                            (search)="term = $event" (clear)="term = null">
+            <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
+                           [alwaysVisible]="true" flex="100"
+                           (search)="term = $event" (clear)="term = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-brand ngFor [ngForOf]="brands | filter: term">
-              <div layout="row" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
-                <input class="push-sm"  [checked]="checkBrand(brand.id)" type="checkbox"
+              <label layout="row" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
+                <input class="push-sm" [checked]="checkBrand(brand.id)" type="checkbox"
                        (change)="toggleBrand(brand.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{brand.name |truncate:15}}</span>
-              </div>
+              </label>
             </template>
           </div>
         </md-card-content>
@@ -78,20 +80,22 @@
       <md-card flex-xs="33" flex-gt-xs="100" class="filter-card">
         <md-card-title class="font-bold-500">Distributor</md-card-title>
         <md-divider></md-divider>
-        <md-card-content class="md-content filter-card-height">
+        <md-card-content class="md-content filter-card-height"
+                         [ngClass]="{'filter-card-mobile': media.registerQuery('xs') | async}">
           <div layout="" layout-wrap="" layout-align="start">
-            <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="100"
-                            (search)="termD = $event" (clear)="termD = null">
+            <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
+                           [alwaysVisible]="true" flex="100"
+                           (search)="termD = $event" (clear)="termD = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-distributor ngFor [ngForOf]="distributors | filter: termD">
-              <div layout="row" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
-                <input class="push-sm"  [checked]="checkDistributor(distributor.id)" type="checkbox" [value]="distributor.name"
+              <label layout="row" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
+                <input class="push-sm" [checked]="checkDistributor(distributor.id)" type="checkbox"
+                       [value]="distributor.name"
                        (change)="toggleDistributor(distributor.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{distributor.name |truncate:15}}</span>
-              </div>
+              </label>
             </template>
           </div>
         </md-card-content>
@@ -106,20 +110,21 @@
       <md-card class="filter-card" flex-xs="33" flex-gt-xs="100">
         <md-card-title class="font-bold-500">Salts</md-card-title>
         <md-divider></md-divider>
-        <md-card-content class="md-content filter-card-height">
+        <md-card-content class="md-content filter-card-height"
+                         [ngClass]="{'filter-card-mobile': media.registerQuery('xs') | async}">
           <div layout="" layout-wrap="" layout-align="start">
-            <td-search-box  backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
-                            [alwaysVisible]="true" flex="100"
-                            (search)="term = $event" (clear)="term = null">
+            <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
+                           [alwaysVisible]="true" flex="100"
+                           (search)="term = $event" (clear)="term = null">
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
             <template let-salt ngFor [ngForOf]="salts | filter: term">
-              <div layout="row" flex-xs="33" flex-gt-sm="25"  flex-gt-lg="10">
-                <input class="push-sm"  [checked]="checkSalt(salt.id)" type="checkbox"
+              <label layout="row" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
+                <input class="push-sm" [checked]="checkSalt(salt.id)" type="checkbox"
                        (change)="toggleSalt(salt.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{salt.name |truncate:15}}</span>
-              </div>
+              </label>
             </template>
           </div>
         </md-card-content>
@@ -140,7 +145,7 @@
     <span flex hide-xs></span>
     <button md-button class="font-bold-500" flex-xs="40" hide-gt-xs=""
             layout-margin="" (click)="checkOut()">
-        <span  class="tc-accent md-title font-bold-500">
+        <span class="tc-accent md-title font-bold-500">
         {{cart?.total - cart?.auto_discount ||0 | currency:'INR':true:'1.2-2'}}/-
         </span>
     </button>
@@ -177,7 +182,7 @@
             <div flex="90" layout="column" class="pad-xs product-click text-center"
                  (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">
               <span class="tc-primary md-caption font-bold-500" [md-tooltip]="product.name">
-              {{product.name | truncate: 30}}
+              {{product.name | truncate: 30: true}}
               </span>
             </div>
             <span (click)="showInfo(product)" class="info-click pad-top-xs pad-right-xs"><md-icon
@@ -192,53 +197,65 @@
       </template>
 
       <div flex="100" layout="row" layout-align="center center" class=" tc-grey-700">
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        <pagination-controls (pageChange)="p = $event" [maxSize]="(media.registerQuery('xs')|async)?3:9"
+                             directionLinks="true"
+                             autoHide="true"
+        ></pagination-controls>
       </div>
     </div>
-    <div layout="column"  flex="20" flex-gt-lg="25" flex-gt-sm="25" flex-sm="50" flex-xs="100">
-      <div class="md-content bgc-white-4 pad-xs" md-scroll-y="" flex-grow>
-        <md-list >
+    <div layout="column" flex="20" flex-gt-lg="25" flex-xl="20" flex-md="30"  flex-gt-sm="30" flex-sm="50" flex-xs="100">
+      <div class="md-content bgc-white-4 " md-scroll-y="" flex-grow>
+        <md-list>
           <template let-item ngFor let-last [ngForOf]="cart?.items">
-            <div layout="row" layout-wrap="" class="pad-xs product-list">
-              <span md-line flex="50" class="tc-grey-700 md-body-2">{{item.name |truncate: 20}}</span>
-              <span flex="5"></span>
-              <span class="pad-left md-body-1 tc-grey-500" flex="20">
-                <input md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity" class="text-right"
-                       (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
+            <div layout="row" layout-wrap="" class="push-sm product-list">
+              <span md-line flex="55" class="tc-grey-700 md-body-2"
+                    style="word-break: break-all">
+                {{item.name |truncate: 20}}
               </span>
-              <span flex="25" class="md-body-1 tc-accent " layout="row" layout-align="start">
-                {{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-
+              <div layout="row" layout-wrap="" flex="45">
+                <button md-icon-button="" class="bgc-white-1 pull-top-sm " flex="20"
+                        (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity+item.default_quantity)">
+                  <md-icon class="bgc-accent md-24" color="accent">add_circle_outline</md-icon>
+                </button>
+                <span flex></span>
+                <md-input-container class="md-body-2 tc-grey-700 pull-top" flex="50">
+                  <input md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity"
+                         class="text-center" [step]="item.default_quantity"
+                         (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
+                </md-input-container>
+                <span flex></span>
+                <button md-icon-button="" class="bgc-white-1 pull-top-sm" flex="20"
+                        (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity-item.default_quantity)">
+                  <md-icon class="bgc-accent md-24" color="accent">remove_circle_outline</md-icon>
+                </button>
+              </div>
+            </div>
+            <div layout="row" layout-wrap="" class="push-bottom-sm bgc-blue-100">
+              <del  flex class="md-body-1 tc-grey-600" layout="row" layout-align="center center">
+              {{item.total_price | currency:'INR':true:'1.2-2'}}/-
+              </del>
+              <span flex class="md-body-1 tc-accent" layout="row" layout-align="center center">
+              {{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-
               </span>
-              <span flex></span>
+              <span class="push-sm">
+                <button md-icon-button="" class="bgc-white-1" md-tooltip="discount"
+                        (click)="discountItem(item.product_id, item.stock_id, item.discount)">
+                <md-icon class="tc-warn">money_off</md-icon>
+              </button>
+              </span>
+              <span class="push-sm">
+              <button md-icon-button="" class="bgc-white-1 push-sm" md-tooltip="remove"
+                      (click)="removeProduct(item.product_id, item.stock_id)">
+                <md-icon class="tc-warn">close</md-icon>
+              </button>
+              </span>
             </div>
-            <div layout="row" layout-wrap="" class="pad-xs bgc-blue-100">
-              <button md-icon-button="" class="bgc-white-1"
-                      (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity+1)">
-                <md-icon class=" tc-grey-600">keyboard_arrow_up</md-icon>
-              </button>
-              <span flex></span>
-              <button md-icon-button="" class="bgc-white-1"
-                      (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity-1)">
-                <md-icon class=" tc-grey-600">keyboard_arrow_down</md-icon>
-              </button>
-              <span flex></span>
-              <button md-icon-button="" class="bgc-white-1" (click)="discountItem(item.product_id, item.stock_id,
-              item.discount)">
-                <md-icon class=" tc-grey-600">money_off</md-icon>
-              </button>
-              <span flex></span>
-              <button md-icon-button="" class="bgc-white-1" (click)="removeProduct(item.product_id, item.stock_id)">
-                <md-icon class=" tc-grey-600">remove</md-icon>
-              </button>
-
-            </div>
-            <!--<md-divider *ngIf="!!last"></md-divider>-->
           </template>
         </md-list>
       </div>
       <div class="bgc-white-4 md-content pad-sm tc-grey-700 md-caption font-bold-500" flex="35"
            md-scroll-y="" layout="row"
-           layout-wrap="" >
+           layout-wrap="">
         <div flex="100" layout-wrap="" layout="row" class="font-bold-500">
 
           <span>Sub Total</span>
@@ -258,7 +275,7 @@
           <span flex></span>
           <span>{{cart?.auto_discount | currency:'INR':true:'1.2-2'}}</span>
         </div>
-        <div flex="100" layout-wrap="" layout="row" class="font-bold-500" >
+        <div flex="100" layout-wrap="" layout="row" class="font-bold-500">
           <label>Add. %</label>
           <span flex></span>
           <input md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value"

@@ -13,9 +13,12 @@ export interface Product {
   description?: {key:string, value: string}[],
   sub_description: string;
   is_disabled: boolean;
+  is_loose: boolean;
   id: string,
+  quantity_label: string,
   min_stock: number,
   mrp: number,
+  default_quantity: number,
   last_selling_amount?: number;
   stock_required?: number;
   last_purchase_amount?: number
@@ -40,6 +43,8 @@ export interface Stock {
   purchase_amount: number;
   purchase_date: Date;
   selling_amount: number;
+  quantity_label: string,
+  is_loose: boolean;
   units_purchased: number;
   units_sold: number,
   product_id: string;
@@ -85,6 +90,8 @@ export interface Distributor {
   name: string
   retail_shop_id?: string;
   retail_shop?: RetailShop;
+  phone_numbers?: number[];
+  emails?: string[];
 }
 
 export interface Brand {

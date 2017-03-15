@@ -18,7 +18,10 @@ export class DistributorComponent implements AfterViewInit {
 
   columns: TdDataTableColumn[] = [
     {name: 'name', label: 'Name', sortable: true},
+    {name: 'phone_numbers', label: 'Numbers'},
+    {name: 'emails', label: 'Emails'},
     {name: 'retail_shop.name', 'label': 'Shop', nested: true}
+
   ];
   title: string;
 

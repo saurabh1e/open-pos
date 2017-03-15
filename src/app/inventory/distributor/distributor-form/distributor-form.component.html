@@ -24,6 +24,16 @@
           <input md-input [value]="distributor.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
         </md-input-container>
       </div>
+      <div layout-margin="" layout="row">
+        <td-chips placeholder="Enter Emails" name="emails" flex [(ngModel)]="distributor.emails">
+        </td-chips>
+      </div>
+      <div layout-margin="" layout="row">
+
+        <td-chips placeholder="Enter Numbers" type="number" name="numbers" flex [(ngModel)]="distributor.phone_numbers">
+        </td-chips>
+
+      </div>
 
 
     </form>

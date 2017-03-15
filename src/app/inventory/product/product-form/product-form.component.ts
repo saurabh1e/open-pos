@@ -40,7 +40,6 @@ export class ProductFormComponent implements OnInit {
               public dialogRef: MdDialogRef<ProductFormComponent>,
               private _shopService: RetailShopsService,
               private _tagService: TagsService,
-              private _dialogService: TdDialogService,
               private _loadingService: TdLoadingService) {
     this._loadingService.create({
       name: 'product-form',

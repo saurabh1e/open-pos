@@ -264,20 +264,26 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
 
   addProduct(product: Product, stock: Stock, qty?:number): void {
+    console.log(product);
     if (!stock)
         return;
     this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart)=>{
       this.cart = cart;
+      this._cd.markForCheck();
     })
   }
   updateProductQuantity(productId: string, stockId: string, qty?: number): void {
+    console.log(qty);
     this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart)=>{
       this.cart = cart;
+      console.log(cart);
+      this._cd.markForCheck();
     })
   }
   removeProduct(productId: string, stockId: string): void {
     this._cartService.removeProduct(this.cart.local_id, productId, stockId).then((cart)=>{
       this.cart = cart;
+      this._cd.markForCheck();
     })
   }
 

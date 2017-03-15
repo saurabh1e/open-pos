@@ -5,7 +5,7 @@ import {
   TdLoadingService,
   LoadingType,
   LoadingMode,
-  IPageChangeEvent
+  IPageChangeEvent, TdMediaService
 } from "@covalent/core";
 import {TdDataTableColumn} from "../td-data-table-column";
 import {Order} from "../../services/orders.service";
@@ -29,7 +29,7 @@ export class StaffComponent implements OnInit, OnDestroy {
     {name: 'email', label: 'Email', sortable: true, nested: true},
     {name: 'mobile_number', label: 'Number', sortable: true, nested: true},
     {name: 'active', label: 'Active'},
-    {name: 'login_count', label: 'Login\'s', format: v => v.toFixed(2)},
+    {name: 'login_count', label: 'Login Count'},
     {
       name: 'last_login_at',
       label: 'Last Login',
@@ -43,8 +43,6 @@ export class StaffComponent implements OnInit, OnDestroy {
     {name: 'created_on', label: 'Added On', format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')},
   ];
 
-  ngOnInit() {
-  }
 
   filteredData: IUser[] = [];
   filteredTotal: number = 0;
@@ -61,6 +59,7 @@ export class StaffComponent implements OnInit, OnDestroy {
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
   constructor(private _titleService: Title,
+              public media: TdMediaService,
               private _loadingService: TdLoadingService,
               private _userService: UsersService,
               private _dialogService: TdDialogService) {
@@ -72,6 +71,9 @@ export class StaffComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnInit() {
+  }
+
   ngAfterViewInit(): void {
     this._titleService.setTitle('Staff');
     this.title = 'Staff';
@@ -81,6 +83,7 @@ export class StaffComponent implements OnInit, OnDestroy {
       this.user = data;
       this.filter();
     });
+    this.media.broadcast();
   }
 
   ngOnDestroy() {

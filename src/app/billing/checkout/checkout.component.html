@@ -41,8 +41,8 @@
 
       <div flex="100" class="pad"></div>
       <div layout="row" layout-wrap="" layout-align="center center">
-        <template let-denomination ngFor [ngForOf]="denominationArray | keys">
-          <button md-button="" class="bgc-grey-100" flex="33" layout-padding=""
+        <template let-denomination ngFor [ngForOf]="denominationArray | keys" class="push-sm">
+          <button md-button="" class="bgc-grey-100" flex="30" layout-padding=""
                   (click)="denomination.value=1+denomination.value" layout-margin="">
             {{denomination.key}}
             <small>&nbsp;({{denomination.value}})</small>

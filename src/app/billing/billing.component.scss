@@ -1,6 +1,13 @@
 .filter-card-height{
-  max-height: 200px;
-  //min-width: 750px;
+  max-height: 400px;
+  min-width: 710px;
+  max-width: 710px;
+}
+
+.filter-card-mobile{
+  max-height: 300px;
+  min-width: 300px;
+  max-width: 300px;
 }
 
 .filter-card-parent{

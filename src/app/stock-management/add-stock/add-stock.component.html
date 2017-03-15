@@ -96,12 +96,15 @@
 
           <template ngFor [ngForOf]="stocks" let-item let-i="index">
             <div layout="row" layout-wrap="" flex="100" >
-              <md-input-container flex layout-margin>
-                <input md-input [disabled]="true" [readOnly]="true" [value]="item.product.name" />
+              <md-input-container flex="30" layout-margin>
+                <input md-input [disabled]="true" [readOnly]="true" [value]="item.product.name | truncate: 40" />
               </md-input-container>
-              <md-input-container flex layout-margin>
+              <md-input-container flex="10" layout-margin>
                 <input md-input  placeholder="Enter Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
                        [(ngModel)]="item.units_purchased" min="0" />
+              </md-input-container>
+              <md-input-container flex="5" layout-margin>
+                <input md-input [value]="item.quantity_label" [readOnly]="true" />
               </md-input-container>
               <md-input-container flex layout-margin>
                 <input md-input  placeholder="Enter Purchase Amount" type="number" [name]="'purchase_amount'+i"

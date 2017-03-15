@@ -127,9 +127,12 @@ export class KeysPipe implements PipeTransform {
 })
 
 export class TruncatePipe implements PipeTransform{
-  transform(value: string, arg1: number) : string {
+  transform(value: string, arg1: number, arg2?: boolean) : string {
     let limit = arg1 || 10;
-    let trail = '...';
+    let trail = '';
+    if (arg2) {
+      trail = '...';
+    }
     return value.length > limit ? value.substring(0, limit) + trail : value;
   }
 }

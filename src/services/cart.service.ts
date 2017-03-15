@@ -84,6 +84,8 @@ export class CartService {
     item.discount = product.auto_discount;
     item.unit_price = stock.selling_amount;
     item.max_units = stock.units_purchased-stock.units_sold;
+    item.default_quantity = product.default_quantity?product.default_quantity:product.is_loose?0.1:1;
+    item.is_loose = product.is_loose;
     item.quantity = qty&&qty<=item.max_units?qty:1;
     item.stock_id = stock.id;
     item.taxes = [];

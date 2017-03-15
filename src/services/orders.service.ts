@@ -42,6 +42,7 @@ export interface Item {
   unit_price: number;
   quantity: number;
   discount: number;
+  default_quantity: number;
   order_id: string;
   stock_id: string;
   discounted_total_price: number;
@@ -50,6 +51,7 @@ export interface Item {
   taxes: ItemTax[];
   total_price: number;
   is_combo: boolean;
+  is_loose: boolean;
   discount_amount: number;
   max_units: number;
 

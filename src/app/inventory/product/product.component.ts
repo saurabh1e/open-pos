@@ -33,8 +33,14 @@ export class ProductComponent implements AfterViewInit {
       sortable: false,
       editable: true
     },
+    {
+      name: 'default_quantity',
+      label: 'Def. Qty',
+      numeric: true,
+      format: v => v?v.toFixed(2):1,
+    },
     {name: 'retail_shop.name', label: 'Shop', sortable: false},
-    {name: 'available_stock', label: 'Stock', numeric: true, sortable: false},
+    {name: 'available_stock', label: 'Stock', numeric: true, sortable: true},
     {name: 'min_stock', label: 'Min.Qty', numeric: true, sortable: true},
   ];
 

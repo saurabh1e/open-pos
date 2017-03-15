@@ -50,7 +50,7 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   shopSub: Subscription;
   currentPage: number = 1;
   pageSize: number = 50;
-  sortBy: string = 'id';
+  sortBy: string = 'name';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Ascending;
 
   constructor(private _loadingService: TdLoadingService,
