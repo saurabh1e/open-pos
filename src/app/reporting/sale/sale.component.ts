@@ -130,17 +130,15 @@ export let multi: any = [
 })
 export class SaleComponent implements OnInit {
 
-  // Chart
   single: any[];
   multi: any[];
-  days: number;
 
   view: any[] = [700, 400];
 
   // options
   showXAxis: boolean = true;
   showYAxis: boolean = true;
-  gradient: boolean = true;
+  gradient: boolean = false;
   showLegend: boolean = false;
   showXAxisLabel: boolean = true;
   xAxisLabel: string = '';
@@ -148,16 +146,20 @@ export class SaleComponent implements OnInit {
   yAxisLabel: string = 'Sales';
 
   colorScheme: any = {
-    domain: ['#1565C0', '#03A9F4', '#FFA726', '#FFCC80'],
+    domain: ['#9575CD', '#4FC3F7', '#4DD0E1', '#4DB6AC', '#66BB6A', '#9CCC65'],
+  };
+
+  colorSchemeDark: any = {
+    domain: ['#5E35B1', '#0277BD', '#00695C', '#558B2F', '#9E9D24'],
   };
 
   // line, area
   autoScale: boolean = true;
 
-  constructor( ) {
-    // Chart Single
+  constructor() {
+    // Cards
     Object.assign(this, {single});
-    // Chart Multi
+    // Chart
     this.multi = multi.map((group: any) => {
       group.series = group.series.map((dataItem: any) => {
         dataItem.name = new Date(dataItem.name);
@@ -167,11 +169,7 @@ export class SaleComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit(){
 
-  getInterVal(): number{
-    return 5
   }
-
 }

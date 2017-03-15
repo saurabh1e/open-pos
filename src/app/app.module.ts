@@ -74,6 +74,8 @@ import {CustomerDetailComponent} from "./reporting/customer/customer-detail/cust
 import {OrderDetailComponent} from "./reporting/order/order-detail/order-detail.component";
 import {StaffComponent} from "./staff/staff.component";
 import {StaffDetailComponent} from "./staff/staff-detail/staff-detail.component";
+import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
+import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -114,6 +116,8 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     OrderComponent,
     DistributorBillComponent,
     CustomerComponent,
+    CustomerReportComponent,
+    StockReportComponent,
     StaffComponent,
     StaffDetailComponent,
     ProductFormComponent,

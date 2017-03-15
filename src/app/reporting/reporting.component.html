@@ -1,7 +1,7 @@
 <td-layout-nav-list logo="assets:logo" toolbarTitle="Postica"
-                    [opened]="media.registerQuery('gt-md') | async"
-                    [mode]="(media.registerQuery('gt-md') | async) ? 'side' : 'over'"
-                    class="bgc-white-1"  [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '200px' : '100%'">
+                    [opened]="false"
+                    [mode]="'over'"
+                    class="bgc-white-1">
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
     Reporting
@@ -16,7 +16,21 @@
        [routerLinkActive]="['active']"
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/reporting/sales']">
-      <span class="tc-grey-800 font-bold-600">Sales</span>
+      <span class="tc-grey-800 font-bold-600">Sales Report</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/reporting/sales']">
+      <span class="tc-grey-800 font-bold-600">Stock Report</span>
+    </a>
+    <a md-list-item
+       md-ripple class="block relative"
+       [routerLinkActive]="['active']"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/reporting/sales']">
+      <span class="tc-grey-800 font-bold-600">Customer Report</span>
     </a>
     <a md-list-item
        md-ripple class="block relative"

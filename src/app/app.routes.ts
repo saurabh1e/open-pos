@@ -23,6 +23,8 @@ import {AddStockComponent} from "./stock-management/add-stock/add-stock.componen
 import {StockComponent} from "./stock-management/stock/stock.component";
 import {DistributorBillComponent} from "./stock-management/distributor-bill/distributor-bill.component";
 import {StaffComponent} from "./staff/staff.component";
+import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
+import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
 
 
 const routes: Routes = [
@@ -63,6 +65,8 @@ const routes: Routes = [
     children: [
       {path: 'sales', component: SaleComponent},
       {path: 'orders', component: OrderComponent},
+      {path: 'stock-report', component: StockReportComponent},
+      {path: 'customer-report', component: CustomerReportComponent},
       {path: 'customers', component: CustomerComponent},
     ]
   },
