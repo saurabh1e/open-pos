@@ -264,7 +264,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
 
   addProduct(product: Product, stock: Stock, qty?:number): void {
-    console.log(product);
     if (!stock)
         return;
     this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart)=>{

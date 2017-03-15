@@ -180,7 +180,9 @@
              flex-xs="30" flex-sm="33" flex-gt-md="15">
           <div flex="100" layout="row">
             <div flex="90" layout="column" class="pad-xs product-click text-center"
-                 (click)="addProduct(product, product.available_stocks[0])" layout-align="center center">
+                 (click)="addProduct(product, product.available_stocks[0],
+                  product.default_quantity?product.default_quantity:product.is_loose?0.1:1)"
+                 layout-align="center center">
               <span class="tc-primary md-caption font-bold-500" [md-tooltip]="product.name">
               {{product.name | truncate: 30: true}}
               </span>
