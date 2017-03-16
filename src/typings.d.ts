@@ -4,3 +4,7 @@
 
 declare var System: any;
 declare var require: any;
+
+declare var fs: any;
+declare var electron: any;
+declare var path: any;

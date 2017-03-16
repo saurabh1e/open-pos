@@ -7,6 +7,7 @@ import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {stringify} from "@angular/core/src/facade/lang";
 
 
+
 @Component({
   selector: 'shops',
   templateUrl: './shops.component.html',
@@ -54,6 +55,7 @@ export class ShopComponent implements AfterViewInit {
   }
 
   openShop(data: RetailShop): void {
+
     this._loadingService.register('shops');
     this._shopService.shop = data;
     this._indexDBService.products.where({retail_shop_id: data.id}).count().then((count)=>{
@@ -77,7 +79,6 @@ export class ShopComponent implements AfterViewInit {
       }
 
     });
-
   }
   syncData(data: string): void {
     this._loadingService.register('shops');

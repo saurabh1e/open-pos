@@ -261,7 +261,7 @@
   <span flex></span>
   <md-divider flex></md-divider>
   <md-card-actions layout-align="end end" layout="row" layout-wrap="" flex style="margin: 0">
-    <button md-raised-button="" color="accent">Print Bill</button>
+    <button md-raised-button="" (click)="printBill()" color="accent">Print Bill</button>
     <button md-raised-button="" (click)="checkOut()" color="accent">Checkout</button>
   </md-card-actions>
 

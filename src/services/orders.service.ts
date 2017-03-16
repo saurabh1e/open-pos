@@ -9,8 +9,9 @@ import {IUser} from "./users.service";
 export interface Order {
 
   id?: string;
+  reference_number?: string;
   sub_total?: number;
-  total: number;
+  total?: number;
   auto_discount?: number;
   local_id: string;
   customer_id?: string;
@@ -21,17 +22,17 @@ export interface Order {
   retail_shop_id?: string;
   current_status_id?: string;
   created_on: Date;
-  additional_discount: number;
-  is_void: boolean;
+  additional_discount?: number;
+  is_void?: boolean;
 
-  taxes: {total: number,};
-  address: Address;
+  taxes?: {total: number,};
+  address?: Address;
   items: Item[];
-  customer: Customer;
-  retail_shop: RetailShop;
-  discounts: Discount[];
-  current_status: Status;
-  time_line: Status[];
+  customer?: Customer;
+  retail_shop?: RetailShop;
+  discounts?: Discount[];
+  current_status?: Status;
+  time_line?: Status[];
 
 }
 

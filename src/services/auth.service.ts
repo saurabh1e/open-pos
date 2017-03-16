@@ -1,22 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { HttpService } from './http.service'
-import {UsersService, IUser} from "./users.service";
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
+
 import {IndexDBServiceService} from "./indexdb.service";
-import {MOCK_API} from '../config/api.config'
-
-function getAuthCookies(): Auth {
-  return {id: Cookie.get('id'), 'authentication_token': Cookie.get('authentication_token')};
-}
-
-function deleteCookies(): void {
-  Cookie.delete('id');
-Cookie.delete('authentication_token');
-}
-
 
 export interface Auth {
   id: string;
@@ -28,32 +14,23 @@ export class AuthService {
   _auth: Auth = <Auth>{};
   _auth$: Subject<Auth> = <Subject<Auth>> new Subject();
 
-  constructor(private _http: HttpService, private _userService: UsersService,
+  constructor(
               private _indexDB: IndexDBServiceService) {
 
-    this.auth = getAuthCookies();
-  }
-
-  set auth(data: Auth){
-    this._auth = data;
-    if (this.auth.id && this.auth.authentication_token) {
-      this.setUser(this.auth.id)
-    }
-  }
-
-  setUser(id: string): void {
-    this._userService.get(id).subscribe((data: IUser)=> {
-      this._userService.user = data;
-    }, (error)=>{
-      if (error.type == 'error') {
-        this._indexDB.users.get(id).then((data)=>{
-          this._userService.user = data;
-        })
-      }
+    this.getAuthData().then((data) => {
+      this.auth = data;
     });
   }
 
-  get auth(): Auth{
+  set auth(data: Auth) {
+    this._auth = data;
+    if (this.auth.id && this.auth.authentication_token) {
+      this._auth$.next(data);
+    }
+  }
+
+
+  get auth(): Auth {
     return this._auth;
   }
 
@@ -61,19 +38,30 @@ export class AuthService {
     return this._auth$.asObservable();
   }
 
-  login(email, password): Observable<Auth> {
-    return this._http.post('login/', {'email': email, 'password': password});
+  getAuthData(): Promise<Auth> {
+    return this._indexDB.auth.toArray().then((data) => {
+      return data[0];
+    });
   }
 
-  logout(): void {
-    deleteCookies();
-    this.auth = <Auth>{};
-    this._userService.logout();
+  deleteAuthData(): Promise<boolean> {
+    return this._indexDB.auth.clear().then((data) => {
+      return data
+    });
   }
 
-  setAuthCookies = (id: string, token: string) => {
-    Cookie.set('id', id, 7, MOCK_API);
-    Cookie.set('authentication_token', token, 7, MOCK_API);
+
+  setAuthData = (id: string, token: string): Promise<boolean> => {
+    return this._indexDB.auth.add({id: id, authentication_token: token}).then((data) => {
+      return data
+    }, () => {
+      this._indexDB.auth.update(id, {id: id, authentication_token: token}).then((data) => {
+        return data
+
+      }, (data) => {
+        return data
+      })
+    });
   }
 
 }

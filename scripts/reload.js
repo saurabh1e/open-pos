@@ -35,7 +35,7 @@ gulp.task('watch', ['start-watch-src','watch-electron'], function (cb) {
 gulp.task('start-watch-src', function (cb) {
   var cmd = getSpawn('ng', ['build']);
   cmd.on('close', function (code) {
-      runSequence('copy','copy-electron-connect', 'npm-install', 'start-electron','watch-src');
+      runSequence('copy','copy-electron-connect', 'start-electron','watch-src');
       cb(code);
   });
 });
@@ -44,7 +44,7 @@ gulp.task('start-watch-src', function (cb) {
 gulp.task('reload', function (cb) {
   var cmd = getSpawn('ng', ['build']);
   cmd.on('close', function (code) {
-      runSequence('copy', 'copy-electron-connect', 'npm-install', 'reload-electron');
+      runSequence('copy', 'copy-electron-connect', 'reload-electron');
       cb(code);
   });
 });
@@ -75,7 +75,7 @@ gulp.task('reload-electron', function () {
 });
 
 // watches the src files for changes
-gulp.task('watch-src', 'Watch for changed files', function (cb) {  
+gulp.task('watch-src', 'Watch for changed files', function (cb) {
   // Reload renderer process after files change
   gulp.watch(['src/**/*'], ['reload']);
 });
@@ -96,7 +96,7 @@ gulp.task('restart-electron', function () {
 });
 
 // watches the electron files for changes
-gulp.task('watch-electron', 'Watch for changed files', function (cb) {  
+gulp.task('watch-electron', 'Watch for changed files', function (cb) {
   // Reload main process after files change
   gulp.watch(['electron/**/*'], ['restart']);
 });

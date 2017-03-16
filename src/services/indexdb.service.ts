@@ -7,6 +7,7 @@ import {RetailShop} from "./shop.service";
 import {Order} from "./orders.service";
 import {Locality} from "./customer.service";
 import {IUser} from "./users.service";
+import {Auth} from "./auth.service";
 
 
 export interface Status {
@@ -31,6 +32,7 @@ export class IndexDBServiceService extends Dexie {
   shops: Dexie.Table<RetailShop, string>;
   orders: Dexie.Table<Order, string>;
   localities: Dexie.Table<Locality, string>;
+  auth: Dexie.Table<Auth, string>;
   configs: Dexie.Table<Config, string>;
   carts: Dexie.Table<Order, string>;
   users: Dexie.Table<IUser, string>;
@@ -52,7 +54,8 @@ export class IndexDBServiceService extends Dexie {
         carts: "++local_id,retail_shop_id",
         localities: "++id, name",
         users: "++id, mobile_number, email",
-        configs: "++shop_id,key,value"
+        configs: "++shop_id,key,value",
+        auth: "++id,authentication_token"
       });
   }
   get db$():Observable<Status>{

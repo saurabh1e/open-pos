@@ -5,6 +5,8 @@ import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
 import {RetailShopsService, RetailShop, RetailBrand} from "./shop.service";
 import {IndexDBServiceService} from "./indexdb.service";
+import {Auth, AuthService} from "./auth.service";
+import {HttpService} from "./http.service";
 
 
 export interface IUser {
@@ -31,12 +33,17 @@ export class UsersService extends RESTService<IUser> {
 
 
   constructor(private _http: HttpInterceptorService, private _shopService: RetailShopsService,
-              private _indexDB: IndexDBServiceService) {
+              private _indexDB: IndexDBServiceService, private _httpService: HttpService, private _auth: AuthService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/user',
     });
 
+    this._auth.auth$.subscribe(data=>{
+      this.get(data.id).subscribe((data)=>{
+        this.user = data;
+      })
+    })
   }
 
   set user(data: IUser) {
@@ -81,9 +88,15 @@ export class UsersService extends RESTService<IUser> {
     });
   }
 
-  logout(): boolean {
+  login(email, password): Observable<Auth> {
+    return this._httpService.post('login/', {'email': email, 'password': password});
+  }
+
+  logout(): Promise<boolean> {
     this.user = <IUser>{};
-    return true
+    return this._auth.deleteAuthData().then(data=>{
+      return data;
+    });
   }
 }
 

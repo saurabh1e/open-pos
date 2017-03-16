@@ -25,8 +25,8 @@
     "Jeremy Wilken <jeremy.wilken@teradata.com>",
     "Jeremy Smartt <jeremy.smartt@teradata.com>"
   ],
-  "dependencies": {
-    "monaco-editor": "^0.8.0"
+  "dependencies":{
+    "randomstring": ""
   },
   "devDependencies": {
     "electron": "^1.4.1"

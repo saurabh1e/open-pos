@@ -26,6 +26,7 @@ export class CheckoutComponent implements OnInit {
   digitsArray: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   denominationArray: {} = {1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 500: 0, 1000: 0, 2000: 0};
   total: string = '0';
+  ipcRenderer:any;
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
               private _customerService: CustomerService,
@@ -39,6 +40,12 @@ export class CheckoutComponent implements OnInit {
       mode: LoadingMode.Indeterminate,
       color: 'warn',
     });
+    try {
+      this.ipcRenderer = electron.ipcRenderer;
+    }
+    catch(err){
+
+    }
   }
 
   ngOnInit() {
@@ -185,4 +192,27 @@ export class CheckoutComponent implements OnInit {
       })
     })
   }
+
+  printBill():void {
+    let data:any = {};
+
+    data['shopName'] = this.shop.name;
+    data['billDate'] = this.cart.created_on.toLocaleString();
+    data['invoice'] = this.cart.reference_number;
+    data['items'] = this.cart.items.map((value)=>{
+      return {name: value.name, quantity: value.quantity, price: value.total_price}
+    });
+    data['subTotal'] = this.cart.sub_total || 0;
+    data['total'] = this.cart.total || 0;
+    data['additionalDiscount'] = this.cart.additional_discount || 0;
+    data['autoDiscount'] = this.cart.auto_discount || 0;
+    try{
+      this.ipcRenderer.send('printBill', data)
+      }
+      catch(err){
+
+      }
+
+  }
+
 }

@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
-import {RequestOptionsArgs, Headers, Response} from '@angular/http';
+import {RequestOptionsArgs, Response, Headers} from '@angular/http';
 import { IHttpInterceptor } from '@covalent/http';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import {TdDialogService} from "@covalent/core";
+import {AuthService} from "../../services/auth.service";
+
 
 
 @Injectable()
 export class RequestInterceptor implements IHttpInterceptor {
 
-  constructor(private _dialogService: TdDialogService){
+  constructor(private _dialogService: TdDialogService, private _auth: AuthService){
 
   }
 
   onRequest(requestOptions: RequestOptionsArgs): RequestOptionsArgs {
 
-    if(Cookie.get('authentication_token')) {
+    if (this._auth.auth) {
       let headers = new Headers();
-      headers.append('authorization', Cookie.get('authentication_token'));
+      headers.append('authorization', this._auth.auth.authentication_token);
       requestOptions.headers = headers;
+      return requestOptions;
     }
-    return requestOptions;
   }
 
   onResponse (error: Response): Response {

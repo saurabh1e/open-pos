@@ -9,6 +9,9 @@
     "reusable"
   ],
   "scripts": {
+    "ngbuild": "rm -rf ./dist && ng build",
+    "build": "gulp copy --option noreload",
+    "temp": "npm run ngbuild && npm run build && npm run npm-install && gulp watch",
     "e2e": "protractor",
     "e2e-test": "protractor ./protractor.conf.js",
     "tslint": "tslint -c ./tslint.json \"./src/**/*.ts\" -e \"./src/**/typings.d.ts\" -e \"./src/environments/**\"",
@@ -89,7 +92,7 @@
     "karma-cli": "1.0.1",
     "karma-jasmine": "1.0.2",
     "karma-remap-istanbul": "0.2.1",
-    "ng2-cookies": "^1.0.4",
+    "randomstring": "",
     "ng2-pagination": "^2.0.0",
     "node-sass": "3.8.0",
     "phantomjs-prebuilt": "2.1.7",

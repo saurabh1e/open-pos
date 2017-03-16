@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthService} from "../../services/auth.service";
 import {RetailShopsService, RetailShop} from "../../services/shop.service";
+import {UsersService} from "../../services/users.service";
 
 @Component({
   selector: 'app-user',
@@ -13,7 +13,7 @@ export class UserComponent implements OnInit {
   shops: RetailShop[];
   shop: RetailShop;
 
-  constructor(private _router: Router, private _authService: AuthService, private _shopService: RetailShopsService) { }
+  constructor(private _router: Router, private _userService: UsersService, private _shopService: RetailShopsService) { }
 
   ngOnInit() {
 
@@ -29,7 +29,7 @@ export class UserComponent implements OnInit {
   }
 
   logout(): void {
-    this._authService.logout();
+    this._userService.logout();
     this._router.navigate(['/']);
   }
   openProfile(): void {

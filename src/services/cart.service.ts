@@ -16,8 +16,17 @@ export class CartService {
 
   _cart : Order;
   _cart$: Subject<Order> = <Subject<Order>>  new Subject();
+  ipcRenderer: any;
 
   constructor(private _indexDB: IndexDBServiceService) {
+    try {
+      this.ipcRenderer = electron.ipcRenderer;
+    }
+
+    catch(err){
+
+    }
+
   }
 
   set cart(data: Order) {
@@ -46,12 +55,11 @@ export class CartService {
     cart.total = 0;
     cart.auto_discount = 0;
     cart.taxes = {total:0};
-    cart.additional_discount = 0;
-    cart.discounts.forEach((discount)=>{
-      cart.additional_discount = round(cart.additional_discount + discount.value, 2)
-    });
+    cart.additional_discount = cart.discounts.reduce((acc, discount)=>{
+       return acc + round(discount.value, 2)
+    }, 0);
     cart.items.forEach((item)=>{
-      item.total_price = item.unit_price*item.quantity;
+      item.total_price = round(item.unit_price*item.quantity, 2);
       let discount = item.discount + cart.additional_discount<=100?item.discount + cart.additional_discount:100;
       item.discounted_unit_price = round(item.unit_price-(item.unit_price*discount)/100, 2);
       item.discounted_total_price = round(item.discounted_unit_price*item.quantity, 2);
@@ -110,9 +118,18 @@ export class CartService {
 
   async newCart(id: string): Promise<string>{
     let localId = stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
+    let referenceNumber = '';
+    try{
+      referenceNumber = this.ipcRenderer.sendSync('generateReferenceNumber');
+    }
+    catch (err){
+
+    }
+
     let discount = <Discount>{value:0, type:'PERCENTAGE'};
     let order = <Order>{retail_shop_id: id, local_id: localId, created_on: new Date(),
-      discounts:[discount], customer: <Customer>{}, address: <Address>{}, items: <Item[]>[]};
+      discounts:[discount], customer: <Customer>{}, address: <Address>{}, items: <Item[]>[],
+      reference_number: referenceNumber};
     return  this._indexDB.carts.add(order).then(()=>{
         return order.local_id;
       });
