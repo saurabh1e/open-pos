@@ -45,7 +45,7 @@ ipcMain.on('printBill', function(event, args) {
   execute('echo  Reference#: ' + data['invoice']+' > /dev/usb/lp1');
   execute('echo  '+ESC+'@ > /dev/usb/lp1');
   // execute('echo  '+ESC+'d'+String.fromCharCode(1)+' > /dev/usb/lp1' );
-
+  execute('echo  '+ESC+'a'+String.fromCharCode(0)+' > /dev/usb/lp1' );
   data['items'].forEach(function(value){
     var name = value['name'].substr(0,16);
     var qty = value.quantity.toString();
@@ -126,6 +126,8 @@ function createWindow () {
   if (process.env.OPEN_DEV_TOOLS === "true") {
     mainWindow.webContents.openDevTools();
   }
+
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

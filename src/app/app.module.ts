@@ -1,7 +1,10 @@
 import {NgModule, Type} from "@angular/core";
 import {BrowserModule, Title} from "@angular/platform-browser";
-import {CovalentCoreModule, CovalentDataTableModule, CovalentSearchModule} from "@covalent/core";
-import {CovalentHttpModule, IHttpInterceptor} from "@covalent/http";
+import {
+  CovalentCoreModule, CovalentDataTableModule, CovalentSearchModule, TdDialogService,
+  CovalentDialogsModule
+} from "@covalent/core";
+import {CovalentHttpModule, IHttpInterceptor, IHttp} from "@covalent/http";
 import {TagInputModule} from "ng2-tag-input";
 import {AppComponent} from "./app.component";
 import {LoginComponent} from "./login/login.component";
@@ -12,7 +15,6 @@ import {appRoutes, appRoutingProviders} from "./app.routes";
 import {Ng2PaginationModule} from "ng2-pagination";
 import {RequestInterceptor} from "../config/interceptors/request.interceptor";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
-import {HttpService} from "../services/http.service";
 import {AuthService} from "../services/auth.service";
 import {UsersService} from "../services/users.service";
 import {RetailShopsService} from "../services/shop.service";
@@ -144,6 +146,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     MdSelectModule.forRoot(),
     CovalentCoreModule.forRoot(),
     CovalentDataTableModule.forRoot(),
+    CovalentDialogsModule.forRoot(),
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
@@ -158,7 +161,6 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     appRoutingProviders,
     httpInterceptorProviders,
     Title,
-    HttpService,
     AuthService,
     UsersService,
     RetailShopsService,

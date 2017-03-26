@@ -14,13 +14,12 @@ export class RequestInterceptor implements IHttpInterceptor {
   }
 
   onRequest(requestOptions: RequestOptionsArgs): RequestOptionsArgs {
-
     if (this._auth.auth) {
       let headers = new Headers();
       headers.append('authorization', this._auth.auth.authentication_token);
       requestOptions.headers = headers;
-      return requestOptions;
     }
+    return requestOptions;
   }
 
   onResponse (error: Response): Response {

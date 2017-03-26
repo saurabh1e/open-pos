@@ -67,18 +67,6 @@
             <input md-input [value]="product.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
           </md-input-container>
         </div>
-
-        <div flex>
-          <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
-                     (onAdd)="addDistributor()"
-                     [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="1">
-            <tag-input-dropdown [autocompleteObservable]='getDistributors' [appendToBody]="false">
-              <template let-item="item" let-index="index">
-                {{ item.display }}
-              </template>
-            </tag-input-dropdown>
-          </tag-input>
-        </div>
         <div flex>
           <tag-input [(ngModel)]="brands" name="brand" [placeholder]="'Enter Brand...'" (onAdd)="addBrand()"
                      [secondaryPlaceholder]="'Enter Brand...'" [onlyFromAutocomplete]="true" [maxItems]="1">
@@ -90,34 +78,62 @@
           </tag-input>
         </div>
       </div>
-
+      <div layout="row" layout-margin="">
+        <div flex>
+          <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
+                     (onAdd)="addDistributor($event)" (onRemove)="removeDistributor($event)"
+                     [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="5"
+                     [identifyBy]="'id'"
+                     [displayBy]="'name'">
+            <tag-input-dropdown [autocompleteObservable]='getDistributors' [appendToBody]="false"
+                                [identifyBy]="'id'"
+                                [displayBy]="'name'">
+              <template let-item="item" let-index="index">
+                {{ item.name }}
+              </template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+      </div>
       <div layout="row" layout-margin>
         <tag-input [(ngModel)]="tags" name="tags" flex="100" [placeholder]="'Enter Tags..'"
-                   [secondaryPlaceholder]="'Enter Tags...'" [onlyFromAutocomplete]="true" (onAdd)="addTags()"
-                   (onRemove)="addTags()">
-          <tag-input-dropdown [autocompleteObservable]='getTags' [appendToBody]="false">
+                   [secondaryPlaceholder]="'Enter Tags...'" [onlyFromAutocomplete]="true" (onAdd)="addTags($event)"
+                   (onRemove)="removeTags($event)"
+                   [identifyBy]="'id'"
+                   [displayBy]="'name'">
+          <tag-input-dropdown [autocompleteObservable]='getTags' [appendToBody]="false"
+                              [identifyBy]="'id'"
+                              [displayBy]="'name'">
             <template let-item="item" let-index="index">
-              {{ item.display }}
+              {{ item.name }}
             </template>
           </tag-input-dropdown>
         </tag-input>
         <tag-input [(ngModel)]="taxes" name="taxes" flex="100" [placeholder]="'Enter Taxes...'"
-                   [secondaryPlaceholder]="'Enter Taxes...'" [onlyFromAutocomplete]="true" (onAdd)="addTaxes()"
-                   (onRemove)="addTaxes()">
-          <tag-input-dropdown [autocompleteObservable]='getTaxes' [appendToBody]="false">
+                   [secondaryPlaceholder]="'Enter Taxes...'" [onlyFromAutocomplete]="true" (onAdd)="addTaxes($event)"
+                   (onRemove)="removeTaxes($event)"
+                   [identifyBy]="'id'"
+                   [displayBy]="'name'">
+          <tag-input-dropdown [autocompleteObservable]='getTaxes' [appendToBody]="false"
+                              [identifyBy]="'id'"
+                              [displayBy]="'name'">
             <template let-item="item" let-index="index">
-              {{ item.display }}
+              {{ item.name }}
             </template>
           </tag-input-dropdown>
         </tag-input>
       </div>
       <div layout="row" layout-margin>
         <tag-input [(ngModel)]="salts" name="salts" flex="100" [placeholder]="'Enter Salts..'"
-                   [secondaryPlaceholder]="'Enter Salts...'" [onlyFromAutocomplete]="true" (onAdd)="addSalts()"
-                   (onRemove)="addSalts()">
-          <tag-input-dropdown [autocompleteObservable]='getSalts' [appendToBody]="false">
+                   [secondaryPlaceholder]="'Enter Salts...'" [onlyFromAutocomplete]="true" (onAdd)="addSalts($event)"
+                   (onRemove)="removeSalts($event)"
+                   [identifyBy]="'id'"
+                   [displayBy]="'name'">
+          <tag-input-dropdown [autocompleteObservable]='getSalts' [appendToBody]="false"
+                              [identifyBy]="'id'"
+                              [displayBy]="'name'">
             <template let-item="item" let-index="index">
-              {{ item.display }}
+              {{ item.name }}
             </template>
           </tag-input-dropdown>
         </tag-input>

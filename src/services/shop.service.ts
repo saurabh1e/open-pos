@@ -121,8 +121,8 @@ export class RetailShopsService extends RESTService<RetailShop> {
   }
 
   async getProductUpdate(retailShopId: string, date?: string, optionalParams?: any): Promise<boolean> {
-    let productParams = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1,
-      __include: ['similar_products', 'available_stocks', 'brand', 'distributor']};
+    let productParams = {__retail_shop_id__equal: retailShopId, __limit: 1000, __page: 1,
+      __include: ['similar_products', 'available_stocks', 'brand', 'distributors'], __exclude: ['links']};
     if (date !== null) {
       productParams['__updated_on__date_gte'] = date;
     }
@@ -186,9 +186,10 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
 
   async syncData(retailShopId: string): Promise<boolean> {
-    let params = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1};
+    let params = {__retail_shop_id__equal: retailShopId, __limit: 1000, __page: 1};
     let product_params = params;
     product_params['__include'] = ['similar_products', 'available_stocks', 'brand', 'distributor'];
+    product_params['__exclude'] = ['links'];
     this._distributorService.saveDistributors(params);
     this._brandService.saveBrands(params);
     this._tagService.saveTags(params);

@@ -6,7 +6,7 @@ import {MOCK_API} from "../config/api.config";
 import {RetailShopsService, RetailShop, RetailBrand} from "./shop.service";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Auth, AuthService} from "./auth.service";
-import {HttpService} from "./http.service";
+import {Response} from "@angular/http";
 
 
 export interface IUser {
@@ -33,7 +33,7 @@ export class UsersService extends RESTService<IUser> {
 
 
   constructor(private _http: HttpInterceptorService, private _shopService: RetailShopsService,
-              private _indexDB: IndexDBServiceService, private _httpService: HttpService, private _auth: AuthService) {
+              private _indexDB: IndexDBServiceService, private _auth: AuthService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/user',
@@ -88,8 +88,8 @@ export class UsersService extends RESTService<IUser> {
     });
   }
 
-  login(email, password): Observable<Auth> {
-    return this._httpService.post('login/', {'email': email, 'password': password});
+  login(email, password): Observable<Response> {
+    return this._http.post(MOCK_API+'login/', {'email': email, 'password': password});
   }
 
   logout(): Promise<boolean> {

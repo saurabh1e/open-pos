@@ -100,13 +100,10 @@ export class ProductDistributorPipe implements PipeTransform {
 
   transform(value: Product[], args?: string[]): any {
     if (args && value && args.length) {
-      return value.filter((val) => {
-        if (args.indexOf(val.distributor_id) > -1){
-          return val
-        }
+      return value.map((val) => {
+
       });
     }
-    return value
   }
 
 }

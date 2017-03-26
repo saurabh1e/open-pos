@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {TdLoadingService, LoadingType, LoadingMode, TdDialogService} from '@covalent/core';
 import {UsersService, AuthService } from '../../services'
 import {IUser} from "../../services/users.service";
+import {Auth} from "../../services/auth.service";
 
 
 @Component({
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit{
 
   login(): void {
     this._loadingService.register('login');
-    this._userService.login(this.username, this.password).subscribe((data) => {
+    this._userService.login(this.username, this.password).subscribe((data: any) => {
       this._authService.setAuthData(data.id, data.authentication_token).then(()=>{
         this._authService.auth = data;
         this._router.navigate(['dashboard/shops']).then(()=>{

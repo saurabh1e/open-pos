@@ -193,6 +193,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
     this._indexDb.products.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
       this.products = data;
+      this._cd.markForCheck();
 
     });
 
@@ -324,6 +325,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
   quickCheckOut(): void {
     this._loadingService.register('billing');
+    this.cart.amount_paid = this.cart.total;
     this._orderService.create(this.cart).subscribe((data: {data: Order[]}) => {
       this._cartService.updateStock(this.cart).then((status)=>{
         this._loadingService.resolve('billing');

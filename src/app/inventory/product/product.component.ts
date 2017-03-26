@@ -18,12 +18,14 @@ import {RESTService} from "@covalent/http";
 export class ProductComponent implements AfterViewInit {
 
   data: Product[] = [];
-  include: string[] = ['brand', 'distributor'];
+  include: string[] = ['brand', 'distributors'];
 
   columns: TdDataTableColumn[] = [
     {name: 'name', label: 'Product Name', sortable: true, editable: true},
     {name: 'brand.name', label: 'Brand', sortable: false, nested: true},
-    {name: 'distributor.name', label: 'Distributor', sortable: false, nested: true},
+    {name: 'distributors', label: 'Distributor', sortable: false, nested: true, format:  v => v.map((value)=>{
+      return value.name
+    })},
     {name: 'mrp', label: 'Price (INR)', numeric: true, format: v => v.toFixed(2), sortable: false},
     {
       name: 'auto_discount',

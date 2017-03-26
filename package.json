@@ -20,6 +20,7 @@
     "lint": "tslint --format codeFrame -c ./tslint.json \"./src/**/*.ts\" -e \"./src/**/typings.d.ts\" -e \"./src/environments/**\"",
     "start": "ng serve --live-reload --watcher",
     "aot": "./node_modules/.bin/ngc -p deploy/platform/tsconfig-aot.json",
+    "package": "npm run ngbuild && npm run build && npm run npm-install && node \"./node_modules/electron-packager/cli.js\" dist Covalent --icon=src/app/assets/ico/icon.icns --out=dist-app --overwrite",
     "start-api": "cd mock-api && covalent-data &",
     "stop-api": "pkill covalent-data",
     "webdriver-update": "bash ./node_modules/.bin/webdriver-manager update",

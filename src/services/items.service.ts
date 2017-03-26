@@ -2,15 +2,17 @@ import {Injectable} from "@angular/core";
 import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
 import {Subject, Observable} from "rxjs";
-import {Status,IndexDBServiceService} from "./indexdb.service";
+import {IndexDBServiceService} from "./indexdb.service";
 import {RetailShop} from "./shop.service";
+
+import {Response} from "@angular/http";
 
 export interface Product {
 
   available_stock: number,
   available_stocks: Stock[],
   similar_products?: string[],
-  description?: {key:string, value: string}[],
+  description?: {key: string, value: string}[],
   sub_description: string;
   is_disabled: boolean;
   is_loose: boolean;
@@ -29,10 +31,9 @@ export interface Product {
   taxes?: Tax[]
   brand_id: string;
   brand_name: string;
-  distributor_id: string;
   retail_shop_id: string;
   brand: Brand;
-  distributor: Distributor;
+  distributors: Distributor[];
   retail_shop: RetailShop;
 }
 
@@ -57,7 +58,7 @@ export interface DistributorBill {
   reference_number: string
   distributor: Distributor;
   purchase_date: Date;
-  distributor_id:string;
+  distributor_id: string;
   purchased_items?: Stock[];
 }
 
@@ -111,7 +112,8 @@ export class ItemsService extends RESTService<Product> {
   _products$: Subject<Product[]> = <Subject<Product[]>>  new Subject();
   _product$: Subject<Product> = <Subject<Product>>  new Subject();
 
-  constructor(private _http: HttpInterceptorService, private _indexDB: IndexDBServiceService) {
+  constructor(private _http: HttpInterceptorService,
+              private _indexDB: IndexDBServiceService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/product',
@@ -140,22 +142,61 @@ export class ItemsService extends RESTService<Product> {
   get products$(): Observable<Product[]> {
     return this._products$.asObservable();
   }
+
   get product$(): Observable<Product> {
     return this._product$.asObservable();
   }
 
+  updateTag(productId: string, tagId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'product_tag', {__action: action, product_id: productId, tag_id: tagId})
+      .map(data=>data.json())
+  }
+
+  updateTax(productId: string, taxId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'product_tax', {__action: action, product_id: productId, tax_id: taxId})
+      .map(data=>data.json())
+  }
+
+  updateSalt(productId: string, saltId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'product_salt', {__action: action, product_id: productId, salt_id: saltId})
+      .map(data=>data.json())
+  }
+
+  updateDistributor(productId: string, distributorId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'product_distributor', {__action: action, product_id: productId, distributor_id: distributorId})
+      .map(data=>data.json())
+  }
+
+  async updateProduct(productId: string): Promise<boolean> {
+    return  await this.query({__id__equal: productId, __include: ['distributors', 'brands', 'available_stocks',
+      'similar_products']})
+      .subscribe((data: {data: Product[]}) => {
+        return this._indexDB.products.add(data.data[0]).then(() => {
+            return true
+          },
+          () => {
+            this._indexDB.products.update(data.data[0].id, data.data[0]).then(() => {
+              return true
+            })
+          });
+      }, () => {
+        return false
+      }).closed;
+  }
+
   async saveProducts(params?): Promise<boolean> {
-    return await this.query(params).subscribe((data: {data: Product[], count: number})=>{
-      data.data.forEach((value)=>{
-        this._indexDB.products.add(value).then(()=>{},
-          ()=>{
-          this._indexDB.products.update(value.id, value).then()
-        })
+    return await this.query(params).subscribe((data: {data: Product[], count: number}) => {
+      data.data.forEach((value) => {
+        this._indexDB.products.add(value).then(() => {
+          },
+          () => {
+            this._indexDB.products.update(value.id, value).then()
+          })
       });
       if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit']==data.data.length) {
-          params['__page']+=1;
-          return this.saveProducts(params).then(()=>{
+        if (params['__limit'] == data.data.length) {
+          params['__page'] += 1;
+          return this.saveProducts(params).then(() => {
             return true
           });
         }
@@ -212,17 +253,19 @@ export class DistributorService extends RESTService<Distributor> {
   get distributors$(): Observable<Distributor[]> {
     return this._distributors$.asObservable();
   }
+
   saveDistributors(params?): void {
-    this.query(params).subscribe((data: {data: Distributor[], count: number})=>{
-      data.data.forEach((value)=>{
-        this._indexDB.distributors.add(value).then(()=>{},
-          ()=>{
+    this.query(params).subscribe((data: {data: Distributor[], count: number}) => {
+      data.data.forEach((value) => {
+        this._indexDB.distributors.add(value).then(() => {
+          },
+          () => {
             this._indexDB.distributors.update(value.id, value)
           })
       });
       if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit']==data.data.length) {
-          params['__page']+=1;
+        if (params['__limit'] == data.data.length) {
+          params['__page'] += 1;
           this.saveDistributors(params);
         }
       }
@@ -271,16 +314,17 @@ export class BrandsService extends RESTService<Brand> {
   }
 
   saveBrands(params?): void {
-    this.query(params).subscribe((data: {data: Brand[], count: number})=>{
-      data.data.forEach((value)=>{
-        this._indexDB.brands.add(value).then(()=>{},
-          ()=>{
+    this.query(params).subscribe((data: {data: Brand[], count: number}) => {
+      data.data.forEach((value) => {
+        this._indexDB.brands.add(value).then(() => {
+          },
+          () => {
             this._indexDB.brands.update(value.id, value)
           })
       });
       if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit']==data.data.length) {
-          params['__page']+=1;
+        if (params['__limit'] == data.data.length) {
+          params['__page'] += 1;
           this.saveBrands(params);
         }
       }
@@ -327,17 +371,19 @@ export class TagsService extends RESTService<Tag> {
   get tags$(): Observable<Tag[]> {
     return this._tags$.asObservable();
   }
+
   saveTags(params?): void {
-    this.query(params).subscribe((data: {data: Tag[], count: number})=>{
-      data.data.forEach((value)=>{
-        this._indexDB.tags.add(value).then(()=>{},
-          ()=>{
+    this.query(params).subscribe((data: {data: Tag[], count: number}) => {
+      data.data.forEach((value) => {
+        this._indexDB.tags.add(value).then(() => {
+          },
+          () => {
             this._indexDB.tags.update(value.id, value)
           })
       });
       if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit']==data.data.length) {
-          params['__page']+=1;
+        if (params['__limit'] == data.data.length) {
+          params['__page'] += 1;
           this.saveTags(params);
         }
       }
@@ -384,17 +430,19 @@ export class SaltsService extends RESTService<Salt> {
   get salts$(): Observable<Salt[]> {
     return this._salts$.asObservable();
   }
+
   saveSalts(params?): void {
-    this.query(params).subscribe((data: {data: Salt[], count: number})=>{
-      data.data.forEach((value)=>{
-        this._indexDB.salts.add(value).then(()=>{},
-          ()=>{
+    this.query(params).subscribe((data: {data: Salt[], count: number}) => {
+      data.data.forEach((value) => {
+        this._indexDB.salts.add(value).then(() => {
+          },
+          () => {
             this._indexDB.salts.update(value.id, value)
           })
       });
       if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit']==data.data.length) {
-          params['__page']+=1;
+        if (params['__limit'] == data.data.length) {
+          params['__page'] += 1;
           this.saveSalts(params);
         }
       }
@@ -441,17 +489,19 @@ export class TaxsService extends RESTService<Tax> {
   get taxes$(): Observable<Tax[]> {
     return this._taxes$.asObservable();
   }
+
   saveTaxes(params?): void {
-    this.query(params).subscribe((data: {data: Tax[], count: number})=>{
-      data.data.forEach((value)=>{
-        this._indexDB.taxes.add(value).then(()=>{},
-          ()=>{
+    this.query(params).subscribe((data: {data: Tax[], count: number}) => {
+      data.data.forEach((value) => {
+        this._indexDB.taxes.add(value).then(() => {
+          },
+          () => {
             this._indexDB.taxes.update(value.id, value)
           })
       });
       if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit']==data.data.length) {
-          params['__page']+=1;
+        if (params['__limit'] == data.data.length) {
+          params['__page'] += 1;
           this.saveTaxes(params);
         }
       }

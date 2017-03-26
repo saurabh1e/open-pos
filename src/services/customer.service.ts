@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {RESTService, HttpInterceptorService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
-import {HttpService} from "./http.service";
 import {Observable} from "rxjs";
 import {Order} from "./orders.service";
 
@@ -48,7 +47,7 @@ export interface City {
 @Injectable()
 export class CustomerService extends RESTService<Customer> {
 
-  constructor(private _http: HttpInterceptorService, private _httpService: HttpService) {
+  constructor(private _http: HttpInterceptorService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/customer',
@@ -57,11 +56,11 @@ export class CustomerService extends RESTService<Customer> {
 
 
   addAddress(address: Address): Observable<any> {
-    return this._httpService.save('address', address);
+    return this._http.post(MOCK_API+'address', address);
   }
 
   addCustomerAddress(addressId: string, customerId: string): Observable<any> {
-    return this._httpService.post('customer_address', [{
+    return this._http.post(MOCK_API+'customer_address', [{
       __action: 'add',
       customer_id: customerId,
       address_id: addressId
@@ -72,7 +71,7 @@ export class CustomerService extends RESTService<Customer> {
 @Injectable()
 export class CustomerTransactionsService extends RESTService<CustomerTransaction> {
 
-  constructor(private _http: HttpInterceptorService, private _httpService: HttpService) {
+  constructor(private _http: HttpInterceptorService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/customer_transaction',

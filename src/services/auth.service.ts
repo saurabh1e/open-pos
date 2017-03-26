@@ -52,16 +52,19 @@ export class AuthService {
 
 
   setAuthData = (id: string, token: string): Promise<boolean> => {
-    return this._indexDB.auth.add({id: id, authentication_token: token}).then((data) => {
-      return data
-    }, () => {
-      this._indexDB.auth.update(id, {id: id, authentication_token: token}).then((data) => {
+    return this._indexDB.auth.clear().then(()=>{
+      return this._indexDB.auth.add({id: id, authentication_token: token}).then((data) => {
         return data
+      }, () => {
+        this._indexDB.auth.update(id, {id: id, authentication_token: token}).then((data) => {
+          return data
 
-      }, (data) => {
-        return data
-      })
+        }, (data) => {
+          return data
+        })
+      });
     });
+
   }
 
 }

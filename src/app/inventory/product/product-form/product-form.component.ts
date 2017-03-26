@@ -7,7 +7,7 @@ import {
   BrandsService,
   DistributorService,
   SaltsService,
-  Product
+  Product, Distributor, Salt, Tax, Tag
 } from "../../../../services/items.service";
 import {Observable} from "rxjs";
 import {TdLoadingService, LoadingType, LoadingMode, TdDialogService} from "@covalent/core";
@@ -24,10 +24,10 @@ export class ProductFormComponent implements OnInit {
 
   product: Product;
   brands: {display: string, value: string}[] = [];
-  taxes: {display: string, value: string}[] = [];
-  salts: {display: string, value: string}[] = [];
-  tags: {display: string, value: string}[] = [];
-  distributors: {display: string, value: string}[] = [];
+  taxes: Tax[] = [];
+  salts: Salt[] = [];
+  tags: Tag[] = [];
+  distributors: Distributor[] = [];
   shops: RetailShop[];
   validators = [];
   productCopy: Product = <Product>{};
@@ -56,6 +56,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.product);
     this.productCopy = Object.assign({}, this.product);
 
     this.resetProduct();
@@ -64,22 +65,16 @@ export class ProductFormComponent implements OnInit {
 
   resetProduct(): void {
     if (this.product.salts) {
-      this.salts = this.product.salts.map((value) => {
-        return {display: value.name, value: value.id}
-      });
+      this.salts = this.product.salts;
     }
     if (this.product.taxes) {
-      this.taxes = this.product.taxes.map((value) => {
-        return {display: value.name, value: value.id}
-      });
+      this.taxes = this.product.taxes;
     }
     if (this.product.tags) {
-      this.tags = this.product.tags.map((value) => {
-        return {display: value.name, value: value.id}
-      });
+      this.tags = this.product.tags;
     }
-    this.distributors = this.product.distributor && this.product.distributor.id ?
-      [{display: this.product.distributor.name, value: this.product.distributor.id}] : [];
+    this.distributors = this.product.distributors;
+
     this.brands = this.product.brand && this.product.brand.id ?
       [{display: this.product.brand.name, value: this.product.brand.id}] : [];
   }
@@ -88,26 +83,20 @@ export class ProductFormComponent implements OnInit {
     return this._tagService.query({
       __retail_shop_id__equal: this.product.retail_shop_id, __limit: 20
       , __name__contains: event
-    }).map(data => data.data.map((item) => {
-      return {display: item.name, value: item.id}
-    }))
+    }).map(data => data.data)
   };
 
   getSalts = (event): Observable<string[]> => {
     return this._saltService.query({
       __retail_shop_id__equal: this.product.retail_shop_id, __limit: 20
       , __name__contains: event
-    }).map(data => data.data.map((item) => {
-      return {display: item.name, value: item.id}
-    }))
+    }).map(data => data.data)
   };
   getTaxes = (event): Observable<string[]> => {
     return this._taxService.query({
       __retail_shop_id__equal: this.product.retail_shop_id, __limit: 20
       , __name__contains: event
-    }).map(data => data.data.map((item) => {
-      return {display: item.name, value: item.id}
-    }))
+    }).map(data => data.data)
 
   };
 
@@ -124,9 +113,7 @@ export class ProductFormComponent implements OnInit {
     return this._distributorService.query({
       __retail_shop_id__equal: this.product.retail_shop_id, __limit: 20
       , __name__contains: event
-    }).map(data => data.data.map((item) => {
-      return {display: item.name, value: item.id}
-    }))
+    }).map(data => data.data)
 
   };
 
@@ -142,26 +129,43 @@ export class ProductFormComponent implements OnInit {
     }
     if (this.product.id) {
       this._itemService.update(this.product.id, this.product).subscribe(() => {
-        this.dialogRef.close(this.product);
-        this._loadingService.resolve('product-form');
+        this._itemService.updateProduct(this.product.id).then(()=>{
+          this.dialogRef.close(this.product);
+          this._loadingService.resolve('product-form');
+        });
       }, ()=>{
         this._loadingService.resolve('product-form');
       })
     }
     else {
       this._itemService.create(this.product).subscribe(() => {
-        this.dialogRef.close(this.product);
-        this._loadingService.resolve('product-form');
+        this._itemService.updateProduct(this.product.id).then(()=>{
+          this.dialogRef.close(this.product);
+          this._loadingService.resolve('product-form');
+        });
       })
     }
   }
 
-  addDistributor(): void {
-    this.product.distributor = {
-      name: this.distributors[0].display, id: this.distributors[0].value,
-      retail_shop_id: this.product.retail_shop_id
-    };
-    this.product.distributor_id = this.distributors[0].value;
+  addDistributor(event: Distributor): void {
+    this._itemService.updateDistributor(this.product.id, event.id, 'add').subscribe(()=>{
+      this.product.distributors.push(event);
+    }, ()=>{
+      this.distributors.splice(this.distributors.indexOf(event), 1)
+    })
+
+  }
+
+  removeDistributor(event : Distributor): void {
+    this._itemService.updateDistributor(this.product.id, event.id, 'remove').subscribe(_=>{
+      this.product.distributors.splice(this.product.distributors.findIndex((value)=>{
+        return value.id == event.id
+      }), 1)
+    },()=>{
+
+      this.distributors.push(event);
+    });
+    return
   }
 
   addBrand(): void {
@@ -172,28 +176,65 @@ export class ProductFormComponent implements OnInit {
     this.product.brand_id = this.brands[0].value;
   }
 
-  addTags(): void {
-    this.product.tags = this.tags.map((value) => {
-      return {
-        name: value.display, id: value.value,
-        retail_shop_id: this.product.retail_shop_id
-      };
-    });
+  addTags(event: Tag): void {
+
+    this._itemService.updateTag(this.product.id, event.id, 'add').subscribe(()=>{
+      this.product.tags.push(event);
+    }, ()=>{
+      this.tags.splice(this.tags.indexOf(event), 1)
+    })
   }
 
-  addSalts(): void {
-    this.product.salts = this.salts.map((value) => {
-      return {
-        name: value.display, id: value.value,
-        retail_shop_id: this.product.retail_shop_id
-      };
-    });
+  addSalts(event: Salt): void {
+    this._itemService.updateSalt(this.product.id, event.id, 'add').subscribe(()=>{
+      this.product.salts.push(event);
+    }, ()=>{
+      this.salts.splice(this.salts.indexOf(event), 1)
+    })
   }
 
-  addTaxes(): void {
-    this.product.taxes = this.taxes.map((value) => {
-      return {name: value.display, id: value.value};
+  addTaxes(event: Tax): void {
+    this._itemService.updateTax(this.product.id, event.id, 'add').subscribe(()=>{
+      this.product.taxes.push(event);
+    }, ()=>{
+      this.taxes.splice(this.taxes.indexOf(event), 1)
+    })
+  }
+
+  removeTags(event: Tag): void {
+    this._itemService.updateTag(this.product.id, event.id, 'remove').subscribe(_=>{
+      this.product.tags.splice(this.product.tags.findIndex((value)=>{
+        return value.id == event.id
+      }), 1)
+    },()=>{
+
+      this.tags.push(event);
     });
+    return
+  }
+
+  removeSalts(event: Salt): void {
+    this._itemService.updateSalt(this.product.id, event.id, 'remove').subscribe(_=>{
+      this.product.salts.splice(this.product.salts.findIndex((value)=>{
+        return value.id == event.id
+      }), 1)
+    },()=>{
+
+      this.salts.push(event);
+    });
+    return
+  }
+
+  removeTaxes(event: Tax): void {
+    this._itemService.updateTax(this.product.id, event.id, 'remove').subscribe(_=>{
+      this.product.taxes.splice(this.product.taxes.findIndex((value)=>{
+        return value.id == event.id
+      }), 1)
+    },()=>{
+
+      this.taxes.push(event);
+    });
+    return
   }
 
   close():void {
