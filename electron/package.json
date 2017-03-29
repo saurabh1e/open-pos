@@ -20,7 +20,8 @@
     "Saurabh Gupta <saurabh.1e1@gmail.com>"
   ],
   "dependencies":{
-    "randomstring": ""
+    "randomstring": "",
+    "electron-squirrel-startup": ""
   },
   "devDependencies": {
     "electron": "^1.4.1"
