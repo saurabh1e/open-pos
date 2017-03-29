@@ -126,3 +126,6 @@ covalent-quickstart.iml
 .github
 .editorconfig
 dist/
+dist-app
+dist-ng
+
