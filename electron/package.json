@@ -1,29 +1,23 @@
 {
-  "name": "covalent-electron-quick-start",
+  "name": "open-pos",
   "version": "0.0.1",
-  "description": "A minimal Covalent Electron application",
+  "description": "A Open Source Point of Sale System",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/Teradata/covalent-electron",
+  "repository": "https://github.com/saurabh1e/open-pos-frontend",
   "keywords": [
-    "Covalent",
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "POS",
+    "Point",
+    "of",
+    "Sale",
+    "Open"
   ],
-  "license": "MIT",
-  "author": "Teradata UX",
+  "license": "GLPA3",
+  "author": "Saurabh Gupta",
   "contributors": [
-    "Kyle Ledbetter <kyle.ledbetter@teradata.com>",
-    "Richa Vyas <richa.vyas@teradata.com>",
-    "Ed Morales <eduardo.morales@teradata.com>",
-    "Jason Weaver <jason.weaver@teradata.com>",
-    "Jeremy Wilken <jeremy.wilken@teradata.com>",
-    "Jeremy Smartt <jeremy.smartt@teradata.com>"
+    "Saurabh Gupta <saurabh.1e1@gmail.com>"
   ],
   "dependencies":{
     "randomstring": ""

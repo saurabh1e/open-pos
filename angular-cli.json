@@ -1,7 +1,7 @@
 {
   "project": {
     "version": "1.0.0",
-    "name": "open-pos-frontend"
+    "name": "open-pos"
   },
   "apps": [
     {
