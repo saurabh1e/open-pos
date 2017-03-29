@@ -77,35 +77,30 @@ export class BillingComponent implements AfterViewInit, OnInit {
     });
     this.media.registerQuery('xs').subscribe((data: boolean)=>{
       if (data) {
-        console.log(data);
         this.itemsPerPage = 12;
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('sm').subscribe((data: boolean)=>{
       if (data) {
-        console.log(data);
         this.itemsPerPage = 24;
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('md').subscribe((data: boolean)=>{
       if (data) {
-        console.log(data);
         this.itemsPerPage = 36;
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('lg').subscribe((data: boolean)=>{
       if (data) {
-        console.log(data);
         this.itemsPerPage = 48;
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('gt-lg').subscribe((data: boolean)=>{
       if (data) {
-        console.log(data);
         this.itemsPerPage = 54;
         this._cd.markForCheck();
       }

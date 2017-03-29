@@ -78,6 +78,7 @@ import {StaffComponent} from "./staff/staff.component";
 import {StaffDetailComponent} from "./staff/staff-detail/staff-detail.component";
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
+import {SideMenuComponent} from "./side-menu/side-menu.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -107,6 +108,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     AddStockComponent,
     StockComponent,
     CheckoutComponent,
+    SideMenuComponent,
     BillingComponent,
     InventoryComponent,
     MenuComponent,

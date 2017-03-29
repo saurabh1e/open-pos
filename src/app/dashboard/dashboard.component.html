@@ -11,41 +11,7 @@
 
 
   <md-nav-list td-sidenav-content>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/dashboard/shops']">
-      <span class="md-subhead tc-grey-800 font-bold-600">DASHBOARD</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/stock/stocks']">
-      <span class="md-subhead tc-grey-800 font-bold-600">STOCKS</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/menu']">
-      <span class="md-subhead tc-grey-800 font-bold-600">INVENTORY</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/sales']">
-      <span class="md-subhead tc-grey-800 font-bold-600">REPORTS</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/staff']">
-      <span class="md-subhead tc-grey-800 font-bold-600">STAFF</span>
-    </a>
+    <app-side-menu></app-side-menu>
   </md-nav-list>
   <router-outlet></router-outlet>
 

@@ -11,45 +11,7 @@
 
 
   <md-nav-list td-sidenav-content>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/sales']">
-      <span class="tc-grey-800 font-bold-600">Sales Report</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/sales']">
-      <span class="tc-grey-800 font-bold-600">Stock Report</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/sales']">
-      <span class="tc-grey-800 font-bold-600">Customer Report</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/orders']">
-      <span class="tc-grey-800 font-bold-600">Orders</span>
-    </a>
-    <a md-list-item
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/reporting/customers']">
-      <span class="tc-grey-800 font-bold-600">Customer</span>
-    </a>
-    <md-divider flex="80" class=" push-top-lg bgc-blue-100"></md-divider>
-    <div class="push-top-lg" layout-align="center center" layout="row">
-      <app-back-button></app-back-button>
-    </div>
+    <app-side-menu></app-side-menu>
   </md-nav-list>
   <router-outlet></router-outlet>
 

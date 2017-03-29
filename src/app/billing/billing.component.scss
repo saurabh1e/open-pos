@@ -84,3 +84,11 @@ md-card>:first-child {
   color: #F44336;
 
 }
+
+.ng2-pagination > li {
+  cursor: pointer;
+}
+
+.ng2-pagination > li > a {
+  cursor: pointer;
+}

@@ -11,63 +11,7 @@
 
 
   <md-nav-list td-sidenav-content>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/menu']">
-      <span class="tc-grey-800 font-bold-600">MENU</span>
-
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/products']">
-      <span class="tc-grey-800 font-bold-600">PRODUCTS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/brands']">
-      <span class="tc-grey-800 font-bold-600">BRANDS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/distributors']">
-      <span class="tc-grey-800 font-bold-600">DISTRIBUTORS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/salts']">
-      <span class="tc-grey-800 font-bold-600">SALTS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/tags']">
-      <span class="tc-grey-800 font-bold-600">TAGS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/inventory/taxes']">
-      <span class="tc-grey-800 font-bold-600">TAXES</span>
-    </a>
-    <md-divider flex="" class=" push-top-lg bgc-blue-100"></md-divider>
-    <div class="push-top-lg" layout-align="center center" layout="row">
-      <app-back-button></app-back-button>
-    </div>
-
-
-
+    <app-side-menu></app-side-menu>
   </md-nav-list>
 
 

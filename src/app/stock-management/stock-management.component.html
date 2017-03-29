@@ -12,45 +12,8 @@
 
 
   <md-nav-list td-sidenav-content>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/stock/stocks']">
-      <span class="tc-grey-800 font-bold-600">STOCKS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/stock/expiry']">
-      <span class="tc-grey-800 font-bold-600">EXPIRY</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/stock/shortage']">
-      <span class="tc-grey-800 font-bold-600">SHORTAGE</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/stock/add-stocks']">
-      <span class="tc-grey-800 font-bold-600">ADD STOCKS</span>
-    </a>
-    <a md-list-item=""
-       md-ripple class="block relative"
-       [routerLinkActive]="['active']"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/stock/bills']">
-      <span class="tc-grey-800 font-bold-600">PURCHASE HISTORY</span>
-    </a>
-    <md-divider flex="" class=" push-top-lg bgc-blue-100"></md-divider>
-    <div class="push-top-lg" layout-align="center center" layout="row">
-      <app-back-button></app-back-button>
-    </div>
+    <app-side-menu></app-side-menu>
+
   </md-nav-list>
   <router-outlet></router-outlet>
 </td-layout-nav-list>

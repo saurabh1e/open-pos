@@ -43,7 +43,7 @@ export class IndexDBServiceService extends Dexie {
     super("myPosDB");
     this.version(1).stores(
       {
-        products: "++id,name,retail_shop_id,brand_id,distributor_id",
+        products: "++id,name,retail_shop_id,brand_id",
         distributors: "++id,name,retail_shop_id",
         brands: "++id,name,retail_shop_id",
         tags: "++id,name,retail_shop_id",

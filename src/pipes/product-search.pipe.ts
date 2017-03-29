@@ -99,11 +99,13 @@ export class ProductBrandPipe implements PipeTransform {
 export class ProductDistributorPipe implements PipeTransform {
 
   transform(value: Product[], args?: string[]): any {
-    if (args && value && args.length) {
-      return value.map((val) => {
+    // if (args && value && args.length) {
+    //   return value.map((val) => {
+    //
+    //   });
+    // }
 
-      });
-    }
+    return value
   }
 
 }

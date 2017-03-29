@@ -173,7 +173,6 @@
                 [ngForOf]="products  | filter: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |  productDistributor: selectedDistributors|
                     productSalt: selectedSalts | paginate : {itemsPerPage: itemsPerPage, currentPage: p}">
-
         <div class="md-content product-card bgc-white-4 push-right-sm push-bottom-sm md-shadow-bottom-z-1"
              layout="row" layout-wrap="" layout-align="center start"
              [ngClass]="{'out-of-stock': product.available_stock<1}" *ngIf="!product.is_disabled"

@@ -89,7 +89,7 @@ export class UsersService extends RESTService<IUser> {
   }
 
   login(email, password): Observable<Response> {
-    return this._http.post(MOCK_API+'login/', {'email': email, 'password': password});
+    return this._http.post(MOCK_API+'login/', {'email': email, 'password': password}).map(res=>res.json());
   }
 
   logout(): Promise<boolean> {

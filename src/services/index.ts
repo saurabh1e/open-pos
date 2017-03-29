@@ -1,4 +1,3 @@
-export { HttpService } from './http.service';
 export { Auth, AuthService } from './auth.service';
 export { UsersService, IUser } from './users.service';
 export { RetailShop, RetailShopsService } from './shop.service';
