@@ -12,7 +12,7 @@ if (handleSquirrelEvent()) {
   return;
 }
 
-const ESC = "\x1b";
+const ESC = "@";
 const GS="\x1d";
 const NUL="\x00";
 
@@ -32,6 +32,7 @@ if (!String.prototype.padEnd) {
     }
   };
 }
+
 
 function execute(command){
   exec(command, function(error, stdout, stderr){ console.log(stdout); });
