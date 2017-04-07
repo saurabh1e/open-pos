@@ -26,8 +26,7 @@
         "../node_modules/@swimlane/ngx-charts/release/ngx-charts.css"
       ],
       "scripts": [
-        "../node_modules/hammerjs/hammer.min.js",
-        "../node_modules/showdown/dist/showdown.js"
+        "../node_modules/hammerjs/hammer.min.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

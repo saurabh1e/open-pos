@@ -25,51 +25,61 @@ import {DistributorBillComponent} from "./stock-management/distributor-bill/dist
 import {StaffComponent} from "./staff/staff.component";
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
+import {MainComponent} from "./main/main.component";
+import {AuthGuard} from "../services/auth-gaurd.service";
 
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
   {
-    path: 'stock', component: StockManagementComponent,
-    children: [
-      {path: 'expiry', component: ExpiryComponent},
-      {path: 'shortage', component: ShortageComponent},
-      {path: 'stocks', component: StockComponent},
-      {path: 'add-stocks', component: AddStockComponent},
-      {path: 'bills', component: DistributorBillComponent}
-    ]
+    path: '',
+    redirectTo: "/dashboard/shops",
+    pathMatch: 'full'
   },
-  {
-    path: 'dashboard', component: DashboardComponent,
-    children: [
-      {path: 'shops', component: ShopComponent},
-      {path: 'carts', component: CartComponent}
-    ]
-  },
-  {
-    path: 'inventory', component: InventoryComponent,
-    children: [
-      {path: 'menu', component: MenuComponent},
-      {path: 'products', component: ProductComponent},
-      {path: 'brands', component: BrandComponent},
-      {path: 'distributors', component: DistributorComponent},
-      {path: 'tags', component: TagComponent},
-      {path: 'taxes', component: TaxComponent},
-      {path: 'salts', component: SaltComponent},
-    ]
-  },
-  {path: 'billing/:id', component: BillingComponent},
-  {path: 'staff', component: StaffComponent},
-  {
-    path: 'reporting', component: ReportingComponent,
-    children: [
-      {path: 'sales', component: SaleComponent},
-      {path: 'orders', component: OrderComponent},
-      {path: 'stock-report', component: StockReportComponent},
-      {path: 'customer-report', component: CustomerReportComponent},
-      {path: 'customers', component: CustomerComponent},
-    ]
-  },
+  {path: 'login', component: LoginComponent},
+  {path: '', component: MainComponent, canActivate: [AuthGuard], children:[
+    {
+      path: 'stock', component: StockManagementComponent, canActivateChild:[AuthGuard],
+      children: [
+        {path: 'expiry', component: ExpiryComponent},
+        {path: 'shortage', component: ShortageComponent},
+        {path: 'stocks', component: StockComponent},
+        {path: 'add-stocks', component: AddStockComponent},
+        {path: 'bills', component: DistributorBillComponent}
+      ]
+    },
+    {
+      path: 'dashboard', component: DashboardComponent, canActivateChild:[AuthGuard],
+      children: [
+        {path: 'shops', component: ShopComponent},
+        {path: 'carts', component: CartComponent}
+      ]
+    },
+    {
+      path: 'inventory', component: InventoryComponent, canActivateChild:[AuthGuard],
+      children: [
+        {path: 'menu', component: MenuComponent},
+        {path: 'products', component: ProductComponent},
+        {path: 'brands', component: BrandComponent},
+        {path: 'distributors', component: DistributorComponent},
+        {path: 'tags', component: TagComponent},
+        {path: 'taxes', component: TaxComponent},
+        {path: 'salts', component: SaltComponent},
+      ]
+    },
+    {path: 'billing/:id', component: BillingComponent, canActivateChild:[AuthGuard] },
+    {path: 'staff', component: StaffComponent, canActivateChild:[AuthGuard] },
+    {
+      path: 'reporting', component: ReportingComponent, canActivateChild:[AuthGuard],
+      children: [
+        {path: 'sales', component: SaleComponent},
+        {path: 'orders', component: OrderComponent},
+        {path: 'stock-report', component: StockReportComponent},
+        {path: 'customer-report', component: CustomerReportComponent},
+        {path: 'customers', component: CustomerComponent},
+      ]
+    },
+  ]},
+
 
 ];
 

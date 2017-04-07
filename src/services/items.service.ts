@@ -10,6 +10,7 @@ import {Response} from "@angular/http";
 export interface Product {
 
   available_stock: number,
+  barcode: string,
   available_stocks: Stock[],
   similar_products?: string[],
   description?: {key: string, value: string}[],
@@ -93,6 +94,7 @@ export interface Distributor {
   retail_shop?: RetailShop;
   phone_numbers?: number[];
   emails?: string[];
+  products: Product[];
 }
 
 export interface Brand {
@@ -184,34 +186,31 @@ export class ItemsService extends RESTService<Product> {
       }).closed;
   }
 
-  async saveProducts(params?): Promise<boolean> {
-    return await this.query(params).subscribe((data: {data: Product[], count: number}) => {
+  async saveProducts(params?) {
+    let arr = [];
+    return await this.query(params).subscribe((data: {data: Product[], total: number}) => {
       data.data.forEach((value) => {
         this._indexDB.products.add(value).then(() => {
+
           },
           () => {
             this._indexDB.products.update(value.id, value).then()
           })
       });
-      if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit'] == data.data.length) {
-          params['__page'] += 1;
-          return this.saveProducts(params).then(() => {
-            return true
-          });
+      if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+        let pages: number = data.total / params['__limit'];
+        for (let i=1; i<=pages; i++) {
+          params['__page'] = i;
+           arr.push(this.query(Object.assign({}, params)));
         }
-        else {
-
-          this._indexDB._db$.next({status: true});
-        }
+        return Observable.forkJoin(arr)
       }
-      return true
+      return Observable.forkJoin([])
 
     }, (err) => {
       console.error(err);
-      this._indexDB._db$.next({status: false});
-      return false
-    }).closed
+      return Observable.forkJoin([])
+    })
   }
 
 }
@@ -314,7 +313,7 @@ export class BrandsService extends RESTService<Brand> {
   }
 
   saveBrands(params?): void {
-    this.query(params).subscribe((data: {data: Brand[], count: number}) => {
+    this.query(params).subscribe((data: {data: Brand[], total: number}) => {
       data.data.forEach((value) => {
         this._indexDB.brands.add(value).then(() => {
           },
@@ -322,11 +321,13 @@ export class BrandsService extends RESTService<Brand> {
             this._indexDB.brands.update(value.id, value)
           })
       });
-      if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit'] == data.data.length) {
-          params['__page'] += 1;
+      if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+        let pages: number = data.total / params['__limit'];
+        for (let i=1; i<=pages; i++) {
+          params['__page'] = i;
           this.saveBrands(params);
         }
+        this._indexDB._db$.next({status: 'brands'});
       }
     }, (err) => {
       console.error(err)
@@ -432,7 +433,7 @@ export class SaltsService extends RESTService<Salt> {
   }
 
   saveSalts(params?): void {
-    this.query(params).subscribe((data: {data: Salt[], count: number}) => {
+    this.query(params).subscribe((data: {data: Salt[], total: number}) => {
       data.data.forEach((value) => {
         this._indexDB.salts.add(value).then(() => {
           },
@@ -440,11 +441,13 @@ export class SaltsService extends RESTService<Salt> {
             this._indexDB.salts.update(value.id, value)
           })
       });
-      if (params && '__limit' in params && '__page' in params) {
-        if (params['__limit'] == data.data.length) {
-          params['__page'] += 1;
-          this.saveSalts(params);
+      if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+        let pages: number = data.total / params['__limit'];
+        for (let i=1; i<=pages; i++) {
+          params['__page'] = i;
+          this.saveSalts(params)
         }
+        this._indexDB._db$.next({status: 'salts'});
       }
     }, (err) => {
       console.error(err)

@@ -14,7 +14,7 @@
       <md-input type="number" [(ngModel)]="cart.amount_paid" flex="100" placeholder="Amount"></md-input>
     </div>
 
-    <div hide-xs="" flex-gt-xs="33" flex-gt-lg="30" layout="row" layout-wrap="" class="pad-xs">
+    <div hide-xs="" flex-gt-xs="33" flex-gt-lg="33" layout="row" layout-wrap="" class="pad-xs">
 
       <md-card-subtitle class="tc-blue-700">Transaction Detail</md-card-subtitle>
 
@@ -56,7 +56,7 @@
 
     </div>
 
-    <div flex-xs="100" flex-gt-xs="66" flex-gt-lg="40" layout="row" layout-wrap="" class="pad-xs">
+    <div flex-xs="100" flex-gt-xs="66" flex-gt-lg="66" layout="row" layout-wrap="" class="pad-xs">
       <md-card-subtitle hide-xs class="tc-blue-700" flex="100">Customer Information</md-card-subtitle>
       <div layout="row" class="" flex="100" layout-align="center start">
         <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
@@ -124,136 +124,6 @@
           </md-input-container>
         </div>
       </form>
-    </div>
-
-    <div hide-xs hide-sm hide-md hide-lg flex-gt-lg="30" layout="row" layout-wrap="" class="pad-xs" *ngIf="shop">
-      <md-card-subtitle class="tc-primary" flex="100">Bill Details</md-card-subtitle>
-      <div  class="invoice-box pad-sm md-shadow-bottom-z-2" layout="row" layout-wrap="" flex="100">
-        <table cellpadding="0" cellspacing="0">
-          <tr class="top">
-            <td colspan="3">
-              <table>
-                <tr>
-                  <td class=" text-center">
-                    {{shop.name}}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center" *ngIf="shop.address">
-                    {{shop.address?.name}},<br>
-                    {{shop.address?.locality?.name}},<br>
-                    {{shop.address?.locality?.city?.name}},
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">
-                    Bill Date: {{cart.created_on| date:'medium'}}
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <tr class="heading">
-            <td>
-              Item
-            </td>
-            <td>
-              Qty
-            </td>
-            <td>
-              Price
-            </td>
-          </tr>
-          <template let-item ngFor [ngForOf]="cart.items">
-            <tr class="item">
-              <td>
-                {{item.name | truncate:15}}
-              </td>
-              <td class="text-center">
-                {{item.quantity}}
-              </td>
-              <td>
-                {{item.total_price| currency:'INR':true:'1.2-2'}}/-
-              </td>
-            </tr>
-          </template>
-          <tr class="">
-            <td>
-
-            </td>
-            <td>
-              Sub.Total:
-            </td>
-            <td>
-              {{cart.sub_total | currency:'INR':true:'1.2-2'}}/-
-            </td>
-          </tr>
-          <template let-tax ngFor let-index [ngForOf]="cart.taxes | keys">
-            <tr class="taxes" *ngIf="tax.key!=='total'">
-              <td></td>
-              <td>
-                {{tax.key}}
-              </td>
-              <td>
-                {{tax.value}}
-              </td>
-            </tr>
-
-          </template>
-          <tr class="discount">
-            <td>
-
-            </td>
-            <td>
-              Discount:
-            </td>
-            <td>
-              {{cart.auto_discount | currency:'INR':true:'1.2-2'}}/-
-            </td>
-          </tr>
-          <tr class="total">
-            <td>
-
-            </td>
-            <td>
-              Net Amount:
-            </td>
-            <td>
-              {{cart.total - cart.auto_discount | currency:'INR':true:'1.2-2'}}/-
-            </td>
-          </tr>
-
-          <tr class="">
-            <td colspan="3">
-              <table class="bottom">
-                <template let-item ngFor [ngForOf]="shop.registration_details">
-                  <tr class="registration">
-                    <td class="text-left">
-                      {{item.name}}
-                    </td>
-                    <td class="text-left">
-                      &nbsp;:&nbsp;{{item.value}}
-                    </td>
-                  </tr>
-
-                </template>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3">
-              <table class="bottom">
-                <tr>
-                  <td class="text-center md-italics">Thank you for shopping with us! Visit us again.</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-        </table>
-      </div>
-
     </div>
 
   </md-card-content>

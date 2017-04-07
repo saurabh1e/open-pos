@@ -4,6 +4,10 @@ var client;
 const ipcMain = electron.ipcMain;
 var exec = require('child_process').execSync;
 var randomstring = require("randomstring");
+var JsBarcode = require('jsbarcode');
+var Canvas  = require('canvas');
+
+var canvas = new Canvas();
 
 if (require('electron-squirrel-startup')) return;
 
@@ -11,6 +15,8 @@ if (handleSquirrelEvent()) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
   return;
 }
+
+
 
 const ESC = "@";
 const GS="\x1d";
@@ -38,52 +44,66 @@ function execute(command){
   exec(command, function(error, stdout, stderr){ console.log(stdout); });
 }
 
-ipcMain.on('printBill', function(event, args) {
-  console.log(args);
-
-  var data = args;
-
-  execute('echo  '+ESC+'@ > /dev/usb/lp1');
-  execute('echo '+ESC+'E'+String.fromCharCode(1)+' > /dev/usb/lp1');
-  execute('echo  '+ESC+'a'+String.fromCharCode(1)+' > /dev/usb/lp1' );
-  execute('echo  '+data['shopName']+' > /dev/usb/lp1');
-  execute('echo  '+ESC+'E'+String.fromCharCode(0)+' > /dev/usb/lp1' );
-  execute('echo  '+ESC+'a'+String.fromCharCode(1)+' > /dev/usb/lp1' );
-  execute('echo  Bill Date: ' + data['billDate']+' > /dev/usb/lp1');
-  execute('echo  Reference#: ' + data['invoice']+' > /dev/usb/lp1');
-  execute('echo  '+ESC+'@ > /dev/usb/lp1');
-  // execute('echo  '+ESC+'d'+String.fromCharCode(1)+' > /dev/usb/lp1' );
-  execute('echo  '+ESC+'a'+String.fromCharCode(0)+' > /dev/usb/lp1' );
-  data['items'].forEach(function(value){
-    var name = value['name'].substr(0,16);
-    var qty = value.quantity.toString();
-    name = name.padEnd(18, '.');
-    execute('echo ' +name+' x'+qty.padEnd(5, '.')+value['price'] + '/- > /dev/usb/lp1')
-
-  });
-  // execute('echo  '+ESC+'d'+String.fromCharCode(1)+' > /dev/usb/lp1' );
-  execute('echo  '+ESC+'a'+String.fromCharCode(2)+' > /dev/usb/lp1' );
-  execute('echo '+ESC+'E'+String.fromCharCode(1)+' > /dev/usb/lp1');
-  execute('echo  Sub.Total: ' + data['subTotal']+'/- > /dev/usb/lp1');
-  execute('echo  Discount: ' + data['autoDiscount']+'/- > /dev/usb/lp1');
-
-  var total = data['total']-data['autoDiscount'];
-  execute('echo  Total: ' + total+'/- > /dev/usb/lp1');
-  execute('echo '+ESC+'E'+String.fromCharCode(1)+' > /dev/usb/lp1');
-
-  execute('echo  '+ESC+'@ > /dev/usb/lp1');
-  execute('echo  '+ESC+'a'+String.fromCharCode(1)+' > /dev/usb/lp1' );
-  execute('echo Thank for shopping with us. > /dev/usb/lp1' );
-  execute('echo Visit us again! > /dev/usb/lp1' );
-  execute('echo  '+ESC+'d'+String.fromCharCode(4)+' > /dev/usb/lp1' );
-  execute('echo  '+GS+'V\x41'+String.fromCharCode(3)+' > /dev/usb/lp1' );
-
-
-});
-
 ipcMain.on('generateReferenceNumber', function(event){
   event.returnValue = (randomstring.generate(12));
 });
+
+
+ipcMain.on('printBill', function(event, args) {
+  console.log(args);
+  var html = '<html><body>args<div><button id="print_button">' +
+    'Print</button>&nbsp;<button id="cancel">Cancel</button></div></body></html>';
+  html =  'data:text/html,' + encodeURIComponent(html);
+
+  var win = new BrowserWindow({
+    width: 400,
+    height: 600,
+    titleBarStyle: 'hidden-inset',
+    "web-preferences": {
+      "web-security": false
+    }
+  });
+
+  // and load the index.html of the app.
+  win.loadURL(html);
+  win.webContents.on('did-finish-load', function() {
+    win.document.getElementById('print_button').addEventListener('click', function() {
+      win.webContents.print();event.returnValue = true});
+    windowdocument.getElementById('cancel').addEventListener('click', function() {
+      win.webContents.print();event.returnValue = false});
+
+  });
+  win.on('closed', function() {
+    event.returnValue = false
+  });
+
+});
+
+ipcMain.on('printLabel', function(event, args){
+  JsBarcode(canvas, args,  {
+    format: "EAN8"
+  });
+
+  var data =  '<img src="' + canvas.toDataURL('image/png') + '">';
+  var html =  'data:text/html,' + encodeURIComponent('<html><body><div>' + data + '</div></body>');
+
+  var win = new BrowserWindow({
+    width: 400,
+    height: 200,
+    titleBarStyle: 'hidden-inset',
+    "web-preferences": {
+      "web-security": false
+    }
+  });
+
+  // and load the index.html of the app.
+  win.loadURL(html);
+  win.webContents.on('did-finish-load', function() {
+    win.webContents.print();
+
+  });
+});
+
 
 // Connect to live update if LIVE_UPDATE env variable is true
 if (process.env.LIVE_UPDATE === "true") {
@@ -129,6 +149,7 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }));
+
 
   // Open the DevTools.
   if (process.env.OPEN_DEV_TOOLS === "true") {

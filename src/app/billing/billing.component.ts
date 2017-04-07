@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy} from "@angular/core";
+import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy} from "@angular/core";
 import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
 import {RetailShop} from "../../services/shop.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -12,6 +12,7 @@ import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 import {stringify} from "@angular/core/src/facade/lang";
 import {async} from "@angular/core/testing";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'billing',
@@ -21,7 +22,7 @@ import {async} from "@angular/core/testing";
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class BillingComponent implements AfterViewInit, OnInit {
+export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
   cart: Order;
   searchInputTerm: string;
@@ -31,7 +32,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
   _distributors: Distributor[];
   _tags: Tag[];
   _salts: Salt[];
-
+  _db: Subscription;
   selectedTags: Tag[] = [];
   selectedSalts: Salt[] = [];
   selectedBrands: string[] = [];
@@ -61,7 +62,10 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
 
+  }
 
+  ngOnDestroy() {
+    this._db.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -106,6 +110,9 @@ export class BillingComponent implements AfterViewInit, OnInit {
       }
     });
     this.media.broadcast();
+    this._db = this._indexDb.db$.subscribe(()=>{
+      this.setInitialData(this.cart.retail_shop_id);
+    });
   }
 
   set distributors(data: Distributor[]) {
@@ -290,7 +297,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     })
   }
   checkOut(): void {
-    let _dialog = this._dialogService.open(CheckoutComponent,  <MdDialogConfig>{ width: '80%'});
+    let _dialog = this._dialogService.open(CheckoutComponent,  <MdDialogConfig>{ width: '60%'});
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data)=>{
       if (data){

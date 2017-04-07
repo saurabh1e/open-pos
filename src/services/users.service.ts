@@ -28,30 +28,48 @@ export interface IUser {
 @Injectable()
 export class UsersService extends RESTService<IUser> {
 
-  _user: IUser;
+  _user: IUser = null;
   _user$: Subject<IUser> = <Subject<IUser>> new Subject();
+  public redirectUrl: string = null;
 
 
-  constructor(private _http: HttpInterceptorService, private _shopService: RetailShopsService,
-              private _indexDB: IndexDBServiceService, private _auth: AuthService) {
+  constructor(private _http: HttpInterceptorService, private _authService: AuthService,
+              private _indexDB: IndexDBServiceService, private _shopService: RetailShopsService) {
     super(_http, {
       baseUrl: MOCK_API,
       path: '/user',
     });
 
-    this._auth.auth$.subscribe(data=>{
-      this.get(data.id).subscribe((data)=>{
-        this.user = data;
-      })
+    this._authService.auth$.subscribe((data)=>{
+      if (data.id && data.authentication_token) {
+        this.get(data.id).subscribe((data)=>{
+          this.user = data;
+        })
+      }
     })
+
   }
 
   set user(data: IUser) {
     this._user = data;
     if (this.user.id && this.user.active){
-      this.getShops(this.user.retail_shop_ids);
       this.updateUserDB();
     }
+
+      this._shopService.query({
+        __id__in: this.user.retail_shop_ids,
+        __include: ['total_sales'],
+        __limit: 100
+      }).subscribe((data: {data: RetailShop[]}) => {
+        this._shopService.shops = data.data;
+      }, (error) => {
+        if (error.type === 'error') {
+
+          this._indexDB.shops.where('id').anyOf(this.user.retail_shop_ids).toArray().then((data) => {
+            this._shopService.shops = data;
+          })
+        }
+      });
     this._user$.next(this.user);
   }
 
@@ -71,32 +89,19 @@ export class UsersService extends RESTService<IUser> {
     return this._user$.asObservable();
   }
 
-  getShops(retail_shop_ids: string[]): void {
-    this._shopService.query({
-      __id__in: retail_shop_ids,
-      __include: ['total_sales'],
-      __limit: 100
-    }).subscribe((data: {data: RetailShop[]}) => {
-      this._shopService.shops = data.data;
-    }, (error) => {
-      if (error.type === 'error') {
-
-        this._indexDB.shops.where('id').anyOf(retail_shop_ids).toArray().then((data) => {
-          this._shopService.shops = data;
-        })
-      }
-    });
-  }
 
   login(email, password): Observable<Response> {
     return this._http.post(MOCK_API+'login/', {'email': email, 'password': password}).map(res=>res.json());
   }
 
-  logout(): Promise<boolean> {
+  async logout(): Promise<boolean> {
     this.user = <IUser>{};
-    return this._auth.deleteAuthData().then(data=>{
-      return data;
-    });
+    return this._authService.deleteAuthData();
   }
+
+  isLoggedIn(): boolean {
+    return this.user && this.user.active
+  }
+
 }
 

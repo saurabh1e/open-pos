@@ -29,8 +29,10 @@ export class UserComponent implements OnInit {
   }
 
   logout(): void {
-    this._userService.logout();
-    this._router.navigate(['/']);
+    this._userService.logout().then(()=>{
+      this._router.navigate(['/login']);
+    });
+
   }
   openProfile(): void {
 

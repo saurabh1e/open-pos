@@ -20,9 +20,14 @@
 
       </div>
       <div layout="row" layout-margin>
-        <md-input-container  flex layout="row">
+        <md-input-container  flex="66" layout="row">
           <input md-input placeholder="Description" [value]="product.sub_description"
                 [(ngModel)]="product.sub_description" name="sub_description"/>
+        </md-input-container>
+        <md-input-container  flex="33" layout="row">
+          <input md-input placeholder="Barcode" [value]="product.barcode"
+                 [(ngModel)]="product.barcode" name="barcode" required maxlength="13" minlength="8" />
+          <md-hint align="end">{{product.barcode?product.barcode.length:0}} / 13</md-hint>
         </md-input-container>
       </div>
       <div layout="row" layout-margin>

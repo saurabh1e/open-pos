@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, ElementRef, OnInit} from "@angular/core";
 import {Order, OrdersService} from "../../../services/orders.service";
 import {MdDialogRef} from "@angular/material";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Customer, CustomerService, Address} from "../../../services/customer.service";
-import {RetailShop} from "../../../services/shop.service";
+import {RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Observable} from "rxjs";
 import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
 import {CartService} from "../../../services/cart.service";
@@ -27,12 +27,15 @@ export class CheckoutComponent implements OnInit {
   denominationArray: {} = {1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 500: 0, 1000: 0, 2000: 0};
   total: string = '0';
   ipcRenderer:any;
+  currentinvoiceNumber: number;
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
               private _customerService: CustomerService,
               private _indexDB: IndexDBServiceService,
               private _orderService: OrdersService,
               private _cartService: CartService,
+              private _shopService: RetailShopsService,
+              private elRef:ElementRef,
               private _loadingService: TdLoadingService) {
     this._loadingService.create({
       name: 'checkout',
@@ -51,6 +54,9 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this._indexDB.shops.get(this.cart.retail_shop_id).then((shop) => {
       this.shop = shop;
+      this._indexDB.configs.get(this.shop.id).then((data)=>{
+        this.currentinvoiceNumber = data.invoiceNumber+1;
+      })
     });
     if (this.cart.customer) {
       this.customer = this.cart.customer;
@@ -60,6 +66,7 @@ export class CheckoutComponent implements OnInit {
       }
     }
     this.cart.address_id = null;
+
   }
 
   close(): void {
@@ -194,25 +201,29 @@ export class CheckoutComponent implements OnInit {
   }
 
   printBill():void {
-    let data:any = {};
 
-    data['shopName'] = this.shop.name;
-    data['billDate'] = this.cart.created_on.toLocaleString();
-    data['invoice'] = this.cart.reference_number;
-    data['items'] = this.cart.items.map((value)=>{
-      return {name: value.name, quantity: value.quantity, price: value.total_price}
-    });
-    data['subTotal'] = this.cart.sub_total || 0;
-    data['total'] = this.cart.total || 0;
-    data['additionalDiscount'] = this.cart.additional_discount || 0;
-    data['autoDiscount'] = this.cart.auto_discount || 0;
-    try{
-      this.ipcRenderer.send('printBill', data)
-      }
-      catch(err){
+    console.log(document.getElementById('print-selection'));
+    console.log(this.elRef.nativeElement.querySelector('#print-selection'));;
+    let mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-      }
+    mywindow.document.write('<html><head><title>' + 'Bill'  + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write(document.getElementById('print-selection').innerHTML);
+    mywindow.document.write('</body></html>');
 
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+    mywindow.close();
+    // console.log(document.getElementById('print-selection'));
+    // if (this.ipcRenderer.sendSync('printBill', document.getElementById('print-selection'))) {
+    //   this._indexDB.configs.update(this.shop.id, {invoiceNumber: this.currentinvoiceNumber}).then(()=>{
+    //     this._shopService.update(this.shop.id, {id: this.shop.id, invoice_number: this.currentinvoiceNumber})
+    //       .subscribe(()=>{
+    //       })
+    //   });
+    // }
   }
 
 }

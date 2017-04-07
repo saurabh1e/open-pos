@@ -11,14 +11,15 @@ import {Auth} from "./auth.service";
 
 
 export interface Status {
-  status: boolean;
+  status: string;
 
 }
 
 
 export interface Config {
-  stock_time: string;
+  stock_time?: string;
   shop_id: string;
+  invoiceNumber?: number;
 }
 
 @Injectable()
@@ -54,7 +55,7 @@ export class IndexDBServiceService extends Dexie {
         carts: "++local_id,retail_shop_id",
         localities: "++id, name",
         users: "++id, mobile_number, email",
-        configs: "++shop_id,key,value",
+        configs: "++shop_id",
         auth: "++id,authentication_token"
       });
   }

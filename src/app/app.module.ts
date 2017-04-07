@@ -79,6 +79,8 @@ import {StaffDetailComponent} from "./staff/staff-detail/staff-detail.component"
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 import {SideMenuComponent} from "./side-menu/side-menu.component";
+import {AuthGuard} from "../services/auth-gaurd.service";
+import {MainComponent} from "./main/main.component";
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -88,6 +90,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
 @NgModule({
   declarations: [
     AppComponent,
+    MainComponent,
     LoginComponent,
     DashboardComponent,
     CartComponent,
@@ -161,11 +164,12 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   ], // modules needed to run this module
   providers: [
     appRoutingProviders,
+    RetailShopsService,
+    UsersService,
+    AuthService,
     httpInterceptorProviders,
     Title,
-    AuthService,
-    UsersService,
-    RetailShopsService,
+    AuthGuard,
     ItemsService,
     OrderItemsService,
     DistributorService,
@@ -176,7 +180,8 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     StocksService,
     CartService,
     OrdersService,
-    IndexDBServiceService
+
+    IndexDBServiceService,
 
   ], // additional providers needed for this module
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,

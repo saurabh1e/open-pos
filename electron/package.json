@@ -1,6 +1,6 @@
 {
-  "name": "open-pos",
-  "version": "0.0.1",
+  "name": "electron",
+  "version": "1.6.2",
   "description": "A Open Source Point of Sale System",
   "main": "main.js",
   "scripts": {
@@ -21,9 +21,13 @@
   ],
   "dependencies":{
     "randomstring": "",
-    "electron-squirrel-startup": ""
+    "electron-squirrel-startup": "",
+    "barcode": "",
+    "datauri": "",
+    "jsbarcode": "",
+    "canvas": ""
   },
   "devDependencies": {
-    "electron": "^1.4.1"
+    "electron": "^1.6.2"
   }
 }

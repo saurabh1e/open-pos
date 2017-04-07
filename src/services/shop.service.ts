@@ -19,26 +19,28 @@ import {
 import {IndexDBServiceService} from "./indexdb.service";
 import {Address} from "./customer.service";
 import {OrderItemsService} from "./orders.service";
+import {UsersService} from "./users.service";
 
 
 export interface RetailShop {
   id: string;
-  name: string;
+  name?: string;
   retail_brand_id?: string;
   products?: Product[];
   registration_details?: RegistrationDetail[];
-  total_sales: {
+  total_sales?: {
     total_sales: number;
     total_orders: number;
     total_items: number;
   };
   retail_brand?: RetailBrand;
-  address: Address;
+  address?: Address;
   brands?: Brand[];
   distributors?: Distributor[];
   tags?: Tag[];
   taxes?: Tax[];
   _link?: {};
+  invoice_number: number;
 }
 
 export interface RegistrationDetail {
@@ -74,6 +76,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
       baseUrl: MOCK_API,
       path: '/retail_shop',
     });
+
   }
 
   set shop(data: RetailShop) {
@@ -82,8 +85,22 @@ export class RetailShopsService extends RESTService<RetailShop> {
   }
 
   set shops(data: RetailShop[]) {
-    this._shops = data;
-    this.shops.forEach((value) => {
+
+    // invoice number sync
+
+    data.forEach((value) => {
+      this._indexDB.configs.get(value.id).then((data)=>{
+        if (data.invoiceNumber !== value.invoice_number){
+          if (data.invoiceNumber > value.invoice_number) {
+            this.update(value.id, {id: value.id, invoice_number: data.invoiceNumber}).subscribe(()=>{
+              value.invoice_number = data.invoiceNumber
+            })
+          }
+          else {
+            this._indexDB.configs.update(value.id, {invoiceNumber: value.invoice_number}).then()
+          }
+        }
+      });
       this._indexDB.shops.add(value).then(() => {
         },
         () => {
@@ -91,6 +108,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
         })
     });
 
+    this._shops = data;
     this._shops$.next(this.shops);
   }
 
@@ -112,10 +130,12 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
   async getUpdate(retailShopId: string): Promise<boolean> {
     return await this._indexDB.configs.get(retailShopId).then((data)=>{
-      this.getProductUpdate(retailShopId, data.stock_time).then();
-      this.getStockUpdate(data.stock_time, retailShopId).then();
-      this.getOrderItemUpdate(retailShopId, data.stock_time).then();
-      this.updateStockTime(retailShopId);
+      if (data && data.stock_time) {
+        this.getProductUpdate(retailShopId, data.stock_time).then();
+        this.getStockUpdate(data.stock_time, retailShopId).then();
+        this.getOrderItemUpdate(retailShopId, data.stock_time).then();
+        this.updateStockTime(retailShopId);
+      }
       return true
     });
   }
@@ -187,17 +207,18 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
 
   async syncData(retailShopId: string): Promise<boolean> {
-    let params = {__retail_shop_id__equal: retailShopId, __limit: 500, __page: 1};
-    let product_params = params;
-    product_params['__include'] = ['similar_products', 'available_stocks', 'brand', 'distributor'];
+    let params = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1};
+    let product_params = Object.assign({}, params);
+    product_params['__include'] = ['similar_products', 'available_stocks', 'brand', 'distributors'];
     product_params['__exclude'] = ['links'];
     product_params['__is_disabled__bool'] = 'false';
-    this._distributorService.saveDistributors(params);
-    this._brandService.saveBrands(params);
-    this._tagService.saveTags(params);
-    this._taxService.saveTaxes(params);
-    this._saltService.saveSalts(params);
-    return await this._itemService.saveProducts(product_params).then(()=>{
+    this._distributorService.saveDistributors(Object.assign({}, params));
+    this._brandService.saveBrands(Object.assign({}, params));
+    this._tagService.saveTags(Object.assign({}, params));
+    this._taxService.saveTaxes(Object.assign({}, params));
+    this._saltService.saveSalts(Object.assign({}, params));
+    return await this._itemService.saveProducts(product_params).then((d)=>{
+      console.log();
       this.updateStockTime(retailShopId);
       return true
     });

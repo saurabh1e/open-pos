@@ -17,16 +17,12 @@ export class AuthService {
   constructor(
               private _indexDB: IndexDBServiceService) {
 
-    this.getAuthData().then((data) => {
-      this.auth = data;
-    });
+    this.init();
   }
 
   set auth(data: Auth) {
     this._auth = data;
-    if (this.auth.id && this.auth.authentication_token) {
-      this._auth$.next(data);
-    }
+    this._auth$.next(data);
   }
 
 
@@ -38,8 +34,8 @@ export class AuthService {
     return this._auth$.asObservable();
   }
 
-  getAuthData(): Promise<Auth> {
-    return this._indexDB.auth.toArray().then((data) => {
+  async getAuthData(): Promise<Auth> {
+    return await this._indexDB.auth.limit(1).toArray().then((data) => {
       return data[0];
     });
   }
@@ -64,7 +60,14 @@ export class AuthService {
         })
       });
     });
+  };
 
+  init(): void {
+    this.getAuthData().then((data)=>{
+      if (data) {
+        this.auth = data;
+      }
+    });
   }
 
 }

@@ -1,18 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 
-import {TdLoadingService, LoadingType, LoadingMode, TdDialogService} from '@covalent/core';
+import {TdLoadingService, LoadingType, LoadingMode} from '@covalent/core';
 import {UsersService, AuthService } from '../../services'
 import {IUser} from "../../services/users.service";
-import {Auth} from "../../services/auth.service";
-
 
 @Component({
   selector: 'qs-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, AfterViewInit{
 
   username: string;
   password: string;
@@ -21,7 +19,6 @@ export class LoginComponent implements OnInit{
   constructor(private _router: Router,
               private _loadingService: TdLoadingService,
               private _userService: UsersService,
-              private _dialogService: TdDialogService,
               private _authService: AuthService) {
     this._loadingService.create({
       name: 'login',
@@ -31,42 +28,49 @@ export class LoginComponent implements OnInit{
     });
   }
 
+  ngAfterViewInit() {
+
+    this._loadingService.register('login');
+    this.checkLogIn();
+    this._userService.user$.subscribe(()=> {
+      this.checkLogIn();
+    });
+  }
+
+  ngOnInit(): void {
+
+  }
+
   login(): void {
     this._loadingService.register('login');
     this._userService.login(this.username, this.password).subscribe((data: any) => {
       this._authService.setAuthData(data.id, data.authentication_token).then(()=>{
         this._authService.auth = data;
-        this._router.navigate(['dashboard/shops']).then(()=>{
+        this._userService.get(data.id).subscribe((data)=>{
+          this._userService.user = data;
+          this.checkLogIn();
           this._loadingService.resolve('login');
         });
 
       });
 
     },() => {
-      this._dialogService.openAlert({
-        message: 'Unable to login incorrect username or password.',
-        disableClose: false,
-        title: 'Login Error!',
-        closeButton: 'Close',
-      });
       this._loadingService.resolve('login');
     });
   }
 
-  ngOnInit(): void {
-    this._loadingService.register('login');
-    this.user = this._userService.user;
-    this._userService.user$.subscribe((data:IUser)=> {
-      this.user = data;
-      this.checkUser();
-    });
-    this.checkUser();
+  redirect(): void {
+    if (this._userService.redirectUrl) {
+      this._router.navigate([this._userService.redirectUrl]).then();
+    }
+    else {
+      this._router.navigate(['dashboard/shops']).then();
+    }
   }
 
-
-  checkUser(): void {
-    if (this.user && this.user.active) {
-      this._router.navigate(['dashboard/shops']);
+  checkLogIn(): void {
+    if (this._userService.isLoggedIn()) {
+      this.redirect();
     }
     this._loadingService.resolve('login');
   }
