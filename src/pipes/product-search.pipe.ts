@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {Product, Tag, Brand, Salt} from "../services/items.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Pipe({
   name: 'productSearch'
@@ -148,5 +149,15 @@ export class SearchPipe implements PipeTransform {
     return items.filter( function(item){
       return item.name.toLowerCase().includes(term.toLowerCase());
     })
+  }
+}
+
+
+
+@Pipe({name: 'safeHtml'})
+export class SafeHtml implements PipeTransform{
+  constructor(private sanitizer:DomSanitizer){}
+  transform(html) {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 }

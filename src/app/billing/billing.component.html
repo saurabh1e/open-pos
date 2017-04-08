@@ -141,6 +141,14 @@
                      [alwaysVisible]="true"
                      (search)="searchInputTerm = $event" (clear)="searchInputTerm = null">
       </td-search-box>
+
+      <!--<div layout="row">-->
+        <!--<md-input-container flex="50">-->
+          <!--<input mdInput placeholder="State" [mdAutocomplete]="tdAuto" [(ngModel)]="currentState" #modelDir="ngModel"-->
+                 <!--(ngModelChange)="this.tdStates = filterStates(currentState)" [disabled]="tdDisabled">-->
+        <!--</md-input-container>-->
+      <!--</div>-->
+
     </div>
     <span flex hide-xs></span>
     <button md-button class="font-bold-500" flex-xs="40" hide-gt-xs=""

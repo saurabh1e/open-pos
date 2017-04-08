@@ -19,6 +19,7 @@ export class CartComponent implements OnInit {
 
   carts: Order[];
   shop_id: string;
+  invoice_number: number;
 
   constructor(private _cartService: CartService,
               private _snackBarService: MdSnackBar,
@@ -44,6 +45,7 @@ export class CartComponent implements OnInit {
 
   setShop():void{
     this.shop_id = this._shopService.shop.id;
+    this.invoice_number = this._shopService.shop.invoice_number;
     this.getCarts(this.shop_id);
   }
 
@@ -77,7 +79,7 @@ export class CartComponent implements OnInit {
       return
     }
 
-    this._cartService.newCart(this.shop_id).then((cartId)=>{
+    this._cartService.newCart(this.shop_id, this.invoice_number).then((cartId)=>{
       this.routeCart(cartId);
     });
   }

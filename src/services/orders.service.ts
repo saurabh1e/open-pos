@@ -50,6 +50,7 @@ export interface Item {
   discounted_unit_price: number;
   children: Item[];
   taxes: ItemTax[];
+  batch_number: string;
   total_price: number;
   is_combo: boolean;
   is_loose: boolean;

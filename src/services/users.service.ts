@@ -58,7 +58,7 @@ export class UsersService extends RESTService<IUser> {
 
       this._shopService.query({
         __id__in: this.user.retail_shop_ids,
-        __include: ['total_sales'],
+        __include: ['total_sales', 'printer_config', 'registration_details'],
         __limit: 100
       }).subscribe((data: {data: RetailShop[]}) => {
         this._shopService.shops = data.data;

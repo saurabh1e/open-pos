@@ -41,6 +41,22 @@ export interface RetailShop {
   taxes?: Tax[];
   _link?: {};
   invoice_number: number;
+  printer_config?: PrinterConfig;
+}
+
+export interface PrinterConfig {
+  header:string;
+  footer:string;
+  bill_template:string;
+  receipt_template:string;
+  bill_printer_type:string;
+  receipt_printer_type:string;
+  label_printer_type:string;
+
+  have_receipt_printer:boolean;
+  have_bill_printer:boolean;
+
+  retail_shop_id:string;
 }
 
 export interface RegistrationDetail {

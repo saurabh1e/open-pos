@@ -56,7 +56,7 @@ export class CustomerService extends RESTService<Customer> {
 
 
   addAddress(address: Address): Observable<any> {
-    return this._http.post(MOCK_API+'address', address);
+    return this._http.post(MOCK_API+'address', address).map(data=>data.json());
   }
 
   addCustomerAddress(addressId: string, customerId: string): Observable<any> {
@@ -64,7 +64,7 @@ export class CustomerService extends RESTService<Customer> {
       __action: 'add',
       customer_id: customerId,
       address_id: addressId
-    }])
+    }]).map(data=>data.json())
   }
 }
 

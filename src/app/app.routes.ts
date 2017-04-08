@@ -27,6 +27,8 @@ import {StockReportComponent} from "./reporting/stock-report/stock-report.compon
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
 import {MainComponent} from "./main/main.component";
 import {AuthGuard} from "../services/auth-gaurd.service";
+import {PrinterConfigComponent} from "./dashboard/printer-config/printer-config.component";
+import {DetailComponent} from "./dashboard/detail/detail.component";
 
 
 const routes: Routes = [
@@ -51,7 +53,9 @@ const routes: Routes = [
       path: 'dashboard', component: DashboardComponent, canActivateChild:[AuthGuard],
       children: [
         {path: 'shops', component: ShopComponent},
-        {path: 'carts', component: CartComponent}
+        {path: 'carts', component: CartComponent},
+        {path: 'printer', component: PrinterConfigComponent},
+        {path: 'details', component: DetailComponent}
       ]
     },
     {

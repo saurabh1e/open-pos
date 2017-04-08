@@ -46,6 +46,7 @@ export interface Stock {
   purchase_date: Date;
   selling_amount: number;
   quantity_label: string,
+  batch_number: string,
   is_loose: boolean;
   units_purchased: number;
   units_sold: number,

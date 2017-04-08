@@ -91,6 +91,7 @@ export class CartService {
     item.discount = product.auto_discount;
     item.discount = product.auto_discount;
     item.unit_price = stock.selling_amount;
+    item.batch_number = stock.batch_number;
     item.max_units = stock.units_purchased-stock.units_sold;
     item.default_quantity = product.default_quantity?product.default_quantity:product.is_loose?0.1:1;
     item.is_loose = product.is_loose;
@@ -116,7 +117,7 @@ export class CartService {
     })
   }
 
-  async newCart(id: string): Promise<string>{
+  async newCart(id: string, invoiceNumber: number): Promise<string>{
     let localId = stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
     let referenceNumber = '';
     try{

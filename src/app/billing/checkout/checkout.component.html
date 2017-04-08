@@ -102,8 +102,9 @@
         </div>
         <div layout="row" layout-margin="" >
           <md-input-container flex>
-            <input md-input placeholder="New address" type="text" name="address"
-                   [(ngModel)]="address.name">
+
+            <input md-input placeholder="New address" type="text" name="address" [(value)]="address.name"
+                   [(ngModel)]="address.name"/>
           </md-input-container>
         </div>
         <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="" style="margin: 0">
@@ -125,6 +126,10 @@
         </div>
       </form>
     </div>
+    <div >
+      <div [hidden]="true"  [innerHTML]="shop?.printer_config.template | safeHtml"></div>
+    </div>
+
 
   </md-card-content>
 

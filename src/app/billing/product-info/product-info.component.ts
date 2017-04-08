@@ -18,11 +18,14 @@ export class ProductInfoComponent implements OnInit {
               private _indexDB: IndexDBServiceService) { }
 
   ngOnInit() {
-    this.product.similar_products.forEach((value)=>{
-      this._indexDB.products.get(value).then((data)=>{
-        this.products.push(data);
-      })
-    });
+    if (this.product.similar_products) {
+      this.product.similar_products.forEach((value)=>{
+        this._indexDB.products.get(value).then((data)=>{
+          this.products.push(data);
+        })
+      });
+    }
+
   }
 
   close():void {

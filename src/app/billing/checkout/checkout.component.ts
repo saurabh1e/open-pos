@@ -27,7 +27,7 @@ export class CheckoutComponent implements OnInit {
   denominationArray: {} = {1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 500: 0, 1000: 0, 2000: 0};
   total: string = '0';
   ipcRenderer:any;
-  currentinvoiceNumber: number;
+  currentInvoiceNumber: number;
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
               private _customerService: CustomerService,
@@ -55,7 +55,7 @@ export class CheckoutComponent implements OnInit {
     this._indexDB.shops.get(this.cart.retail_shop_id).then((shop) => {
       this.shop = shop;
       this._indexDB.configs.get(this.shop.id).then((data)=>{
-        this.currentinvoiceNumber = data.invoiceNumber+1;
+        this.currentInvoiceNumber = data.invoiceNumber+1;
       })
     });
     if (this.cart.customer) {
@@ -154,7 +154,7 @@ export class CheckoutComponent implements OnInit {
       this._cartService.updateStock(this.cart).then((status)=>{
         console.log(status);
         this._loadingService.resolve('checkout');
-        this.dialogRef.close(data.data[0].invoice_number);
+        this.dialogRef.close(data.data[0].reference_number);
       });
 
     }, () => {
@@ -191,39 +191,123 @@ export class CheckoutComponent implements OnInit {
   addAddress(): void {
     this._loadingService.register('checkout');
     this._customerService.addAddress(this.address).subscribe((data: {data: Address[]})=>{
+      console.log(data);
       this._customerService.addCustomerAddress(data.data[0].id, this.customer.id).subscribe(()=>{
         this.address.id = data.data[0].id;
         this.addresses = this.addresses.concat(this.address);
         this.cart.address_id = this.address.id;
         this._loadingService.resolve('checkout');
-      })
+      }, ()=>{this._loadingService.resolve('checkout');})
+    }, ()=>{
+      this._loadingService.resolve('checkout');
     })
   }
 
   printBill():void {
+    //#TODO Very Bad DOM manipulation need to change
 
-    console.log(document.getElementById('print-selection'));
-    console.log(this.elRef.nativeElement.querySelector('#print-selection'));;
-    let mywindow = window.open('', 'PRINT', 'height=400,width=600');
+    let a  = this.elRef.nativeElement.querySelector('#print-selection');
+    if (a.querySelector('#shopName')) {
+      a.querySelector('#shopName').innerHTML = this.shop.name;
+    }
+    if (a.querySelector('#dueDate')) {
+      a.querySelector('#dueDate').innerHTML = this.cart.created_on.toLocaleString();
+    }
+    if (a.querySelector('#billDate')) {
+      a.querySelector('#billDate').innerHTML = this.cart.created_on.toLocaleString();
+    }
+    if (a.querySelector('#customerName')) {
+      a.querySelector('#customerName').innerHTML = this.cart.customer.name || null;
+    }
+    if (a.querySelector('#customerNumber')) {
+      a.querySelector('#customerNumber').innerHTML = this.cart.customer.mobile_number || null;
+    }
+    if (a.querySelector('#invoiceNumber')) {
+      a.querySelector('#invoiceNumber').innerHTML = '#' + this.pad(this.currentInvoiceNumber, 5) || null;
+    }
+    if (a.querySelector('#subTotal')) {
+      a.querySelector('#subTotal').innerHTML = (this.cart.sub_total  || 0).toString() + '/-';
+    }
+    if (a.querySelector('#total')) {
+      a.querySelector('#total').innerHTML = (this.cart.total || 0).toString()  + '/-';
+    }
+    if (a.querySelector('#discount')) {
+      a.querySelector('#discount').innerHTML = ((this.cart.additional_discount || 0) +
+        (this.cart.auto_discount || 0)).toString() + '/-';
+    }
+    if (a.querySelector('#taxParent')) {
+      let taxes = {};
+      this.cart.items.forEach((item)=>{
+       item.taxes.forEach((tax)=>{
+         console.log(tax);
+         if (tax.tax.name in taxes) {
+            taxes[tax.tax.name] += tax.tax_amount;
+          }
+          else {
+            taxes[tax.tax.name] = tax.tax_amount;
+          }
+        })
+      });
+      let taxRow = a.querySelector('#taxParent').children[0].children[0];
+      let taxName = taxRow.children[1];
+      let taxValue = taxRow.children[2];
+      for (let i in taxes) {
+        if (taxes.hasOwnProperty(i)) {
+          taxName.innerHTML = i;
+          taxValue.innerHTML = taxes[i] + '/';
+          a.querySelector('#taxParent2').innerHTML += taxRow.outerHTML;
 
-    mywindow.document.write('<html><head><title>' + 'Bill'  + '</title>');
-    mywindow.document.write('</head><body >');
-    mywindow.document.write(document.getElementById('print-selection').innerHTML);
-    mywindow.document.write('</body></html>');
+        }
+      }
+      a.querySelector('#taxParent').innerHTML = null;
 
-    mywindow.document.close(); // necessary for IE >= 10
-    mywindow.focus(); // necessary for IE >= 10*/
+    }
+    if (a.querySelector('#item')) {
 
-    mywindow.print();
-    mywindow.close();
-    // console.log(document.getElementById('print-selection'));
-    // if (this.ipcRenderer.sendSync('printBill', document.getElementById('print-selection'))) {
-    //   this._indexDB.configs.update(this.shop.id, {invoiceNumber: this.currentinvoiceNumber}).then(()=>{
-    //     this._shopService.update(this.shop.id, {id: this.shop.id, invoice_number: this.currentinvoiceNumber})
-    //       .subscribe(()=>{
-    //       })
-    //   });
-    // }
+      let itemRow = a.querySelector('#item').children[0].children[0];
+      let itemName = itemRow.children[0];
+      let itemQuantity = itemRow.children[1];
+      let itemPrice = itemRow.children[2];
+      this.cart.items.forEach((item)=>{
+        itemName.innerHTML = item.name;
+        itemQuantity.innerHTML = 'x' + item.quantity;
+        itemPrice.innerHTML = item.unit_price + '/-';
+
+        a.querySelector('#item2').innerHTML += itemRow.outerHTML;
+      });
+
+      a.querySelector('#item').innerHTML = null;
+
+    }
+
+    if (a.querySelector('#address1')) {
+      a.querySelector('#address1').innerHTML = this.address.name || '';
+    }
+
+    try{
+      if (this.ipcRenderer.send('printBill', a.innerHTML)) {
+        this.increaseInvoiceNumber()
+      }
+    }
+    catch(err){
+      let wnd = window.open("about:blank", "", "_blank");
+      wnd.document.write(a.innerHTML);
+      wnd.print();
+      this.increaseInvoiceNumber()
+    }
+
+  }
+
+  pad(num:number, size:number): string {
+    let s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+
+  increaseInvoiceNumber(){
+    this._indexDB.configs.update(this.shop.id, {invoiceNumber: this.currentInvoiceNumber}).then((data)=>{
+      this._shopService.update(this.shop.id, {id: this.shop.id, invoice_number: this.currentInvoiceNumber}).subscribe()
+    })
   }
 
 }

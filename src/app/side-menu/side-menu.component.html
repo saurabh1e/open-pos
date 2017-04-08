@@ -1,4 +1,4 @@
-<div class="push-bottom-lg">
+<div class="bottom-margin">
   <nav>
     <h4 class="bgc-blue-400">Dashboard</h4>
     <ul>
@@ -136,5 +136,25 @@
 
     </ul>
   </nav>
+  <nav>
+    <h4 class="bgc-blue-400">Settings</h4>
+    <ul>
+      <li>
+        <a
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['/dashboard/details']">Details</a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="['/dashboard/printer']">Printer Config</a>
+      </li>
+    </ul>
+  </nav>
+
 
 </div>

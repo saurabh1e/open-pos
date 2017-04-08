@@ -4,8 +4,11 @@ import {
   CovalentCoreModule, CovalentDataTableModule, CovalentSearchModule, TdDialogService,
   CovalentDialogsModule
 } from "@covalent/core";
-import {CovalentHttpModule, IHttpInterceptor, IHttp} from "@covalent/http";
+import {CovalentHttpModule, IHttpInterceptor} from "@covalent/http";
 import {TagInputModule} from "ng2-tag-input";
+import { CKEditorModule } from 'ng2-ckeditor';
+
+
 import {AppComponent} from "./app.component";
 import {LoginComponent} from "./login/login.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
@@ -14,7 +17,7 @@ import {ShopComponent} from "./dashboard/shops/shops.component";
 import {appRoutes, appRoutingProviders} from "./app.routes";
 import {Ng2PaginationModule} from "ng2-pagination";
 import {RequestInterceptor} from "../config/interceptors/request.interceptor";
-import {NgxChartsModule} from "@swimlane/ngx-charts";
+// import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {AuthService} from "../services/auth.service";
 import {UsersService} from "../services/users.service";
 import {RetailShopsService} from "../services/shop.service";
@@ -32,7 +35,7 @@ import {
   ProductDistributorPipe,
   ProductTagPipe,
   ProductSaltPipe,
-  KeysPipe, TruncatePipe, SearchPipe
+  KeysPipe, TruncatePipe, SearchPipe, SafeHtml
 } from "../pipes/product-search.pipe";
 import {IndexDBServiceService} from "../services/indexdb.service";
 import {CartService} from "../services/cart.service";
@@ -81,6 +84,10 @@ import {StockReportComponent} from "./reporting/stock-report/stock-report.compon
 import {SideMenuComponent} from "./side-menu/side-menu.component";
 import {AuthGuard} from "../services/auth-gaurd.service";
 import {MainComponent} from "./main/main.component";
+import {DetailComponent} from "./dashboard/detail/detail.component";
+import {PrinterConfigComponent} from "./dashboard/printer-config/printer-config.component";
+import { BillComponent } from './billing/checkout/bill/bill.component';
+import { HtmlOutletDirective } from '../directives/html-outlet.directive';
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -124,6 +131,8 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     DistributorBillComponent,
     CustomerComponent,
     CustomerReportComponent,
+    DetailComponent,
+    PrinterConfigComponent,
     StockReportComponent,
     StaffComponent,
     StaffDetailComponent,
@@ -143,11 +152,15 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     SearchPipe,
     ProductSaltPipe,
     KeysPipe,
-    GoBackDirective
+    SafeHtml,
+    GoBackDirective,
+    BillComponent,
+    HtmlOutletDirective,
   ], // directives, components, and pipes owned by this NgModule
   imports: [
     BrowserModule,
     Ng2PaginationModule,
+    CKEditorModule,
     MdSelectModule.forRoot(),
     CovalentCoreModule.forRoot(),
     CovalentDataTableModule.forRoot(),
@@ -160,7 +173,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     CovalentSearchModule.forRoot(),
     TagInputModule,
     appRoutes,
-    NgxChartsModule,
+    // NgxChartsModule,
   ], // modules needed to run this module
   providers: [
     appRoutingProviders,
