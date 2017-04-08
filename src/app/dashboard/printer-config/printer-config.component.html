@@ -1,0 +1,77 @@
+
+<div layout="row" layout-align="center center" layout-wrap class="push" *ngIf="shop.id">
+  <md-card flex="100">
+    <md-card-title>Printer Config</md-card-title>
+    <md-card-subtitle>{{shop?.name}}</md-card-subtitle>
+    <md-divider></md-divider>
+    <md-card-content>
+      <div layout-margin flex>
+        <md-input-container flex>
+          <input md-input [(ngModel)]="shop.printer_config.bill_printer_type" placeholder="Bill Printer Type" />
+        </md-input-container>
+        <md-input-container flex>
+          <input md-input [(ngModel)]="shop.printer_config.receipt_printer_type" placeholder="Receipt Printer Type" />
+        </md-input-container>
+      </div>
+      <div layout-margin flex>
+        <md-input-container flex>
+          <input md-input [(ngModel)]="shop.printer_config.label_printer_type" placeholder="label Printer Config" />
+        </md-input-container>
+      </div>
+      <div layout-margin flex>
+        <md-input-container flex>
+          <input md-input [(ngModel)]="shop.printer_config.have_bill_printer" type="checkbox" />
+          Print Bill
+        </md-input-container>
+        <md-input-container flex>
+          <input md-input [(ngModel)]="shop.printer_config.have_receipt_printer" type="checkbox" />
+          Print Receipt
+        </md-input-container>
+      </div>
+
+    </md-card-content>
+  </md-card>
+  <div layout="row" layout-wrap layout-align="center center">
+    <md-card flex="45">
+      <md-card-title>Receipt Template Editor</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content >
+
+        <ckeditor
+          [(ngModel)]="shop.printer_config.receipt_template">
+          <ckbutton [name]="'saveButton'"
+                    [command]="'saveCmd'"
+                    (click)="save($event)"
+                    [icon]="'save.png'"
+                    [label]="'Save Document'"
+                    [toolbar]="'clipboard,1'">
+          </ckbutton>
+        </ckeditor>
+
+
+      </md-card-content>
+
+    </md-card>
+    <md-card flex="45">
+      <md-card-title>Bill Template Editor</md-card-title>
+      <md-divider></md-divider>
+      <md-card-content >
+
+        <ckeditor
+          [(ngModel)]="shop.printer_config.bill_template">
+          <ckbutton [name]="'saveButton'"
+                    [command]="'saveCmd'"
+                    (click)="save($event)"
+                    [icon]="'save.png'"
+                    [label]="'Save Document'"
+                    [toolbar]="'clipboard,1'">
+          </ckbutton>
+        </ckeditor>
+
+
+      </md-card-content>
+
+    </md-card>
+  </div>
+
+</div>
