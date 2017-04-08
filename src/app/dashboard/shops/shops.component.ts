@@ -1,11 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { Title }     from '@angular/platform-browser';
-import { TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
-import {RetailShopsService, RetailShop} from "../../../services/index";
+import {AfterViewInit, Component} from "@angular/core";
+import {Title} from "@angular/platform-browser";
+import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
+import {RetailShop, RetailShopsService} from "../../../services/index";
 import {Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
-import {stringify} from "@angular/core/src/facade/lang";
-
 
 
 @Component({
@@ -39,7 +37,7 @@ export class ShopComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this._titleService.setTitle('Dashboard');
-    this.title  = 'Dashboard';
+    this.title = 'Dashboard';
 
     this._loadingService.register('shops');
     this._shopService.shops$.subscribe((data: RetailShop[]) => {
@@ -58,17 +56,17 @@ export class ShopComponent implements AfterViewInit {
 
     this._loadingService.register('shops');
     this._shopService.shop = data;
-    this._indexDBService.products.where({retail_shop_id: data.id}).count().then((count)=>{
-      if (count< 1) {
-        this._shopService.syncData(data.id).then(()=>{
-          this._router.navigate(['dashboard/carts/']).then(()=>{
+    this._indexDBService.products.where({retail_shop_id: data.id}).count().then((count) => {
+      if (count < 1) {
+        this._shopService.syncData(data.id).then(() => {
+          this._router.navigate(['dashboard/carts/']).then(() => {
             this._loadingService.resolve('shops');
           });
         });
       }
-      else  {
-        this._shopService.getUpdate(data.id).then(()=>{
-          this._router.navigate(['dashboard/carts/']).then(()=>{
+      else {
+        this._shopService.getUpdate(data.id).then(() => {
+          this._router.navigate(['dashboard/carts/']).then(() => {
             this._loadingService.resolve('shops');
           });
         });
@@ -77,9 +75,10 @@ export class ShopComponent implements AfterViewInit {
 
     });
   }
+
   syncData(data: string): void {
     this._loadingService.register('shops');
-    this._shopService.syncData(data).then(()=>{
+    this._shopService.syncData(data).then(() => {
       this._loadingService.resolve('shops');
     });
 

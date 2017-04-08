@@ -9,7 +9,6 @@ import {
 } from "@covalent/core";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {OrdersService, Order} from "../../../services/orders.service";
-import {DateFormatter} from "@angular/common/src/pipes/intl";
 import {Title} from "@angular/platform-browser";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Subscription} from "rxjs";
@@ -35,7 +34,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     {name: 'amount_due', label: 'Due', numeric: true, format: v => v.toFixed(2)},
     {name: 'items_count', label: 'Items', numeric: true},
     {name: 'auto_discount', label: 'Discount', numeric: true},
-    {name: 'created_on', label: 'Date', format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')},
+    {name: 'created_on', label: 'Date'},
     {name: 'created_by.name', label: 'Created By', nested: true},
   ];
 

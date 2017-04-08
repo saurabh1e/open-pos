@@ -25,7 +25,7 @@ import {DistributorBillComponent} from "./stock-management/distributor-bill/dist
 import {StaffComponent} from "./staff/staff.component";
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
-import {MainComponent} from "./main/main.component";
+import {MainRouteComponent} from "./main-route/main-route.component";
 import {AuthGuard} from "../services/auth-gaurd.service";
 import {PrinterConfigComponent} from "./dashboard/printer-config/printer-config.component";
 import {DetailComponent} from "./dashboard/detail/detail.component";
@@ -38,7 +38,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {path: 'login', component: LoginComponent},
-  {path: '', component: MainComponent, canActivate: [AuthGuard], children:[
+  {path: '', component: MainRouteComponent, canActivate: [AuthGuard], children:[
     {
       path: 'stock', component: StockManagementComponent, canActivateChild:[AuthGuard],
       children: [

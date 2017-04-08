@@ -194,7 +194,7 @@ app.on('activate', function () {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
+// In this file you can include the rest of your app's specific main-route process
 // code. You can also put them in separate files and require them here.
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {

@@ -4,7 +4,6 @@ import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Product, Tax, Stock} from "./items.service";
 import {Customer, Address} from "./customer.service";
-import {stringify} from "@angular/core/src/facade/lang";
 
 function round(value, precision) {
   let multiplier = Math.pow(10, precision || 0);
@@ -118,7 +117,7 @@ export class CartService {
   }
 
   async newCart(id: string, invoiceNumber: number): Promise<string>{
-    let localId = stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
+    let localId = JSON.stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
     let referenceNumber = '';
     try{
       referenceNumber = this.ipcRenderer.sendSync('generateReferenceNumber');

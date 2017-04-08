@@ -97,6 +97,6 @@ gulp.task('restart-electron', function () {
 
 // watches the electron files for changes
 gulp.task('watch-electron', 'Watch for changed files', function (cb) {
-  // Reload main process after files change
+  // Reload main-route process after files change
   gulp.watch(['electron/**/*'], ['restart']);
 });

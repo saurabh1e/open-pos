@@ -1,17 +1,14 @@
-import {Component, AfterViewInit, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy} from "@angular/core";
-import {Product, Tag, Distributor, Brand, Salt, Stock} from "../../services/items.service";
-import {RetailShop} from "../../services/shop.service";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {Brand, Distributor, Product, Salt, Stock, Tag} from "../../services/items.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IndexDBServiceService} from "../../services/indexdb.service";
 import {Order, OrdersService} from "../../services/orders.service";
-import {TdDialogService, TdLoadingService, LoadingType, LoadingMode, TdMediaService} from "@covalent/core";
+import {LoadingMode, LoadingType, TdDialogService, TdLoadingService, TdMediaService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialogConfig, MdSnackBar} from "@angular/material";
 import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
-import {stringify} from "@angular/core/src/facade/lang";
-import {async} from "@angular/core/testing";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -25,7 +22,6 @@ import {Subscription} from "rxjs";
 export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
   cart: Order;
-  searchInputTerm: string;
   filterType: number = 0;
   _brands: Brand[];
   _products: Product[];
@@ -41,8 +37,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   itemsPerPage: number = 48;
 
 
-  constructor(
-              private _snackBarService: MdSnackBar,
+  constructor(private _snackBarService: MdSnackBar,
               private _dialogService: TdDialogService,
               private _cartService: CartService,
               private _orderService: OrdersService,
@@ -69,7 +64,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this._activatedRoute.params.subscribe((params: {id: string}) => {
+    this._activatedRoute.params.subscribe((params: { id: string }) => {
       if (params.id) {
         this._loadingService.register('billing');
         this._indexDb.carts.get((params.id)).then((data) => {
@@ -79,38 +74,38 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
         })
       }
     });
-    this.media.registerQuery('xs').subscribe((data: boolean)=>{
+    this.media.registerQuery('xs').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 12;
         this._cd.markForCheck();
       }
     });
-    this.media.registerQuery('sm').subscribe((data: boolean)=>{
+    this.media.registerQuery('sm').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 24;
         this._cd.markForCheck();
       }
     });
-    this.media.registerQuery('md').subscribe((data: boolean)=>{
+    this.media.registerQuery('md').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 36;
         this._cd.markForCheck();
       }
     });
-    this.media.registerQuery('lg').subscribe((data: boolean)=>{
+    this.media.registerQuery('lg').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 48;
         this._cd.markForCheck();
       }
     });
-    this.media.registerQuery('gt-lg').subscribe((data: boolean)=>{
+    this.media.registerQuery('gt-lg').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 54;
         this._cd.markForCheck();
       }
     });
     this.media.broadcast();
-    this._db = this._indexDb.db$.subscribe(()=>{
+    this._db = this._indexDb.db$.subscribe(() => {
       this.setInitialData(this.cart.retail_shop_id);
     });
   }
@@ -165,12 +160,21 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     this.filterType = value;
     return
   }
-  clearFilter (value: number) {
+
+  clearFilter(value: number) {
     switch (value) {
-      case 0: this.selectedTags = [].concat();break;
-      case 1: this.selectedBrands = [].concat();break;
-      case 2: this.selectedDistributors = [];break;
-      case 3: this.selectedSalts = [].concat();break;
+      case 0:
+        this.selectedTags = [].concat();
+        break;
+      case 1:
+        this.selectedBrands = [].concat();
+        break;
+      case 2:
+        this.selectedDistributors = [];
+        break;
+      case 3:
+        this.selectedSalts = [].concat();
+        break;
     }
     this._cd.markForCheck();
   }
@@ -266,24 +270,26 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
 
-  addProduct(product: Product, stock: Stock, qty?:number): void {
+  addProduct(product: Product, stock: Stock, qty?: number): void {
     if (!stock)
-        return;
-    this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart)=>{
+      return;
+    this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart) => {
       this.cart = cart;
       this._cd.markForCheck();
     })
   }
+
   updateProductQuantity(productId: string, stockId: string, qty?: number): void {
     console.log(qty);
-    this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart)=>{
+    this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart) => {
       this.cart = cart;
       console.log(cart);
       this._cd.markForCheck();
     })
   }
+
   removeProduct(productId: string, stockId: string): void {
-    this._cartService.removeProduct(this.cart.local_id, productId, stockId).then((cart)=>{
+    this._cartService.removeProduct(this.cart.local_id, productId, stockId).then((cart) => {
       this.cart = cart;
       this._cd.markForCheck();
     })
@@ -293,47 +299,52 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
     let _dialog = this._dialogService.open(ProductInfoComponent, this.config);
     _dialog.componentInstance.product = product;
-    _dialog.afterClosed().subscribe((data)=>{
+    _dialog.afterClosed().subscribe((data) => {
     })
   }
+
   checkOut(): void {
-    let _dialog = this._dialogService.open(CheckoutComponent,  <MdDialogConfig>{ width: '60%'});
+    let _dialog = this._dialogService.open(CheckoutComponent, <MdDialogConfig>{width: '60%'});
     _dialog.componentInstance.cart = this.cart;
-    _dialog.afterClosed().subscribe((data)=>{
-      if (data){
+    _dialog.afterClosed().subscribe((data) => {
+      if (data) {
         this.showSnackBar(data);
-        this._cartService.deleteCart(this.cart.local_id).then(()=>{
+        this._cartService.deleteCart(this.cart.local_id).then(() => {
           this._router.navigate(['dashboard/carts/']);
         });
       }
     })
   }
-  discountItem(productId: string, stockId: string, discount?: number){
+
+  discountItem(productId: string, stockId: string, discount?: number) {
     let _dialog = this._dialogService.open(ItemDiscountComponent, <MdDialogConfig>{height: '25%', width: '25%'});
-    _dialog.componentInstance.discount = stringify(discount);
-    _dialog.afterClosed().subscribe((data)=>{
-      this._cartService.updateDiscount(this.cart.local_id, productId, stockId, data.discount).then((cart)=>{
+    _dialog.componentInstance.discount = JSON.stringify(discount);
+    _dialog.afterClosed().subscribe((data) => {
+      this._cartService.updateDiscount(this.cart.local_id, productId, stockId, data.discount).then((cart) => {
         this.cart = cart;
       })
     })
   }
-  updateOrderDiscount(discount: number): void{
-    this._cartService.updateOrderDiscount(this.cart.local_id, discount).then((cart)=>{
+
+  updateOrderDiscount(discount: number): void {
+    this._cartService.updateOrderDiscount(this.cart.local_id, discount).then((cart) => {
       this.cart = cart;
     })
   }
+
   showSnackBar(orderId: string): void {
-    this._snackBarService.open('Order Placed Successfully ID#' + orderId, '', { duration: 3000 });
+    this._snackBarService.open('Order Placed Successfully ID#' + orderId, '', {duration: 3000});
   }
+
   quickCheckOut(): void {
     this._loadingService.register('billing');
     this.cart.amount_paid = this.cart.total;
-    this._orderService.create(this.cart).subscribe((data: {data: Order[]}) => {
-      this._cartService.updateStock(this.cart).then((status)=>{
+    this._orderService.create(this.cart).subscribe((data: { data: Order[] }) => {
+      this._cartService.updateStock(this.cart).then((status) => {
         this._loadingService.resolve('billing');
-        if (data){
-          this.showSnackBar(stringify(data.data[0].invoice_number));
-          this._cartService.deleteCart(this.cart.local_id).then(()=>{
+        if (data) {
+          this.showSnackBar(JSON.stringify(data.data[0].invoice_number));
+          this._cartService.deleteCart(this.cart.local_id).then(() => {
             this._router.navigate(['dashboard/carts/']);
           });
         }

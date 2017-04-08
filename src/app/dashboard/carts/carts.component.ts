@@ -1,12 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {TdLoadingService, LoadingMode, LoadingType} from '@covalent/core';
+import {Component, OnInit} from "@angular/core";
+import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 
 import {CartService} from "../../../services/cart.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
 import {Order} from "../../../services/orders.service";
-import {stringify} from "@angular/forms/src/facade/lang";
-import {RetailShop, RetailShopsService} from "../../../services/shop.service";
+import {RetailShopsService} from "../../../services/shop.service";
 import {MdSnackBar} from "@angular/material";
 
 
@@ -43,50 +42,50 @@ export class CartComponent implements OnInit {
     });
   }
 
-  setShop():void{
+  setShop(): void {
     this.shop_id = this._shopService.shop.id;
     this.invoice_number = this._shopService.shop.invoice_number;
     this.getCarts(this.shop_id);
   }
 
-  getCarts(id: string):void {
-    this._indexDB.carts.where({retail_shop_id: id}).toArray().then((data)=>{
+  getCarts(id: string): void {
+    this._indexDB.carts.where({retail_shop_id: id}).toArray().then((data) => {
       this.carts = data;
     })
   }
 
   openCart(id: string): void {
     this._loadingService.register('cart');
-    this._indexDB.carts.get(id).then((cart)=>{
+    this._indexDB.carts.get(id).then((cart) => {
       this.routeCart(cart.local_id);
-      });
-    }
+    });
+  }
 
   deleteCart(cart: Order): void {
-  this._cartService.deleteCart(cart.local_id).then(()=>{
-    this.carts.splice(this.carts.indexOf(cart), 1)
-  })
+    this._cartService.deleteCart(cart.local_id).then(() => {
+      this.carts.splice(this.carts.indexOf(cart), 1)
+    })
 
   }
 
   newCart(): void {
     this._loadingService.register('cart');
     if (!this.shop_id) {
-      this._snackBarService.open('No outlet selected', '', { duration: 3000 });
-      this._route.navigate(['dashboard/shops']).then(()=>{
+      this._snackBarService.open('No outlet selected', '', {duration: 3000});
+      this._route.navigate(['dashboard/shops']).then(() => {
         this._loadingService.resolve('cart');
       });
       return
     }
 
-    this._cartService.newCart(this.shop_id, this.invoice_number).then((cartId)=>{
+    this._cartService.newCart(this.shop_id, this.invoice_number).then((cartId) => {
       this.routeCart(cartId);
     });
   }
 
   routeCart(cartId: string): void {
-    this._route.navigate(['billing/'+cartId]).then(()=>{
-    this._loadingService.resolve('cart');
+    this._route.navigate(['billing/' + cartId]).then(() => {
+      this._loadingService.resolve('cart');
 
     })
   }

@@ -8,7 +8,6 @@ import {
   IPageChangeEvent
 } from "@covalent/core";
 import {TdDataTableColumn} from "../../td-data-table-column";
-import {DateFormatter} from "@angular/common/src/pipes/intl";
 import {Title} from "@angular/platform-browser";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Subscription} from "rxjs";
@@ -31,7 +30,7 @@ export class CustomerComponent implements OnInit {
     {name: 'total_billing', label: 'Total Billing', numeric: true, format: v => v.toFixed(2)},
     {name: 'amount_due', label: 'Due', numeric: true, format: v => v.toFixed(2)},
     {name: 'total_order', label: 'Orders', numeric: true},
-    {name: 'created_on', label: 'Added on', format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')},
+    {name: 'created_on', label: 'Added on'},
   ];
 
   ngOnInit() {

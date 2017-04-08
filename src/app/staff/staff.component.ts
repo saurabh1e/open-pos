@@ -9,7 +9,6 @@ import {
 } from "@covalent/core";
 import {TdDataTableColumn} from "../td-data-table-column";
 import {Order} from "../../services/orders.service";
-import {DateFormatter} from "@angular/common/src/pipes/intl";
 import {Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {IUser, UsersService} from "../../services/users.service";
@@ -33,14 +32,12 @@ export class StaffComponent implements OnInit, OnDestroy {
     {
       name: 'last_login_at',
       label: 'Last Login',
-      format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')
     },
     {
       name: 'current_login_at',
       label: 'Current Login',
-      format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')
     },
-    {name: 'created_on', label: 'Added On', format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy hh:mm')},
+    {name: 'created_on', label: 'Added On'},
   ];
 
 

@@ -7,7 +7,6 @@ import {
   DistributorBillsService, StocksService, Distributor
 } from "../../../services/items.service";
 import {MdSnackBar} from "@angular/material";
-import {stringify} from "@angular/core/src/facade/lang";
 
 
 @Component({
@@ -156,7 +155,7 @@ export class AddStockComponent implements OnInit {
         this.stocks = [];
         this.distributors = [];
         this.entryType = null;
-        this._snackBarService.open('Stock updated with bill ID#' + stringify(data.data[0].id), '', { duration: 3000 });
+        this._snackBarService.open('Stock updated with bill ID#' + JSON.stringify(data.data[0].id), '', { duration: 3000 });
         this._loadingService.resolve('distributor-bill');
       });
 
@@ -173,7 +172,7 @@ export class AddStockComponent implements OnInit {
         this.stocks = [];
         this.distributors = [];
         this.products = [];
-        this._snackBarService.open('Stock updated with ID#' + stringify(data.data[0].id), '', { duration: 3000 });
+        this._snackBarService.open('Stock updated with ID#' + JSON.stringify(data.data[0].id), '', { duration: 3000 });
         this._loadingService.resolve('distributor-bill');
       });
     }, ()=>{

@@ -3,7 +3,6 @@ import {DistributorBillsService} from "../../../services/items.service";
 import {Title} from "@angular/platform-browser";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {RESTService} from "@covalent/http";
-import {DateFormatter} from "@angular/common/src/pipes/intl";
 
 @Component({
   selector: 'app-distributor-bill',
@@ -17,8 +16,7 @@ export class DistributorBillComponent implements OnInit {
     { name: 'distributor.name', label: 'Distributor', sortable: false, nested: true },
     {name: 'distributor.retail_shop.name', label: 'Shop', sortable: false},
     {name: 'reference_number', label: 'Reference #', numeric: true, sortable: false},
-    {name: 'purchase_date', label: 'Date', numeric: true, sortable: true,
-      format: v => DateFormatter.format(new Date(v), 'en', 'dd/MM/yy')},
+    {name: 'purchase_date', label: 'Date', numeric: true, sortable: true},
     {name: 'bill_amount', label: 'Amount', numeric: true, sortable: false, format: v => v.toFixed(2)},
     {name: 'total_items', label: 'Items', numeric: true, sortable: true},
   ];

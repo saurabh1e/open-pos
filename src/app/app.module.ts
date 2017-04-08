@@ -83,11 +83,9 @@ import {CustomerReportComponent} from "./reporting/customer-report/customer-repo
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 import {SideMenuComponent} from "./side-menu/side-menu.component";
 import {AuthGuard} from "../services/auth-gaurd.service";
-import {MainComponent} from "./main/main.component";
+import {MainRouteComponent} from "./main-route/main-route.component";
 import {DetailComponent} from "./dashboard/detail/detail.component";
 import {PrinterConfigComponent} from "./dashboard/printer-config/printer-config.component";
-import { BillComponent } from './billing/checkout/bill/bill.component';
-import { HtmlOutletDirective } from '../directives/html-outlet.directive';
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -97,7 +95,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent,
+    MainRouteComponent,
     LoginComponent,
     DashboardComponent,
     CartComponent,
@@ -154,23 +152,21 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     KeysPipe,
     SafeHtml,
     GoBackDirective,
-    BillComponent,
-    HtmlOutletDirective,
   ], // directives, components, and pipes owned by this NgModule
   imports: [
     BrowserModule,
     Ng2PaginationModule,
     CKEditorModule,
-    MdSelectModule.forRoot(),
-    CovalentCoreModule.forRoot(),
-    CovalentDataTableModule.forRoot(),
-    CovalentDialogsModule.forRoot(),
+    MdSelectModule,
+    CovalentCoreModule,
+    CovalentDataTableModule,
+    CovalentDialogsModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
       }],
     }),
-    CovalentSearchModule.forRoot(),
+    CovalentSearchModule,
     TagInputModule,
     appRoutes,
     // NgxChartsModule,

@@ -22,17 +22,18 @@
       "styles": [
         "styles.scss",
         "theme.scss",
-        "../node_modules/@covalent/core/common/platform.css",
-        "../node_modules/@swimlane/ngx-charts/release/ngx-charts.css"
+        "../node_modules/@covalent/core/common/platform.css"
+
       ],
       "scripts": [
         "../node_modules/hammerjs/hammer.min.js"
       ],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
+
     }
   ],
   "lint": [{
