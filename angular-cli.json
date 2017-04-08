@@ -1,6 +1,6 @@
 {
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0",
     "name": "open-pos"
   },
   "apps": [
@@ -14,9 +14,9 @@
       ],
       "index": "index.html",
       "main": "main.ts",
-      "test": "test.ts",
       "polyfills": "polyfills.ts",
-      "tsconfig": "tsconfig.json",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
       "prefix": "app",
       "mobile": false,
       "styles": [

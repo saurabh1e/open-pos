@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, AfterViewInit} from "@angular/core";
 import {
   TdDialogService,
   TdDataTableSortingOrder,
@@ -12,7 +12,6 @@ import {Title} from "@angular/platform-browser";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Subscription} from "rxjs";
 import {CustomerService, Customer} from "../../../services/customer.service";
-import {CustomerDetailComponent} from "./customer-detail/customer-detail.component";
 
 
 @Component({
@@ -20,9 +19,9 @@ import {CustomerDetailComponent} from "./customer-detail/customer-detail.compone
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss'],
   viewProviders: [CustomerService],
-  entryComponents: [CustomerDetailComponent]
+
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, AfterViewInit {
 
   columns: TdDataTableColumn[] = [
     {name: 'name', label: 'name', sortable: true, nested: true},
@@ -135,11 +134,11 @@ export class CustomerComponent implements OnInit {
       .subscribe((data: {data: Customer[]}) => {
         this.customer = data.data[0];
         this._loadingService.resolve('customer');
-        let _dialog = this._dialogService.open(CustomerDetailComponent);
-        _dialog.componentInstance.customer = this.customer;
-        _dialog.afterClosed().subscribe((data: number) => {
-          customer.amount_due = data;
-        });
+        // let _dialog = this._dialogService.open(CustomerDetailComponent);
+        // _dialog.componentInstance.customer = this.customer;
+        // _dialog.afterClosed().subscribe((data: number) => {
+        //   customer.amount_due = data;
+        // });
       })
   }
 }

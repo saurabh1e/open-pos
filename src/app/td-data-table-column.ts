@@ -1,4 +1,3 @@
-
 import {ITdDataTableColumn} from "@covalent/core";
 export interface TdDataTableColumn extends ITdDataTableColumn{
 

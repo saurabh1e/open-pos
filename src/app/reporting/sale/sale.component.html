@@ -1,5 +1,48 @@
-
-  <div class="inset charts-dark" flex layout-wrap>
+<td-layout-nav logo="assets:covalent" class="dark-grey-blue">
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span>App Templates</span>
+    <span flex ></span>
+    <button md-icon-button [mdMenuTriggerFor]="notificationsMenu">
+      <td-notification-count color="accent" [notifications]="4">
+        <md-icon>apps</md-icon>
+      </td-notification-count>
+    </button>
+    <md-menu #notificationsMenu="mdMenu">
+      <td-menu>
+        <div td-menu-header class="md-subhead">Templates</div>
+        <md-nav-list dense>
+          <a md-list-item [routerLink]="['/templates']">
+            <md-icon md-list-avatar>system_update_alt</md-icon>
+            <h4 md-line><span class="text-wrap">Landing Page</span></h4>
+            <p md-line>a landing page template</p>
+          </a>
+          <md-divider></md-divider>
+          <a md-list-item [routerLink]="['/templates/dashboard']">
+            <md-icon md-list-avatar>dashboard</md-icon>
+            <h4 md-line><span class="text-wrap">Dashboard</span></h4>
+            <p md-line>an ngx-charts dashboard template</p>
+          </a>
+          <md-divider></md-divider>
+          <a md-list-item [routerLink]="['/templates/email']">
+            <md-icon md-list-avatar>email</md-icon>
+            <h4 md-line><span class="text-wrap">Email App</span></h4>
+            <p md-line>an email app template</p>
+          </a>
+          <md-divider></md-divider>
+          <a md-list-item [routerLink]="['/templates/editor']">
+            <md-icon md-list-avatar>view_array</md-icon>
+            <h4 md-line><span class="text-wrap">IDE Editor</span></h4>
+            <p md-line>an IDE text editor app template</p>
+          </a>
+        </md-nav-list>
+        <a md-button color="accent" td-menu-footer href="https://github.com/Teradata/covalent-quickstart/tree/develop/src/app/templates" target="_blank">
+          View Code
+        </a>
+      </td-menu>
+    </md-menu>
+    <a md-icon-button mdTooltip="View this code" href="https://github.com/Teradata/covalent-quickstart/tree/develop/src/app/templates" target="_blank"><md-icon svgIcon="assets:github"></md-icon></a>
+  </div>
+  <div class="bgc-black inset charts-dark" flex>
     <div layout-gt-xs="row" layout-wrap>
       <div flex-gt-xs="40">
         <md-card>
@@ -111,9 +154,13 @@
       </div>
     </div>
   </div>
-  <td-layout-footer class="push">
-    <div layout="row" layout-align="start center" >
+  <td-layout-footer>
+    <div layout="row" layout-align="start center">
       <span class="md-caption">Days Shown:</span>
-      <md-slider flex thumbLabel tickInterval="1" step="1" min="1" max="52" value="1"></md-slider>
+      <md-slider flex thumbLabel tickInterval="1" step="1" min="1" max="30" value="14"></md-slider>
     </div>
   </td-layout-footer>
+  <a md-fab color="accent" class="md-fab-position-bottom-right" style="bottom:20px;" href="https://github.com/Teradata/covalent-quickstart/tree/develop/src/app/templates" target="_blank">
+    <md-icon>code</md-icon>
+  </a>
+</td-layout-nav>

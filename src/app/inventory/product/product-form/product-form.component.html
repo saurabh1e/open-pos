@@ -1,43 +1,43 @@
-<div layout="column">
-  <div layout="row" class="bgc-white-4" layout-wrap>
-    <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Product Form</md-card-title>
-    <form flex="100" class #productForm="ngForm">
-      <div layout="row" layout-margin>
-        <md-input-container flex="50">
-          <input md-input placeholder="Product Name" minlength="1" maxlength="127" required [value]="product.name || ''"
+<div fxLayout="column">
+  <div fxLayout="row" class="bgc-white-4" fxLayoutWrap>
+    <md-card-title fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="md-title">Product Form</md-card-title>
+    <form fxFlex="100" class #productForm="ngForm">
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container fxFlex="50">
+          <input mdInput placeholder="Product Name" minlength="1" maxlength="127" required [value]="product.name || ''"
                  [(ngModel)]="product.name" name="name">
           <md-hint align="end">{{product.name?product.name.length:0}} / 127</md-hint>
         </md-input-container>
-        <md-input-container flex>
-          <input md-input placeholder="Auto Discount" max="100" type="number" required
+        <md-input-container fxFlex>
+          <input mdInput placeholder="Auto Discount" max="100" type="number" required
                  [value]="product.auto_discount || 0"
                  [(ngModel)]="product.auto_discount" name="auto_discount">
         </md-input-container>
-        <md-input-container flex>
-          <input md-input placeholder="Min. Stock" min="0" type="number" required [value]="product.min_stock || 0"
+        <md-input-container fxFlex>
+          <input mdInput placeholder="Min. Stock" min="0" type="number" required [value]="product.min_stock || 0"
                  [(ngModel)]="product.min_stock" name="min_stock">
         </md-input-container>
 
       </div>
-      <div layout="row" layout-margin>
-        <md-input-container  flex="66" layout="row">
-          <input md-input placeholder="Description" [value]="product.sub_description"
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container  fxFlex="66" fxLayout="row">
+          <input mdInput placeholder="Description" [value]="product.sub_description"
                 [(ngModel)]="product.sub_description" name="sub_description"/>
         </md-input-container>
-        <md-input-container  flex="33" layout="row">
-          <input md-input placeholder="Barcode" [value]="product.barcode"
+        <md-input-container  fxFlex="33" fxLayout="row">
+          <input mdInput placeholder="Barcode" [value]="product.barcode"
                  [(ngModel)]="product.barcode" name="barcode" required maxlength="13" minlength="8" />
           <md-hint align="end">{{product.barcode?product.barcode.length:0}} / 13</md-hint>
         </md-input-container>
       </div>
-      <div layout="row" layout-margin>
-        <md-input-container  flex layout="row">
-          <input md-input placeholder="Default Quantity" [value]="product.default_quantity"
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container  fxFlex fxLayout="row">
+          <input mdInput placeholder="Default Quantity" [value]="product.default_quantity"
                  [(ngModel)]="product.default_quantity" name="default_quantity" type="number" [step]="product.is_loose?0.1:1"
                  required min="0"/>
         </md-input-container>
-        <div flex layout="row" layout-margin layout-align="center center">
-          <md-select md-input placeholder="Quantity Type" [(ngModel)]="product.quantity_label" name="shop"
+        <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
+          <md-select mdInput placeholder="Quantity Type" [(ngModel)]="product.quantity_label" name="shop"
                      style="width: 100%"
           >
             <md-option [value]="'KG'">KiloGram</md-option>
@@ -51,15 +51,15 @@
 
           </md-select>
         </div>
-        <div flex layout-align="center center" layout="row">
+        <div fxFlex fxLayoutAlign="center center" fxLayout="row">
             <md-checkbox placeholder="Min. Stock"  required [checked]="product.is_loose"
                          [(ngModel)]="product.is_loose" name="min_stock">Loose Available</md-checkbox>
         </div>
       </div>
 
-      <div layout="row" layout-margin>
-        <div flex *ngIf="!product.retail_shop_id" layout-align="end end" layout="row">
-          <md-select md-input placeholder="Select a Shop" [(ngModel)]="product.retail_shop" name="shop"
+      <div fxLayout="row" fxLayoutGap="20px">
+        <div fxFlex *ngIf="!product.retail_shop_id" fxLayoutAlign="end end" fxLayout="row">
+          <md-select mdInput placeholder="Select a Shop" [(ngModel)]="product.retail_shop" name="shop"
                      style="width: 100%"
           >
             <md-option *ngFor="let shop of shops" [value]="shop">
@@ -67,12 +67,12 @@
             </md-option>
           </md-select>
         </div>
-        <div flex style="margin-top: 16px">
-          <md-input-container flex *ngIf="product.retail_shop_id" layout-align="start end" layout="row">
-            <input md-input [value]="product.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
+        <div fxFlex style="margin-top: 16px">
+          <md-input-container fxFlex *ngIf="product.retail_shop_id" fxLayoutAlign="start end" fxLayout="row">
+            <input mdInput [value]="product.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
           </md-input-container>
         </div>
-        <div flex>
+        <div fxFlex>
           <tag-input [(ngModel)]="brands" name="brand" [placeholder]="'Enter Brand...'" (onAdd)="addBrand()"
                      [secondaryPlaceholder]="'Enter Brand...'" [onlyFromAutocomplete]="true" [maxItems]="1">
             <tag-input-dropdown [autocompleteObservable]='getBrands' [appendToBody]="false">
@@ -83,8 +83,8 @@
           </tag-input>
         </div>
       </div>
-      <div layout="row" layout-margin="">
-        <div flex>
+      <div fxLayout="row" fxLayoutGap="20px">
+        <div fxFlex>
           <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
                      (onAdd)="addDistributor($event)" (onRemove)="removeDistributor($event)"
                      [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="5"
@@ -100,8 +100,8 @@
           </tag-input>
         </div>
       </div>
-      <div layout="row" layout-margin>
-        <tag-input [(ngModel)]="tags" name="tags" flex="100" [placeholder]="'Enter Tags..'"
+      <div fxLayout="row" fxLayoutGap="20px">
+        <tag-input [(ngModel)]="tags" name="tags" fxFlex="100" [placeholder]="'Enter Tags..'"
                    [secondaryPlaceholder]="'Enter Tags...'" [onlyFromAutocomplete]="true" (onAdd)="addTags($event)"
                    (onRemove)="removeTags($event)"
                    [identifyBy]="'id'"
@@ -114,7 +114,7 @@
             </template>
           </tag-input-dropdown>
         </tag-input>
-        <tag-input [(ngModel)]="taxes" name="taxes" flex="100" [placeholder]="'Enter Taxes...'"
+        <tag-input [(ngModel)]="taxes" name="taxes" fxFlex="100" [placeholder]="'Enter Taxes...'"
                    [secondaryPlaceholder]="'Enter Taxes...'" [onlyFromAutocomplete]="true" (onAdd)="addTaxes($event)"
                    (onRemove)="removeTaxes($event)"
                    [identifyBy]="'id'"
@@ -128,8 +128,8 @@
           </tag-input-dropdown>
         </tag-input>
       </div>
-      <div layout="row" layout-margin>
-        <tag-input [(ngModel)]="salts" name="salts" flex="100" [placeholder]="'Enter Salts..'"
+      <div fxLayout="row" fxLayoutGap="20px">
+        <tag-input [(ngModel)]="salts" name="salts" fxFlex="100" [placeholder]="'Enter Salts..'"
                    [secondaryPlaceholder]="'Enter Salts...'" [onlyFromAutocomplete]="true" (onAdd)="addSalts($event)"
                    (onRemove)="removeSalts($event)"
                    [identifyBy]="'id'"
@@ -143,8 +143,8 @@
           </tag-input-dropdown>
         </tag-input>
       </div>
-      <div layout="row" layout-margin>
-        <tag-input [(ngModel)]="product.description" name="description" flex="100"
+      <div fxLayout="row" fxLayoutGap="20px">
+        <tag-input [(ngModel)]="product.description" name="description" fxFlex="100"
                    [placeholder]="'Enter Key : Value Description..'"
                    [secondaryPlaceholder]="'Enter Description...'" (onAdd)="addDescription($event)"
                    [validators]="validators"
@@ -160,18 +160,18 @@
 
 
     </form>
-    <md-card-actions layout="row" layout-align="center center" flex class="push-top">
-      <button md-icon-button md-fab md-raised-button md-tooltip="cancel"
+    <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top">
+      <button  md-fab md-tooltip="cancel"
               (click)="close()" class="pad-xs push-xs" color="accent">
         <md-icon class="md-24">close</md-icon>
       </button>
       <span class="pad"></span>
-      <button md-icon-button md-fab md-raised-button md-tooltip="undo"
+      <button  md-fab md-tooltip="undo"
               (click)="cancelState()" class="pad-xs push-xs" color="warn">
         <md-icon class="md-24">undo</md-icon>
       </button>
       <span class="pad"></span>
-      <button md-icon-button md-fab md-raised-button [disabled]="!productForm.form.valid"
+      <button md-fab  [disabled]="!productForm.form.valid"
               (click)="saveState()" class="pad-xs push-xs" color="primary" md-tooltip="save"
       >
         <md-icon class="md-24">done</md-icon>

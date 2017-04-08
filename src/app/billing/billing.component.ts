@@ -6,7 +6,7 @@ import {Order, OrdersService} from "../../services/orders.service";
 import {LoadingMode, LoadingType, TdDialogService, TdLoadingService, TdMediaService} from "@covalent/core";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
-import {MdDialogConfig, MdSnackBar} from "@angular/material";
+import {MdDialog, MdSnackBar} from "@angular/material";
 import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 import {Subscription} from "rxjs";
@@ -33,12 +33,12 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   selectedSalts: Salt[] = [];
   selectedBrands: string[] = [];
   selectedDistributors: string[] = [];
-  config = <MdDialogConfig>{height: '70%', width: '70%'};
+
   itemsPerPage: number = 48;
 
 
   constructor(private _snackBarService: MdSnackBar,
-              private _dialogService: TdDialogService,
+              private _dialogService: MdDialog,
               private _cartService: CartService,
               private _orderService: OrdersService,
               private _cd: ChangeDetectorRef,
@@ -297,14 +297,14 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
   showInfo(product: Product): void {
 
-    let _dialog = this._dialogService.open(ProductInfoComponent, this.config);
+    let _dialog = this._dialogService.open(ProductInfoComponent);
     _dialog.componentInstance.product = product;
     _dialog.afterClosed().subscribe((data) => {
     })
   }
 
   checkOut(): void {
-    let _dialog = this._dialogService.open(CheckoutComponent, <MdDialogConfig>{width: '60%'});
+    let _dialog = this._dialogService.open(CheckoutComponent);
     _dialog.componentInstance.cart = this.cart;
     _dialog.afterClosed().subscribe((data) => {
       if (data) {
@@ -317,7 +317,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   discountItem(productId: string, stockId: string, discount?: number) {
-    let _dialog = this._dialogService.open(ItemDiscountComponent, <MdDialogConfig>{height: '25%', width: '25%'});
+    let _dialog = this._dialogService.open(ItemDiscountComponent);
     _dialog.componentInstance.discount = JSON.stringify(discount);
     _dialog.afterClosed().subscribe((data) => {
       this._cartService.updateDiscount(this.cart.local_id, productId, stockId, data.discount).then((cart) => {

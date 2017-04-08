@@ -31,13 +31,13 @@
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
-            <template let-tag ngFor [ngForOf]="tags | filter: term">
+            <ng-template let-tag ngFor [ngForOf]="tags | filter: term">
               <label layout="row" layout-wrap="" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
                 <input layout-padding="" type="checkbox" [value]="tag.name" class="push-sm"
                        [checked]="checkTag(tag)" (change)="toggleTag(tag)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{tag.name |truncate:15}}</span>
               </label>
-            </template>
+            </ng-template>
           </div>
         </md-card-content>
         <md-divider></md-divider>
@@ -60,13 +60,13 @@
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
-            <template let-brand ngFor [ngForOf]="brands | filter: term">
+            <ng-template let-brand ngFor [ngForOf]="brands | filter: term">
               <label layout="row" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
                 <input class="push-sm" [checked]="checkBrand(brand.id)" type="checkbox"
                        (change)="toggleBrand(brand.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{brand.name |truncate:15}}</span>
               </label>
-            </template>
+            </ng-template>
           </div>
         </md-card-content>
         <md-divider></md-divider>
@@ -89,14 +89,14 @@
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
-            <template let-distributor ngFor [ngForOf]="distributors | filter: termD">
+            <ng-template let-distributor ngFor [ngForOf]="distributors | filter: termD">
               <label layout="row" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
                 <input class="push-sm" [checked]="checkDistributor(distributor.id)" type="checkbox"
                        [value]="distributor.name"
                        (change)="toggleDistributor(distributor.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{distributor.name |truncate:15}}</span>
               </label>
-            </template>
+            </ng-template>
           </div>
         </md-card-content>
         <md-divider></md-divider>
@@ -119,13 +119,13 @@
             </td-search-box>
           </div>
           <div layout="row" layout-wrap="">
-            <template let-salt ngFor [ngForOf]="salts | filter: term">
+            <ng-template let-salt ngFor [ngForOf]="salts | filter: term">
               <label layout="row" flex-xs="33" flex-gt-sm="25" flex-gt-lg="20">
                 <input class="push-sm" [checked]="checkSalt(salt.id)" type="checkbox"
                        (change)="toggleSalt(salt.id)"/>
                 <span class="tc-grey-800 md-caption push-top-sm">{{salt.name |truncate:15}}</span>
               </label>
-            </template>
+            </ng-template>
           </div>
         </md-card-content>
         <md-divider></md-divider>
@@ -177,7 +177,7 @@
     <div layout="row" layout-wrap="" flex layout-align="start">
       <!--<div class="md-content md-shadow-bottom-z-1" flex="100" md-scroll-y="" layout-fill="" layout="row" layout-wrap=""-->
       <!--layout-align="center center">-->
-      <template let-product ngFor let-last
+      <ng-template let-product ngFor let-last
                 [ngForOf]="products  | filter: searchInputTerm
                    | productBrand : selectedBrands | productTag: selectedTags |  productDistributor: selectedDistributors|
                     productSalt: selectedSalts | paginate : {itemsPerPage: itemsPerPage, currentPage: p}">
@@ -203,7 +203,7 @@
           </span>
 
         </div>
-      </template>
+      </ng-template>
 
       <div flex="100" layout="row" layout-align="center center" class=" tc-grey-700">
         <pagination-controls (pageChange)="p = $event" [maxSize]="(media.registerQuery('xs')|async)?3:9"
@@ -228,7 +228,7 @@
                 </button>
                 <span flex></span>
                 <md-input-container class="md-body-2 tc-grey-700 pull-top" flex="50">
-                  <input md-input type="number" ([value])="item.quantity" [(ngModel)]="item.quantity"
+                  <input mdInput type="number" ([value])="item.quantity" [(ngModel)]="item.quantity"
                          class="text-center" [step]="item.default_quantity"
                          (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
                 </md-input-container>
@@ -287,7 +287,7 @@
         <div flex="100" layout-wrap="" layout="row" class="font-bold-500">
           <label>Add. %</label>
           <span flex></span>
-          <input md-input type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value"
+          <input mdInput type="number" flex="30" min="0" max="100" ([value])="cart.discounts[0].value"
                  [(ngModel)]="cart?.discounts[0].value" class="text-right"
                  (change)="updateOrderDiscount(cart.discounts[0].value)"/>
         </div>

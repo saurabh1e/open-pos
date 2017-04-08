@@ -1,4 +1,4 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdIconRegistry } from '@angular/material';
 
@@ -8,7 +8,7 @@ import { MdIconRegistry } from '@angular/material';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent{
 
   constructor(
               private _iconRegistry: MdIconRegistry,
@@ -19,10 +19,6 @@ export class AppComponent implements AfterViewInit{
       this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/logo.svg'));
     this._iconRegistry.addSvgIconInNamespace('assets', 'online-shop',
       this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/online-shop.svg'));
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
 }

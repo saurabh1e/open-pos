@@ -7,7 +7,6 @@ import {Order, OrdersService} from "../../../../services/orders.service";
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss'],
-  entryComponents: [OrderDetailComponent]
 })
 export class OrderDetailComponent implements OnInit {
 

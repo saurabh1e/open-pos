@@ -7,7 +7,6 @@ import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
   selector: 'app-customer-detail',
   templateUrl: './customer-detail.component.html',
   styleUrls: ['./customer-detail.component.scss'],
-  viewProviders: [CustomerTransactionsService]
 })
 export class CustomerDetailComponent implements OnInit {
 

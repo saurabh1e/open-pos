@@ -67,9 +67,12 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.shop = this._shopService.shop;
     this.shops = this._shopService.shops;
-
+    if (this.shops.length) {
+      this.getData();
+    }
     this.shopsSub = this._shopService.shops$.subscribe((data: RetailShop[]) => {
       this.shops = data;
+      this.getData();
     });
     this.shopSub = this._shopService.shop$.subscribe((data: RetailShop) => {
       this.shop = data;

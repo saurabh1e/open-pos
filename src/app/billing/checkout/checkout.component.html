@@ -1,66 +1,66 @@
-<div layout="column" layout-wrap="">
-  <md-card-title class="tc-primary" layout="row" layout-wrap="">
+<div fxLayout="column" fxLayoutWrap="">
+  <md-card-title class="tc-primary" fxLayout="row" fxLayoutWrap="">
     Checkout
-    <span flex></span>
+    <span fxFlex></span>
     <button md-icon-button="" (click)="close()" color="accent">
       <md-icon>close</md-icon>
     </button>
   </md-card-title>
 
-  <md-card-content flex="75" layout="row" layout-wrap="" layout-align="start">
+  <md-card-content fxFlex="75" fxLayout="row" fxLayoutWrap="" fxLayoutAlign="start">
 
-    <div hide-gt-xs="" layout="row" layout-wrap="" class="pad-xs">
+    <div fxHide.gt-xs="" fxLayout="row" fxLayoutWrap="" class="pad-xs">
 
-      <md-input type="number" [(ngModel)]="cart.amount_paid" flex="100" placeholder="Amount"></md-input>
+      <input mdInput type="number" [(ngModel)]="cart.amount_paid" fxFlex="100" placeholder="Amount"/>
     </div>
 
-    <div hide-xs="" flex-gt-xs="33" flex-gt-lg="33" layout="row" layout-wrap="" class="pad-xs">
+    <div fxHide-xs="" fxFlex.gt-xs="33" fxFlex.gt-lg="33" fxLayout="row" fxLayoutWrap="" class="pad-xs">
 
       <md-card-subtitle class="tc-blue-700">Transaction Detail</md-card-subtitle>
 
-      <md-input type="number" [(ngModel)]="cart.amount_paid" flex="100" placeholder="Amount"></md-input>
+      <input mdInput type="number" [(ngModel)]="cart.amount_paid" fxFlex="100" placeholder="Amount"/>
       <ng-template let-digit ngFor [ngForOf]="digitsArray">
-        <div flex="33">
+        <div fxFlex="33">
           <button md-icon-button="" class="bgc-blue-50" (click)="enterAmount(digit)">{{digit}}
           </button>
         </div>
       </ng-template>
-      <div flex="33">
+      <div fxFlex="33">
         <button md-icon-button="" class="bgc-blue-50 bold" (click)="enterAmount('.')">.</button>
       </div>
-      <div flex="33">
+      <div fxFlex="33">
         <button md-icon-button="" class="bgc-blue-50 bold" (click)="enterAmount('0')">
         </button>
       </div>
-      <div flex="33">
+      <div fxFlex="33">
         <button md-icon-button="" class="bgc-blue-50" (click)="clearAmount()">
           <md-icon>keyboard_backspace</md-icon>
         </button>
       </div>
 
 
-      <div flex="100" class="pad"></div>
-      <div layout="row" layout-wrap="" layout-align="center center">
-        <ng-template let-denomination ngFor [ngForOf]="denominationArray | keys" class="push-sm">
-          <button md-button="" class="bgc-grey-100" flex="30" layout-padding=""
-                  (click)="denomination.value=1+denomination.value" layout-margin="">
-            {{denomination.key}}
-            <small>&nbsp;({{denomination.value}})</small>
-          </button>
-        </ng-template>
-        <button md-button="" class="bgc-grey-100" flex="33" layout-padding="" layout-margin=""
-                (click)="clearDenomination()">
-          <md-icon>keyboard_backspace</md-icon>
-        </button>
+      <div fxFlex="100" class="pad"></div>
+      <div fxLayout="row" fxLayoutWrap="" fxLayoutAlign="center center">
+        <!--<ng-template let-denomination ngFor [ngForOf]="denominationArray | keys" class="push-sm">-->
+          <!--<button md-button="" class="bgc-grey-100" fxFlex="30" fxLayout-padding=""-->
+                  <!--(click)="denomination.value=1+denomination.value" fxLayoutMargin="">-->
+            <!--{{denomination.key}}-->
+            <!--<small>&nbsp;({{denomination.value}})</small>-->
+          <!--</button>-->
+        <!--</ng-template>-->
+        <!--<button md-button="" class="bgc-grey-100" fxFlex="33" fxLayoutPadding="" fxLayoutMargin=""-->
+                <!--(click)="clearDenomination()">-->
+          <!--<md-icon>keyboard_backspace</md-icon>-->
+        <!--</button>-->
       </div>
 
     </div>
 
-    <div flex-xs="100" flex-gt-xs="66" flex-gt-lg="66" layout="row" layout-wrap="" class="pad-xs">
-      <md-card-subtitle hide-xs class="tc-blue-700" flex="100">Customer Information</md-card-subtitle>
-      <div layout="row" class="" flex="100" layout-align="center start">
+    <div fxFlex-xs="100" fxFlex-gt-xs="66" fxFlex-gt-lg="66" fxLayout="row" fxLayoutWrap="" class="pad-xs">
+      <md-card-subtitle fxHide-xs class="tc-blue-700" fxFlex="100">Customer Information</md-card-subtitle>
+      <div fxLayout="row" class="" fxFlex="100" fxLayoutAlign="center start">
         <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
-                   (onAdd)="addCustomer($event)" flex-xs="90" flex="65"
+                   (onAdd)="addCustomer($event)" fxFlex-xs="90" fxFlex="65"
                    [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
           <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false" [identifyBy]="'id'"
                               [displayBy]="'name'">
@@ -71,73 +71,78 @@
         </tag-input>
       </div>
 
-      <form flex="100" layout="column" layout-fill="">
-        <div layout="row" layout-margin>
-          <md-input-container flex>
-            <input md-input placeholder="Name" name="customer_name" [(ngModel)]="customer.name">
+      <form fxFlex="100" fxLayout="column" fxLayout-fill="">
+        <div fxLayout="row" fxLayoutMargin>
+          <md-input-container fxFlex>
+            <input mdInput placeholder="Name" name="customer_name" [(ngModel)]="customer.name">
           </md-input-container>
         </div>
-        <div layout="row" layout-margin="">
-          <md-input-container flex>
-            <input md-input placeholder="Number" type="number" min="0" name="mobile_number" [(ngModel)]="customer.mobile_number">
+        <div fxLayout="row" fxLayoutMargin="">
+          <md-input-container fxFlex>
+            <input mdInput placeholder="Number" type="number" min="0" name="mobile_number" [(ngModel)]="customer.mobile_number">
           </md-input-container>
         </div>
-        <md-card-actions layout-align="end end" layout="row" layout-wrap="" style="margin: 0">
-          <button md-raised-button="" flex-xs="" flex-gt-xs="25" (click)="clearCustomer()" color="warn">Clear</button>
-          <button md-raised-button="" flex-xs="" flex-gt-xs="25" [disabled]="cart.customer_id"
+        <md-card-actions fxLayoutAlign="end end" fxLayout="row" fxLayoutWrap="" style="margin: 0">
+          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" (click)="clearCustomer()" color="warn">Clear</button>
+          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" [disabled]="cart.customer_id"
                   (click)="saveCustomer()" color="primary">Save</button>
         </md-card-actions>
 
         <span [hidden]="addresses.length===0">
-          <div layout="row" layout-margin >
-              <md-select flex="100" [(ngModel)]="cart.address_id" name="address" placeholder="Select Address" >
+          <div fxLayout="row" fxLayoutMargin >
+              <md-select fxFlex="100" [(ngModel)]="cart.address_id" name="address" placeholder="Select Address" >
                 <md-option [value]="null">Select Address</md-option>
                 <md-option *ngFor="let address of addresses"
                            (click)="saveCart()" [value]="address.id">{{address.name}}</md-option>
               </md-select>
           </div>
         </span>
-        <div layout="row" layout-margin="" *ngIf="addresses.length" layout-align="center center">
+        <div fxLayout="row" fxLayoutMargin="" *ngIf="addresses.length" fxLayoutAlign="center center">
           <small>or</small>
         </div>
-        <div layout="row" layout-margin="" >
-          <md-input-container flex>
+        <div fxLayout="row" fxLayoutMargin="" >
+          <md-input-container fxFlex>
 
-            <input md-input placeholder="New address" type="text" name="address" [(value)]="address.name"
+            <input mdInput placeholder="New address" type="text" name="address" [(value)]="address.name"
                    [(ngModel)]="address.name"/>
           </md-input-container>
         </div>
-        <md-card-actions layout-align="end end" layout="row" class="" layout-wrap="" style="margin: 0">
-          <button md-raised-button="" flex-xs="" flex-gt-xs="25" (click)="clearAddress()" color="warn">Clear</button>
-          <button md-raised-button="" flex-xs="" flex-gt-xs="25" [disabled]="!cart.customer_id || cart.address_id"
+        <md-card-actions fxLayoutAlign="end end" fxLayout="row" class="" fxLayoutWrap="" style="margin: 0">
+          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" (click)="clearAddress()" color="warn">Clear</button>
+          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" [disabled]="!cart.customer_id || cart.address_id"
                   (click)="addAddress()" color="primary">Save</button>
         </md-card-actions>
 
-        <div layout="row" layout-margin *ngIf="false">
-          <md-input-container flex>
-            <input md-input placeholder="City">
+        <div fxLayout="row" fxLayoutMargin *ngIf="false">
+          <md-input-container fxFlex>
+            <input mdInput placeholder="City">
           </md-input-container>
-          <md-input-container flex>
-            <input md-input placeholder="Locality">
+          <md-input-container fxFlex>
+            <input mdInput placeholder="Locality">
           </md-input-container>
-          <md-input-container flex>
-            <input md-input maxlength="5" placeholder="Postal Code">
+          <md-input-container fxFlex>
+            <input mdInput maxlength="5" placeholder="Postal Code">
           </md-input-container>
         </div>
       </form>
     </div>
     <div >
-      <div [hidden]="true"  [innerHTML]="shop?.printer_config.template | safeHtml"></div>
+      <div [hidden]="true"  [innerHTML]="shop?.printer_config.bill_template | safeHtml"></div>
+    </div>
+    <div >
+      <div [hidden]="true"  [innerHTML]="shop?.printer_config.receipt_template | safeHtml"></div>
     </div>
 
 
   </md-card-content>
 
-  <span flex></span>
-  <md-divider flex></md-divider>
-  <md-card-actions layout-align="end end" layout="row" layout-wrap="" flex style="margin: 0">
-    <button md-raised-button="" (click)="printBill()" color="accent">Print Bill</button>
-    <button md-raised-button="" (click)="checkOut()" color="accent">Checkout</button>
+  <span fxFlex></span>
+
+  <md-card-actions fxLayoutAlign="end end" fxLayout="row" fxLayoutWrap="" fxFlex style="margin: 0">
+    <button md-raised-button="" *ngIf="shop?.printer_config.have_bill_printer" (click)="printBill()" color="accent">Print Bill</button>
+    <button md-raised-button="" (click)="printReceipt()" *ngIf="shop?.printer_config.have_receipt_printer"
+            color="accent">Print Receipt</button>
+    <button md-raised-button="" (click)="checkOut()" color="primary">Checkout</button>
   </md-card-actions>
 
 </div>

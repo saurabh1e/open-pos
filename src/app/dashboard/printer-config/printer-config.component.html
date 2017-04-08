@@ -1,38 +1,40 @@
 
-<div layout="row" layout-align="center center" layout-wrap class="push" *ngIf="shop.id">
-  <md-card flex="100">
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutWrap class="push" *ngIf="shop.id">
+  <md-card fxFlex="100">
     <md-card-title>Printer Config</md-card-title>
     <md-card-subtitle>{{shop?.name}}</md-card-subtitle>
     <md-divider></md-divider>
     <md-card-content>
-      <div layout-margin flex>
-        <md-input-container flex>
-          <input md-input [(ngModel)]="shop.printer_config.bill_printer_type" placeholder="Bill Printer Type" />
+      <div fxLayoutMargin fxLayoutPadding fxFlex>
+        <md-input-container fxFlex>
+          <input mdInput [(ngModel)]="shop.printer_config.bill_printer_type" placeholder="Bill Printer Type" />
         </md-input-container>
-        <md-input-container flex>
-          <input md-input [(ngModel)]="shop.printer_config.receipt_printer_type" placeholder="Receipt Printer Type" />
-        </md-input-container>
-      </div>
-      <div layout-margin flex>
-        <md-input-container flex>
-          <input md-input [(ngModel)]="shop.printer_config.label_printer_type" placeholder="label Printer Config" />
+        <md-input-container fxFlex>
+          <input mdInput [(ngModel)]="shop.printer_config.receipt_printer_type" placeholder="Receipt Printer Type" />
         </md-input-container>
       </div>
-      <div layout-margin flex>
-        <md-input-container flex>
-          <input md-input [(ngModel)]="shop.printer_config.have_bill_printer" type="checkbox" />
+      <div fxLayoutMargin fxLayoutPadding fxFlex>
+        <md-input-container fxFlex>
+          <input mdInput [(ngModel)]="shop.printer_config.label_printer_type" placeholder="label Printer Config" />
+        </md-input-container>
+      </div>
+      <div fxLayoutMargin fxLayoutPadding fxFlex>
+        <div fxFlex fxLayoutMargin fxLayoutPadding>
+          <md-checkbox mdInput [checked]="shop.printer_config.have_bill_printer"
+                       [(ngModel)]="shop.printer_config.have_bill_printer"></md-checkbox>
           Print Bill
-        </md-input-container>
-        <md-input-container flex>
-          <input md-input [(ngModel)]="shop.printer_config.have_receipt_printer" type="checkbox" />
+        </div>
+        <div fxFlex fxLayoutMargin fxLayoutPadding>
+          <md-checkbox  mdInput [checked]="shop.printer_config.have_receipt_printer"
+                       [(ngModel)]="shop.printer_config.have_receipt_printer"></md-checkbox>
           Print Receipt
-        </md-input-container>
+        </div>
       </div>
 
     </md-card-content>
   </md-card>
-  <div layout="row" layout-wrap layout-align="center center">
-    <md-card flex="45">
+  <div fxLayout="row" fxLayoutWrap fxLayoutAlign="center center">
+    <md-card fxFlex="">
       <md-card-title>Receipt Template Editor</md-card-title>
       <md-divider></md-divider>
       <md-card-content >
@@ -52,7 +54,7 @@
       </md-card-content>
 
     </md-card>
-    <md-card flex="45">
+    <md-card fxFlex="">
       <md-card-title>Bill Template Editor</md-card-title>
       <md-divider></md-divider>
       <md-card-content >

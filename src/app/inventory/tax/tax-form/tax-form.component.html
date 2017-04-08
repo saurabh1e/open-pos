@@ -5,7 +5,7 @@
     <form flex="100" class="" #taxForm="ngForm">
       <div layout="row" layout-margin>
         <md-input-container flex>
-          <input md-input placeholder="Tax Name" minlength="1" maxlength="55" required [value]="tax.name || ''"
+          <input mdInput placeholder="Tax Name" minlength="1" maxlength="55" required [value]="tax.name || ''"
                  [(ngModel)]="tax.name" name="name">
           <md-hint align="end">{{tax.name?tax.name.length:0}} / 55</md-hint>
         </md-input-container>
@@ -14,18 +14,18 @@
 
       <div layout="row" layout-margin>
         <div flex *ngIf="!tax.retail_shop_id" layout-align="end end">
-          <md-select md-input placeholder="Select a Shop" [(ngModel)]="tax.retail_shop" name="shop" required>
+          <md-select mdInput placeholder="Select a Shop" [(ngModel)]="tax.retail_shop" name="shop" required>
             <md-option *ngFor="let shop of shops" [value]="shop">
               {{shop.name}}
             </md-option>
           </md-select>
         </div>
         <md-input-container flex *ngIf="tax.retail_shop_id">
-          <input md-input [value]="tax.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
+          <input mdInput [value]="tax.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
         </md-input-container>
 
         <md-input-container flex >
-          <input md-input [value]="tax.value" name="value" [(ngModel)]="tax.value" type="number" required min="0"
+          <input mdInput [value]="tax.value" name="value" [(ngModel)]="tax.value" type="number" required min="0"
                  placeholder="value">
         </md-input-container>
       </div>

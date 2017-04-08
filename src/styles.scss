@@ -5,11 +5,11 @@
 md-nav-list {
     [md-list-item].active {
         md-icon[md-list-avatar] {
-            background-color: md-color($accent);
-            color: md-color($accent, default-contrast)
+            background-color: mat-color($accent);
+            color: mat-color($accent, default-contrast)
         }
         md-icon[md-list-icon] {
-            color: md-color($accent);
+            color: mat-color($accent);
         }
     }
 }
@@ -30,22 +30,22 @@ a[md-icon-button] {
   max-width: 50px;
 }
 .tc-primary{
-  color: md-color($primary)
+  color: mat-color($primary)
 }
 .tc-accent{
-  color: md-color($accent)
+  color: mat-color($accent)
 }
 .tc-warn{
-  color: md-color($warn)
+  color: mat-color($warn)
 }
 .bgc-primary {
-  color: md-color($primary)
+  color: mat-color($primary)
 }
 .bgc-accent {
-  color: md-color($accent)
+  color: mat-color($accent)
 }
 .bgc-warn {
-  color: md-color($warn)
+  color: mat-color($warn)
 }
 .bgc-tool-bar {
   background: rgb(245, 245, 245);

@@ -1,19 +1,19 @@
-<div layout="row" layout-wrap="" layout-align="start start" class="pad-xs">
+<div fxLayout="row" fxLayoutWrap="" fxLayoutAlign="start start" class="pad-xs">
   <ng-template let-cart ngFor [ngForOf]="carts">
-    <md-card flex="30" class="cart-card" flex-xs="100" flex-sm="100">
-      <md-card-title class="tc-blue-700" layout="row" layout-wrap="">
-          <span layout-align="center center" layout="row">
+    <md-card fxFlex="30" class="cart-card" fxFlex-xs="100" fxFlex-sm="100">
+      <md-card-title class="tc-blue-700" fxLayout="row" fxLayoutWrap="">
+          <span fxLayoutAlign="center center" fxLayout="row">
             #{{cart.local_id}}
           </span>
 
-        <span flex=""></span>
+        <span fxFlex=""></span>
         <button md-icon-button="" (click)="deleteCart(cart)" color="accent">
           <md-icon class="md-24">close</md-icon>
         </button>
       </md-card-title>
-      <md-card-subtitle layout="row" layout-wrap="">
+      <md-card-subtitle fxLayout="row" fxLayoutWrap="">
         <span md-line>{{cart.total || 0 | currency:'INR':true:'1.2-2'}}/-</span>
-        <span flex></span>
+        <span fxFlex></span>
         {{cart.created_on | date:'shortTime'}}
       </md-card-subtitle>
       <md-divider></md-divider>
@@ -31,7 +31,7 @@
         </md-list>
       </div>
 
-      <md-card-actions layout="row" layout-wrap="" layout-align="end center">
+      <md-card-actions fxLayout="row" fxLayoutWrap="" fxLayoutAlign="end center">
         <button md-raised-button="" (click)="openCart(cart.local_id)" color="accent">
           <md-icon>
             add_shopping_cart
@@ -44,13 +44,13 @@
 </div>
 
 <a md-fab color="accent" class="md-fab-position-bottom-right button-size"
-   (click)="newCart()" style="text-align: center" layout-align="center center"
-[md-tooltip]="'Create New Order'" mdTooltipPosition="before" hide-xs="">
+   (click)="newCart()" style="textAlign: center" fxLayoutAlign="center center"
+[md-tooltip]="'Create New Order'" mdTooltipPosition="before" fxHide-xs="">
   <md-icon class="md-48" style="padding-top: 40px">add</md-icon>
 </a>
 
-<a md-fab color="accent" class="md-fab-position-bottom-right" hide-gt-xs=""
-   (click)="newCart()" layout-align="center center"
+<a md-fab color="accent" class="md-fab-position-bottom-right" fxHide.gt-xs=""
+   (click)="newCart()" fxLayoutAlign="center center"
    [md-tooltip]="'Create New Order'" mdTooltipPosition="before">
   <md-icon class="md-36">add</md-icon>
 </a>

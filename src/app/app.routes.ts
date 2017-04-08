@@ -25,18 +25,14 @@ import {DistributorBillComponent} from "./stock-management/distributor-bill/dist
 import {StaffComponent} from "./staff/staff.component";
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
-import {MainRouteComponent} from "./main-route/main-route.component";
-import {AuthGuard} from "../services/auth-gaurd.service";
 import {PrinterConfigComponent} from "./dashboard/printer-config/printer-config.component";
 import {DetailComponent} from "./dashboard/detail/detail.component";
+import {MainRouteComponent} from "./main-route/main-route.component";
+import {AuthGuard} from "../services/auth-gaurd.service";
 
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: "/dashboard/shops",
-    pathMatch: 'full'
-  },
+
   {path: 'login', component: LoginComponent},
   {path: '', component: MainRouteComponent, canActivate: [AuthGuard], children:[
     {
@@ -70,7 +66,7 @@ const routes: Routes = [
         {path: 'salts', component: SaltComponent},
       ]
     },
-    {path: 'billing/:id', component: BillingComponent, canActivateChild:[AuthGuard] },
+    {path: 'billing/:id', component: BillingComponent },
     {path: 'staff', component: StaffComponent, canActivateChild:[AuthGuard] },
     {
       path: 'reporting', component: ReportingComponent, canActivateChild:[AuthGuard],

@@ -1,13 +1,13 @@
-<div class="md-content inset" layout="row">
-  <div layout="row" layout-align="start start" flex="100" layout-wrap="">
+<div class="md-content inset" fxLayout="row">
+  <div fxLayout="row" fxLayoutAlign="start start" fxFlex="100" fxLayoutWrap="">
 
     <ng-template let-item let-last="last"  ngFor [ngForOf]="shops">
 
-      <md-card  flex-gt-xs="45"  flex-gt-lg="33" flex-xs="100" flex-sm="100">
-        <md-card-title layout="row" layout-wrap="">
+      <md-card  fxFlex.gt-xs="45"  fxFlex.gt-lg="33" fxFlex-xs="100" fxFlex-sm="100">
+        <md-card-title fxLayout="row" fxLayoutWrap="">
           <span class="tc-accent">{{item.name}}</span>&nbsp;
           <small class="tc-grey-500 md-body-1" *ngIf="shop.id===item.id">(default)</small>
-          <span flex></span>
+          <span fxFlex></span>
           <button md-icon-button="" color="accent" (click)="syncData(item.id)">
             <md-icon class="md-36">refresh</md-icon>
           </button>
@@ -17,7 +17,7 @@
 
         <md-divider></md-divider>
 
-        <div md-content layout-align="center center">
+        <div md-content fxLayoutAlign="left top">
           <md-list>
             <md-list-item>
               <md-icon md-list-avatar>attach_money</md-icon>
@@ -30,7 +30,8 @@
           </md-list>
 
         </div>
-        <md-card-actions layout="row" layout-align="end end">
+        <md-divider class="inset"></md-divider>
+        <md-card-actions fxLayout="row" fxLayoutAlign="end end">
           <button md-button md-raised-button="" class="font-bold-600" color="accent" (click)="openShop(item)">POS</button>
         </md-card-actions>
       </md-card>

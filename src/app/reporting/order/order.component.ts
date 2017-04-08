@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnInit, OnDestroy, AfterViewInit} from "@angular/core";
 import {
   TdDialogService,
   TdDataTableSortingOrder,
@@ -21,7 +21,7 @@ import {OrderDetailComponent} from "./order-detail/order-detail.component";
   styleUrls: ['./order.component.scss'],
   entryComponents: [OrderDetailComponent]
 })
-export class OrderComponent implements OnInit, OnDestroy {
+export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   data: Order[]=[];
 
