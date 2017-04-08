@@ -1,5 +1,5 @@
 <div layout="row" layout-wrap="" layout-align="start start" class="pad-xs">
-  <template let-cart ngFor [ngForOf]="carts">
+  <ng-template let-cart ngFor [ngForOf]="carts">
     <md-card flex="30" class="cart-card" flex-xs="100" flex-sm="100">
       <md-card-title class="tc-blue-700" layout="row" layout-wrap="">
           <span layout-align="center center" layout="row">
@@ -40,7 +40,7 @@
       </md-card-actions>
     </md-card>
 
-  </template>
+  </ng-template>
 </div>
 
 <a md-fab color="accent" class="md-fab-position-bottom-right button-size"

@@ -19,12 +19,12 @@
       <md-card-subtitle class="tc-blue-700">Transaction Detail</md-card-subtitle>
 
       <md-input type="number" [(ngModel)]="cart.amount_paid" flex="100" placeholder="Amount"></md-input>
-      <template let-digit ngFor [ngForOf]="digitsArray">
+      <ng-template let-digit ngFor [ngForOf]="digitsArray">
         <div flex="33">
           <button md-icon-button="" class="bgc-blue-50" (click)="enterAmount(digit)">{{digit}}
           </button>
         </div>
-      </template>
+      </ng-template>
       <div flex="33">
         <button md-icon-button="" class="bgc-blue-50 bold" (click)="enterAmount('.')">.</button>
       </div>
@@ -41,13 +41,13 @@
 
       <div flex="100" class="pad"></div>
       <div layout="row" layout-wrap="" layout-align="center center">
-        <template let-denomination ngFor [ngForOf]="denominationArray | keys" class="push-sm">
+        <ng-template let-denomination ngFor [ngForOf]="denominationArray | keys" class="push-sm">
           <button md-button="" class="bgc-grey-100" flex="30" layout-padding=""
                   (click)="denomination.value=1+denomination.value" layout-margin="">
             {{denomination.key}}
             <small>&nbsp;({{denomination.value}})</small>
           </button>
-        </template>
+        </ng-template>
         <button md-button="" class="bgc-grey-100" flex="33" layout-padding="" layout-margin=""
                 (click)="clearDenomination()">
           <md-icon>keyboard_backspace</md-icon>
@@ -64,9 +64,9 @@
                    [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
           <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false" [identifyBy]="'id'"
                               [displayBy]="'name'">
-            <template let-item="item" let-index="index">
+            <ng-template let-item="item" let-index="index">
               {{ item.name }}&nbsp;<{{item.mobile_number}}>
-            </template>
+            </ng-template>
           </tag-input-dropdown>
         </tag-input>
       </div>

@@ -3,10 +3,10 @@
     <td-steps>
       <td-step #step1
                [active]="state===1" [disabled]="disabled" [state]="stateStep1" >
-        <template td-step-label><span>Select Shop</span></template>
-        <template td-step-actions>
+        <ng-template td-step-label><span>Select Shop</span></ng-template>
+        <ng-template td-step-actions>
           <div layout="row" layout-wrap="" flex="100">
-            <template ngFor [ngForOf]="shops" let-item >
+            <ng-template ngFor [ngForOf]="shops" let-item >
               <md-card class="md-shadow-bottom-z-2" flex="33">
                 <md-card-content layout="column" layout-align="center center">
                   <md-icon class="md-48" color="primary">{{item.name| truncate:1}}</md-icon>
@@ -19,16 +19,16 @@
 
                 </md-toolbar>
               </md-card>
-            </template>
+            </ng-template>
           </div>
-        </template>
-        <template td-step-summary="" class="tc-grey-500">
+        </ng-template>
+        <ng-template td-step-summary="" class="tc-grey-500">
           Shop Selected: {{shop.name}}
-        </template>
+        </ng-template>
       </td-step>
       <td-step #step2  [state]="stateStep2" [disabled]="disabled" [active]="state===2">
-        <template td-step-label><span>Select Distributor or Item Wise Entry</span></template>
-        <template td-step-actions>
+        <ng-template td-step-label><span>Select Distributor or Item Wise Entry</span></ng-template>
+        <ng-template td-step-actions>
           <div layout="row" layout-wrap="" flex="100">
             <md-card flex="33" class=" md-shadow-bottom-z-2">
               <md-card-content layout="column" layout-align="center center">
@@ -55,10 +55,10 @@
               </md-toolbar>
             </md-card>
           </div>
-        </template>
-        <template td-step-summary="">
+        </ng-template>
+        <ng-template td-step-summary="">
           Entry Mode Selected: {{entryType}}
-        </template>
+        </ng-template>
       </td-step>
       <td-step #step3 label="Add Stock"
                [state]="stateStep3" [disabled]="disabled" [active]="state===3">
@@ -74,9 +74,9 @@
                 <tag-input-dropdown [autocompleteObservable]='getDistributors'  [appendToBody]="false"
                                     [identifyBy]="'id'"
                                     [displayBy]="'name'">
-                  <template let-item="item" let-index="index">
+                  <ng-template let-item="item" let-index="index">
                     {{ item.name }}
-                  </template>
+                  </ng-template>
                 </tag-input-dropdown>
               </tag-input>
             </div>
@@ -94,7 +94,7 @@
 
           </div>
 
-          <template ngFor [ngForOf]="stocks" let-item let-i="index">
+          <ng-template ngFor [ngForOf]="stocks" let-item let-i="index">
             <div layout="row" layout-wrap="" flex="100" >
               <div flex-shrink layout-margin layout-padding="" class="push-left-md">
                 <input #barcodeCopy  type="checkbox" [name]="'add_'+i"
@@ -139,7 +139,7 @@
               <!--<button md-raised-button="" color="primary">Print</button>-->
             <!--</div>-->
 
-          </template>
+          </ng-template>
           <div layout="row" layout-margin="" layout-align="center center" flex="100" *ngIf="distributors.length">
             <md-card-actions layout="row" layout-align="center center" flex class="push-top">
               <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
@@ -168,16 +168,16 @@
                 <tag-input-dropdown [autocompleteObservable]='getProducts'  [appendToBody]="false"
                                     [identifyBy]="'id'"
                                     [displayBy]="'name'">
-                  <template let-item="item" let-index="index">
+                  <ng-template let-item="item" let-index="index">
                     {{ item.name }}
-                  </template>
+                  </ng-template>
                 </tag-input-dropdown>
               </tag-input>
             </div>
 
           </div>
 
-          <template ngFor [ngForOf]="stocks" let-item let-i="index">
+          <ng-template ngFor [ngForOf]="stocks" let-item let-i="index">
             <div layout="row" layout-wrap="" flex="100" >
               <md-input-container flex layout-margin>
                 <input md-input [disabled]="true" [readOnly]="true" [value]="item.product.name" />
@@ -200,7 +200,7 @@
               </md-input-container>
             </div>
 
-          </template>
+          </ng-template>
           <div layout="row" layout-margin="" layout-align="center center" flex="100" *ngIf="products.length">
             <md-card-actions layout="row" layout-align="center center" flex class="push-top">
               <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"

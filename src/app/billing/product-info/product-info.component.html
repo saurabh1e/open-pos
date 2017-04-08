@@ -28,28 +28,28 @@
       <div layout="row" layout-wrap="" class="info-dialog">
         <md-list flex="50">
           <h4>Description</h4>
-          <template let-entry ngFor [ngForOf]="product.description">
+          <ng-template let-entry ngFor [ngForOf]="product.description">
             <md-list-item>
               <md-icon class="tc-orange-A400" md-list-avatar="">description</md-icon>
               <span class="md-body-1" md-line>{{entry.value}}</span>
               <p md-line="">{{entry.key}}</p>
             </md-list-item>
-          </template>
+          </ng-template>
 
         </md-list>
         <md-list flex="50">
           <h4>Similar Products</h4>
-          <template let-item ngFor [ngForOf]="products">
+          <ng-template let-item ngFor [ngForOf]="products">
             <md-list-item>
               <md-icon class="tc-orange-A400" md-list-avatar="">label_outline</md-icon>
               <span class="md-body-1" md-line>{{item.name}}</span>
               <p md-line="">Price:&nbsp;{{item.mrp | currency:'INR':true:'1.2-2'}}&nbsp;<span flex></span>&nbsp;Stocks:&nbsp;{{item.available_stock||0}}
               </p>
               <p md-line="">
-                <template let-salt ngFor [ngForOf]="item.salts"><span>{{salt.name}}&nbsp;</span></template>
+                <ng-template let-salt ngFor [ngForOf]="item.salts"><span>{{salt.name}}&nbsp;</span></ng-template>
               </p>
             </md-list-item>
-          </template>
+          </ng-template>
 
         </md-list>
       </div>

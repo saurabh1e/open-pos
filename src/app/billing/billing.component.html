@@ -215,7 +215,7 @@
     <div layout="column" flex="20" flex-gt-lg="25" flex-xl="20" flex-md="30"  flex-gt-sm="30" flex-sm="50" flex-xs="100">
       <div class="md-content bgc-white-4 " md-scroll-y="" flex-grow>
         <md-list>
-          <template let-item ngFor let-last [ngForOf]="cart?.items">
+          <ng-template let-item ngFor let-last [ngForOf]="cart?.items">
             <div layout="row" layout-wrap="" class="push-sm product-list">
               <span md-line flex="55" class="tc-grey-700 md-body-2"
                     style="word-break: break-all">
@@ -259,7 +259,7 @@
               </button>
               </span>
             </div>
-          </template>
+          </ng-template>
         </md-list>
       </div>
       <div class="bgc-white-4 md-content pad-sm tc-grey-700 md-caption font-bold-500" flex="35"
@@ -271,13 +271,13 @@
           <span flex></span>
           <span>{{cart?.sub_total | currency:'INR':true:'1.2-2'}}</span>
         </div>
-        <template let-entry ngFor [ngForOf]="cart?.taxes | keys">
+        <ng-template let-entry ngFor [ngForOf]="cart?.taxes | keys">
           <div flex="100" layout-wrap="" layout="row" *ngIf="entry.key!=='total'">
             <span>{{entry.key}}</span>
             <span flex></span>
             <span>{{entry.value | currency:'INR':true:'1.2-2'}}</span>
           </div>
-        </template>
+        </ng-template>
 
         <div flex="100" layout-wrap="" layout="row">
           <span>Discount</span>
