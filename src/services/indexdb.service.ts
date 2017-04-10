@@ -1,7 +1,7 @@
-import {Subject, Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
-import Dexie  from 'dexie';
-import {Product, Distributor, Tag, Brand, Tax, Salt} from "./items.service";
+import Dexie from "dexie";
+import {Brand, Distributor, Product, ProductSalt, ProductTag, Salt, Tag, Tax} from "./items.service";
 import {Injectable} from "@angular/core";
 import {RetailShop} from "./shop.service";
 import {Order} from "./orders.service";
@@ -11,7 +11,7 @@ import {Auth} from "./auth.service";
 
 
 export interface Status {
-  status: string;
+  status: boolean;
 
 }
 
@@ -20,6 +20,7 @@ export interface Config {
   stock_time?: string;
   shop_id: string;
   invoiceNumber?: number;
+  is_selected?: boolean;
 }
 
 @Injectable()
@@ -37,6 +38,8 @@ export class IndexDBServiceService extends Dexie {
   configs: Dexie.Table<Config, string>;
   carts: Dexie.Table<Order, string>;
   users: Dexie.Table<IUser, string>;
+  productSalt: Dexie.Table<ProductSalt, string>;
+  productTag: Dexie.Table<ProductTag, string>;
 
   _db$: Subject<Status> = <Subject<Status>> new Subject;
 
@@ -44,7 +47,7 @@ export class IndexDBServiceService extends Dexie {
     super("myPosDB");
     this.version(1).stores(
       {
-        products: "++id,name,retail_shop_id,brand_id",
+        products: "++id,name,retail_shop_id,brand_id,[retail_shop_id+brand_id],barcode",
         distributors: "++id,name,retail_shop_id",
         brands: "++id,name,retail_shop_id",
         tags: "++id,name,retail_shop_id",
@@ -55,11 +58,14 @@ export class IndexDBServiceService extends Dexie {
         carts: "++local_id,retail_shop_id",
         localities: "++id, name",
         users: "++id, mobile_number, email",
-        configs: "++shop_id",
-        auth: "++id,authentication_token"
+        configs: "++shop_id,is_selected",
+        auth: "++id,authentication_token",
+        productSalt: "++id,product_id,salt_id",
+        productTag: "++id,product_id,tag_id"
       });
   }
-  get db$():Observable<Status>{
+
+  get db$(): Observable<Status> {
     return this._db$.asObservable();
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Order, Item, ItemTax, Discount} from "./orders.service";
+import {Order, Item, ItemTax, Discount, OrderItemsService} from "./orders.service";
 import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
 import {Product, Tax, Stock} from "./items.service";

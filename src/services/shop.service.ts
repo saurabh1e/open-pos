@@ -14,9 +14,9 @@ import {
   TaxsService,
   DistributorService,
   BrandsService,
-  SaltsService, StocksService, Stock
+  SaltsService, StocksService, Stock, ProductTagService, ProductSaltService, ProductSalt, ProductTag, Salt
 } from "./items.service";
-import {IndexDBServiceService} from "./indexdb.service";
+import {Config, IndexDBServiceService} from "./indexdb.service";
 import {Address} from "./customer.service";
 import {OrderItemsService} from "./orders.service";
 import {UsersService} from "./users.service";
@@ -84,8 +84,9 @@ export class RetailShopsService extends RESTService<RetailShop> {
               private _tagService: TagsService,
               private _taxService: TaxsService,
               private _stockService: StocksService,
+              private _productTagService: ProductTagService,
+              private _productSaltService: ProductSaltService,
               private _orderItemService: OrderItemsService,
-              private _distributorService: DistributorService,
               private _brandService: BrandsService,
               private _saltService: SaltsService) {
     super(_http, {
@@ -97,6 +98,13 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
   set shop(data: RetailShop) {
     this._shop = data;
+    this._indexDB.configs.toArray().then((config: Config[])=>{
+      config.forEach((value)=>{
+        value.is_selected = value.shop_id === data.id;
+      });
+      this._indexDB.configs.bulkPut(config).then(()=>{
+      })
+    });
     this._shop$.next(this.shop);
   }
 
@@ -157,8 +165,8 @@ export class RetailShopsService extends RESTService<RetailShop> {
   }
 
   async getProductUpdate(retailShopId: string, date?: string, optionalParams?: any): Promise<boolean> {
-    let productParams = {__retail_shop_id__equal: retailShopId, __limit: 1000, __page: 1, __is_disabled__bool: false,
-      __include: ['similar_products', 'available_stocks', 'brand', 'distributors'], __exclude: ['links']};
+    let productParams = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1, __is_disabled__bool: false,
+      __include: ['similar_products', 'available_stocks'], __exclude: ['_links']};
 
     if (date !== null) {
       productParams['__updated_on__date_gte'] = date;
@@ -175,7 +183,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
   async getStockUpdate(date: string, retailShopId: string, pageNumber?: number): Promise<boolean> {
     let stockParams = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: pageNumber || 1,
-      __only: ['id', 'product_id'],
+      __only: ['id', 'product_id'], __distinct_by: 'product_id',
       __updated_on__date_gte: date};
     return await this._stockService.query(stockParams).subscribe((data: {data: Stock[]})=>{
 
@@ -193,9 +201,29 @@ export class RetailShopsService extends RESTService<RetailShop> {
     }).closed
   }
 
+  async getProductSaltUpdate(date: string, retailShopId: string, pageNumber?: number): Promise<boolean> {
+    let saltParams = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: pageNumber || 1,
+      __only: ['id', 'product_id'], __distinct_by: 'product_id',
+      __updated_on__date_gte: date};
+    return await this._productSaltService.query(saltParams).subscribe((data: {data: ProductSalt[]})=>{
+
+      let productId: string[] = data.data.map((value)=>{
+        return value.product_id;
+      });
+      if (productId.length) {
+        this.getProductUpdate(retailShopId, null, {__id__in: productId}).then();
+      }
+      if (saltParams['__limit']==data.data.length) {
+        this.getProductSaltUpdate(date, retailShopId, pageNumber+1 || 2).then();
+        return true
+      }
+      return true
+    }).closed
+  }
+
   async getOrderItemUpdate(retailShopId: string, date?: string,  pageNumber?: number, optionalParams?: any): Promise<boolean> {
     let orderItemParams = {
-      __retail_shop_id__equal: retailShopId, __limit: 100, __page: pageNumber || 1,
+      __retail_shop_id__equal: retailShopId, __limit: 100, __page: pageNumber || 1, __distinct_by: 'product_id',
       __only: ['id', 'product_id']};
 
     if (date !== null) {
@@ -225,19 +253,88 @@ export class RetailShopsService extends RESTService<RetailShop> {
   async syncData(retailShopId: string): Promise<boolean> {
     let params = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1};
     let product_params = Object.assign({}, params);
-    product_params['__include'] = ['similar_products', 'available_stocks', 'brand', 'distributors'];
-    product_params['__exclude'] = ['links'];
+    product_params['__include'] = ['available_stocks'];
+    product_params['__exclude'] = ['_links', 'brand', 'distributors', 'similar_products'];
     product_params['__is_disabled__bool'] = 'false';
-    this._distributorService.saveDistributors(Object.assign({}, params));
     this._brandService.saveBrands(Object.assign({}, params));
     this._tagService.saveTags(Object.assign({}, params));
     this._taxService.saveTaxes(Object.assign({}, params));
-    this._saltService.saveSalts(Object.assign({}, params));
-    return await this._itemService.saveProducts(product_params).then((d)=>{
-      console.log();
-      this.updateStockTime(retailShopId);
-      return true
+
+    this._brandService.sync(Object.assign({}, params)).subscribe((data: {data:Brand[], total: number})=> {
+      this._indexDB.brands.clear().then(() => {
+        this._indexDB.brands.bulkAdd(data.data).then(() => {
+          this._brandService.brandObservableFork(Object.assign({}, params), data.total)
+            .subscribe((data: { data: Brand[] }[]) => {
+              data.forEach((data) => {
+                this._indexDB.brands.bulkAdd(data.data).then(() => {
+                }, (err) => {
+                });
+              })
+            });
+        })
+      });
     });
+
+    this._saltService.sync(Object.assign({}, params)).subscribe((data: {data:Salt[], total: number})=> {
+      this._indexDB.salts.clear().then(() => {
+        this._indexDB.salts.bulkAdd(data.data).then(() => {
+          this._saltService.saltObservableFork(Object.assign({}, params), data.total)
+            .subscribe((data: { data: Salt[] }[]) => {
+              data.forEach((data) => {
+                this._indexDB.salts.bulkAdd(data.data).then(() => {
+                }, (err) => {
+                });
+              })
+            });
+        })
+      });
+    });
+    this._productTagService.sync(Object.assign({}, params)).subscribe((data: {data:ProductTag[], total: number})=> {
+      this._indexDB.productTag.clear().then(() => {
+        this._indexDB.productTag.bulkAdd(data.data).then(() => {
+          this._productTagService.productTagObservableFork(Object.assign({}, params), data.total)
+            .subscribe((data: { data: ProductTag[] }[]) => {
+            data.forEach((data) => {
+              this._indexDB.productTag.bulkAdd(data.data).then(() => {
+              }, (err) => {
+              });
+            })
+          });
+        })
+      });
+    });
+
+    this._productSaltService.sync(Object.assign({}, params)).subscribe((data: {data:ProductSalt[], total: number})=> {
+      this._indexDB.productSalt.clear().then(() => {
+        this._indexDB.productSalt.bulkAdd(data.data).then(() => {
+          this._productSaltService.productSaltObservableFork(Object.assign({}, params), data.total)
+            .subscribe((data: { data: ProductSalt[] }[]) => {
+              data.forEach((data) => {
+                this._indexDB.productSalt.bulkAdd(data.data).then(() => {
+                }, (err) => {
+                });
+              })
+            });
+        })
+      });
+    });
+
+    this._itemService.syncProducts(product_params).subscribe((data: {data: Product[], total: number}) => {
+      this._indexDB.products.clear().then(()=>{
+        this._indexDB.products.bulkAdd(data.data).then(()=>{
+          this._itemService.productObservableFork(product_params, data.total).subscribe((data: {data:Product[]}[])=>{
+            data.forEach((data)=>{
+              this._indexDB.products.bulkAdd(data.data).then(()=>{}, (err)=>{
+              });
+            });
+            this._indexDB._db$.next({status: true})
+          });
+        })
+      });
+
+    });
+    this.updateStockTime(retailShopId);
+    return await  true;
 
   }
 

@@ -58,7 +58,6 @@ export class ProductSaltPipe implements PipeTransform {
       return value.filter((val) => {
         let flag = true;
         for (let salt in args) {
-          console.log(salt);
           if (val.salts.indexOf(args[salt])<0){
             flag = false;
             return false

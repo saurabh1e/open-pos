@@ -34,18 +34,21 @@ export class RequestInterceptor implements IHttpInterceptor {
     catch (err) {
       data = {}
     }
-
     this.openAlert(data, error.status);
     return error;
   };
 
   openAlert(message: {}, status: number): void {
-    let title = 'Error!!';
+    let title = null;
     switch (status) {
+      case 0: title = null;break;
       case 400: title = 'Bad request'; break;
       case 401: title = 'Unauthorized: you don\'t access'; break;
       case 403: title = 'Forbidden: access not allowed'; break;
       case 404: title = null; break;
+      case 500: title = 'Contact Support';break;
+      default: title = 'Contact Support';break;
+
     }
     if (title) {
       this._dialogService.openAlert({

@@ -32,7 +32,11 @@ import {AuthGuard} from "../services/auth-gaurd.service";
 
 
 const routes: Routes = [
-
+  {
+    path: '',
+    redirectTo: "/dashboard/shops",
+    pathMatch: 'full'
+  },
   {path: 'login', component: LoginComponent},
   {path: '', component: MainRouteComponent, canActivate: [AuthGuard], children:[
     {

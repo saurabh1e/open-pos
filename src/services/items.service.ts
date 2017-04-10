@@ -105,6 +105,17 @@ export interface Brand {
   retail_shop?: RetailShop;
 }
 
+export interface ProductSalt {
+  id: string;
+  product_id: string;
+  salt_id: string;
+}
+
+export interface ProductTag {
+  id: string;
+  product_id: string;
+  tag_id: string;
+}
 
 @Injectable()
 export class ItemsService extends RESTService<Product> {
@@ -188,8 +199,7 @@ export class ItemsService extends RESTService<Product> {
   }
 
   async saveProducts(params?) {
-    let arr = [];
-    return await this.query(params).subscribe((data: {data: Product[], total: number}) => {
+    this.query(params).subscribe((data: {data: Product[], total: number}) => {
       data.data.forEach((value) => {
         this._indexDB.products.add(value).then(() => {
 
@@ -198,20 +208,30 @@ export class ItemsService extends RESTService<Product> {
             this._indexDB.products.update(value.id, value).then()
           })
       });
-      if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
-        let pages: number = data.total / params['__limit'];
-        for (let i=1; i<=pages; i++) {
-          params['__page'] = i;
-           arr.push(this.query(Object.assign({}, params)));
-        }
-        return Observable.forkJoin(arr)
-      }
+
       return Observable.forkJoin([])
 
     }, (err) => {
       console.error(err);
       return Observable.forkJoin([])
     })
+  }
+
+  syncProducts(params: any): Observable<{data: Product[]}> {
+    return this.query(params);
+  }
+
+  productObservableFork(params: any, total: number): Observable<{}[]>{
+    let arr = [];
+    if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+      let pages: number =total / params['__limit'];
+      for (let i=2; i<=pages; i++) {
+        params['__page'] = i;
+        arr.push(this.query(Object.assign({}, params)));
+      }
+      console.log(arr);
+      return Observable.forkJoin(arr)
+    }
   }
 
 }
@@ -328,13 +348,27 @@ export class BrandsService extends RESTService<Brand> {
           params['__page'] = i;
           this.saveBrands(params);
         }
-        this._indexDB._db$.next({status: 'brands'});
+
       }
     }, (err) => {
       console.error(err)
     })
   }
+  sync(params: any): Observable<{data: Brand[], total: number}> {
+    return this.query(params)
+  }
 
+  brandObservableFork(params: any, total: number): Observable<{}[]>{
+    let arr = [];
+    if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+      let pages: number =total / params['__limit'];
+      for (let i=2; i<=pages; i++) {
+        params['__page'] = i;
+        arr.push(this.query(Object.assign({}, params)));
+      }
+      return Observable.forkJoin(arr)
+    }
+  }
 }
 
 @Injectable()
@@ -448,11 +482,25 @@ export class SaltsService extends RESTService<Salt> {
           params['__page'] = i;
           this.saveSalts(params)
         }
-        this._indexDB._db$.next({status: 'salts'});
       }
     }, (err) => {
       console.error(err)
     })
+  }
+  sync(params: any): Observable<{data: Salt[], total: number}> {
+    return this.query(params)
+  }
+
+  saltObservableFork(params: any, total: number): Observable<{}[]>{
+    let arr = [];
+    if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+      let pages: number =total / params['__limit'];
+      for (let i=2; i<=pages; i++) {
+        params['__page'] = i;
+        arr.push(this.query(Object.assign({}, params)));
+      }
+      return Observable.forkJoin(arr)
+    }
   }
 }
 
@@ -539,6 +587,65 @@ export class DistributorBillsService extends RESTService<DistributorBill> {
       path: '/distributor_bill',
     });
 
+  }
+
+}
+
+
+@Injectable()
+export class ProductSaltService extends RESTService<ProductSalt> {
+
+  constructor(private _http: HttpInterceptorService, private _indexDB: IndexDBServiceService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/product_salt',
+    });
+
+  }
+
+  sync(params: any): Observable<{data: ProductSalt[], total: number}> {
+    return this.query(params)
+  }
+  productSaltObservableFork(params: any, total: number): Observable<{}[]>{
+    let arr = [];
+    if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+      let pages: number =total / params['__limit'];
+      for (let i=2; i<=pages; i++) {
+        params['__page'] = i;
+        arr.push(this.query(Object.assign({}, params)));
+      }
+      console.log(arr);
+      return Observable.forkJoin(arr)
+    }
+  }
+}
+
+
+@Injectable()
+export class ProductTagService extends RESTService<ProductTag> {
+
+  constructor(private _http: HttpInterceptorService, private _indexDB: IndexDBServiceService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/product_tag',
+    });
+
+  }
+
+  sync(params: any): Observable<{data: ProductTag[], total: number}> {
+    return this.query(params)
+  }
+
+  productTagObservableFork(params: any, total: number): Observable<{}[]>{
+    let arr = [];
+    if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
+      let pages: number =total / params['__limit'];
+      for (let i=2; i<=pages; i++) {
+        params['__page'] = i;
+        arr.push(this.query(Object.assign({}, params)));
+      }
+      return Observable.forkJoin(arr)
+    }
   }
 
 }

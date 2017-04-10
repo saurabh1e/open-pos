@@ -17,7 +17,7 @@ export class DistributorBillComponent implements OnInit {
     {name: 'distributor.retail_shop.name', label: 'Shop', sortable: false},
     {name: 'reference_number', label: 'Reference #', numeric: true, sortable: false},
     {name: 'purchase_date', label: 'Date', numeric: true, sortable: true},
-    {name: 'bill_amount', label: 'Amount', numeric: true, sortable: false, format: v => v.toFixed(2)},
+    {name: 'bill_amount', label: 'Amount', numeric: true, sortable: false, format: v => v?v.toFixed(2):0},
     {name: 'total_items', label: 'Items', numeric: true, sortable: true},
   ];
 

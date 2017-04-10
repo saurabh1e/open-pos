@@ -1,12 +1,14 @@
 import {NgModule, Type} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
+import { BrowserModule } from '@angular/platform-browser';
+
 import {CovalentCoreModule, CovalentDataTableModule, CovalentDialogsModule, CovalentSearchModule} from "@covalent/core";
 import {CovalentHttpModule, IHttpInterceptor} from "@covalent/http";
 import {TagInputModule} from "ng2-tag-input";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CovalentPagingModule } from '@covalent/core';
 
 import {AppComponent} from "./app.component";
 import {appRoutes, appRoutingProviders} from "./app.routes";
@@ -15,12 +17,11 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {AuthService} from "../services/auth.service";
 import {UsersService} from "../services/users.service";
 import {RetailShopsService} from "../services/shop.service";
-import {Ng2PaginationModule} from "ng2-pagination";
 
 import {
-  BrandsService, Distributor,
+  BrandsService, DistributorBillsService,
   DistributorService,
-  ItemsService,
+  ItemsService, ProductSaltService, ProductTagService,
   SaltsService,
   StocksService,
   TagsService,
@@ -158,17 +159,19 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    Ng2PaginationModule,
     CKEditorModule,
     CovalentCoreModule,
     FlexLayoutModule,
     CovalentDataTableModule,
+    CovalentPagingModule,
     CovalentDialogsModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
       }],
     }),
+    FormsModule,
+    ReactiveFormsModule,
     CovalentSearchModule,
     TagInputModule,
     appRoutes,
@@ -191,7 +194,9 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     StocksService,
     CartService,
     OrdersService,
-
+    DistributorBillsService,
+    ProductSaltService,
+    ProductTagService,
     IndexDBServiceService,
 
   ], // additional providers needed for this module

@@ -59,9 +59,17 @@ export class ShopComponent implements AfterViewInit {
     this._indexDBService.products.where({retail_shop_id: data.id}).count().then((count) => {
       if (count < 1) {
         this._shopService.syncData(data.id).then(() => {
-          this._router.navigate(['dashboard/carts/']).then(() => {
+          this._indexDBService.db$.subscribe((data)=>{
+            if (data.status) {
+              this._router.navigate(['dashboard/carts/']).then(() => {
+                this._loadingService.resolve('shops');
+              });
+              this._loadingService.resolve('shops');
+            }
+          }, ()=>{
             this._loadingService.resolve('shops');
-          });
+          })
+
         });
       }
       else {
@@ -79,7 +87,13 @@ export class ShopComponent implements AfterViewInit {
   syncData(data: string): void {
     this._loadingService.register('shops');
     this._shopService.syncData(data).then(() => {
-      this._loadingService.resolve('shops');
+      this._indexDBService.db$.subscribe((data)=>{
+        if (data.status) {
+          this._loadingService.resolve('shops');
+        }
+      }, ()=>{
+        this._loadingService.resolve('shops');
+      })
     });
 
   }

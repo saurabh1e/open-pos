@@ -75,7 +75,9 @@ export class StaffComponent implements OnInit, OnDestroy {
     this._titleService.setTitle('Staff');
     this.title = 'Staff';
     this.user = this._userService.user;
-
+    if (this.user) {
+      this.filter();
+    }
     this.userSub = this._userService.user$.subscribe((data: IUser) => {
       this.user = data;
       this.filter();

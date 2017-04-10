@@ -4,7 +4,7 @@ import {Subject} from "rxjs/Subject";
 import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
 import {RetailShopsService, RetailShop, RetailBrand} from "./shop.service";
-import {IndexDBServiceService} from "./indexdb.service";
+import {Config, IndexDBServiceService} from "./indexdb.service";
 import {Auth, AuthService} from "./auth.service";
 import {Response} from "@angular/http";
 
@@ -44,6 +44,12 @@ export class UsersService extends RESTService<IUser> {
       if (data.id && data.authentication_token) {
         this.get(data.id).subscribe((data)=>{
           this.user = data;
+        }, (err: ProgressEvent)=>{
+          if (err.type === 'error') {
+            this._indexDB.users.get(data.id).then((user)=>{
+              this.user = user;
+            })
+          }
         })
       }
     })
@@ -67,6 +73,16 @@ export class UsersService extends RESTService<IUser> {
 
           this._indexDB.shops.where('id').anyOf(this.user.retail_shop_ids).toArray().then((data) => {
             this._shopService.shops = data;
+            this._indexDB.configs.toArray().then((config: Config[])=>{
+              config.forEach((value)=>{
+                if (value.is_selected) {
+                  this._shopService.shop = data.find((shop)=>{
+                    return shop.id === value.shop_id;
+                  })
+                }
+              })
+            });
+
           })
         }
       });

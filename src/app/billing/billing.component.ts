@@ -1,9 +1,9 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Brand, Distributor, Product, Salt, Stock, Tag} from "../../services/items.service";
+import {Brand, Distributor, ItemsService, Product, Salt, Stock, Tag} from "../../services/items.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {IPageChangeEvent, LoadingMode, LoadingType, TdLoadingService, TdMediaService} from "@covalent/core";
 import {IndexDBServiceService} from "../../services/indexdb.service";
-import {Order, OrdersService} from "../../services/orders.service";
-import {LoadingMode, LoadingType, TdDialogService, TdLoadingService, TdMediaService} from "@covalent/core";
+import {Item, Order, OrdersService} from "../../services/orders.service";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialog, MdSnackBar} from "@angular/material";
@@ -11,12 +11,13 @@ import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 import {Subscription} from "rxjs";
 
+
 @Component({
   selector: 'billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
@@ -24,7 +25,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   cart: Order;
   filterType: number = 0;
   _brands: Brand[];
-  _products: Product[];
+  _products: Product[] = [];
   _distributors: Distributor[];
   _tags: Tag[];
   _salts: Salt[];
@@ -33,13 +34,16 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   selectedSalts: Salt[] = [];
   selectedBrands: string[] = [];
   selectedDistributors: string[] = [];
-
+  searchInputTerm: string = null;
+  totalProducts: number;
   itemsPerPage: number = 48;
-
+  // myControl = new FormControl();
+  // filteredProducts: Observable<Product[]>;
 
   constructor(private _snackBarService: MdSnackBar,
               private _dialogService: MdDialog,
               private _cartService: CartService,
+              private _itemService: ItemsService,
               private _orderService: OrdersService,
               private _cd: ChangeDetectorRef,
               private _activatedRoute: ActivatedRoute,
@@ -56,8 +60,15 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    // this.filteredProducts = this.myControl.valueChanges
+    //   .startWith(null)
+    //   .map(product => product && typeof product === 'object' ? this.filter(product.name):this.filter(product))
   }
+
+  // filter(name: string): Product[] {
+  //   console.log(name, typeof name);
+  //   return this.products.filter(option => new RegExp(`^${name}`, 'gi').test(option.name));
+  // }
 
   ngOnDestroy() {
     this._db.unsubscribe();
@@ -151,6 +162,115 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     return this._products
   }
 
+  change(event: IPageChangeEvent): void {
+    console.log(event);
+
+    this.getProducts(event.page, event.pageSize);
+  }
+
+  getProducts(page?: number, pageSize?: number) {
+    if (!pageSize) {
+      pageSize = this.itemsPerPage
+    }
+
+    if (!page) {
+      page = 1
+    }
+
+    if (this.totalProducts > 10 && this.searchInputTerm) {
+      let params = {
+        __retail_shop_id__equal: this.cart.retail_shop_id, __name__contains: this.searchInputTerm,
+        __only: ['id'], __page: page, __limit: pageSize
+      };
+      if (this.selectedBrands.length) {
+        params['__brand_id__in'] = [this.selectedBrands]
+      }
+      this._itemService.query(params).subscribe((data: { data: Product[], total: number }) => {
+        this._indexDb.products.where('id').anyOf(data.data.map((product) => {
+          return product.id
+        })).toArray().then((data) => {
+          this.products = data;
+          this._cd.markForCheck();
+          return;
+        })
+      }, (err: ProgressEvent)=>{
+        if (err.type === 'err') {
+          this.getLocalProducts(page, pageSize);
+        }
+      });
+      return
+    }
+    this.getLocalProducts(page, pageSize);
+  }
+
+  getLocalProducts(page?: number, pageSize?: number) {
+
+    let query = this._indexDb.products;
+
+
+    if (this.selectedBrands.length) {
+      let brandArr = [];
+      this.selectedBrands.forEach((brand_id)=>{
+        brandArr.push([this.cart.retail_shop_id, brand_id]);
+      });
+      if (this.searchInputTerm) {
+        console.log(this.searchInputTerm);
+        query.where(['retail_shop_id+brand_id']).anyOf(brandArr)
+          .filter((product)=>{return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)})
+          .offset((page - 1) * pageSize).limit(pageSize).toArray().then((data) => {
+          this.products = data;
+          this._cd.markForCheck();
+        });
+        return
+      }
+      query.where(['retail_shop_id+brand_id']).anyOf(brandArr).offset((page - 1) * pageSize).limit(pageSize).toArray().then((data) => {
+        this.products = data;
+        this._cd.markForCheck();
+      });
+      return
+
+    }
+
+    if (this.searchInputTerm) {
+      query.offset((page - 1) * pageSize).limit(pageSize).filter((product)=>{return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)})
+        .toArray().then((data) => {
+        this.products = data;
+        this._cd.markForCheck();
+      });
+      return
+    }
+
+    else {
+      query.offset((page - 1) * pageSize).limit(pageSize).toArray().then((data) => {
+        this.products = data;
+        this._cd.markForCheck();
+      });
+      return
+    }
+  }
+
+  searchProducts() {
+
+    if (this.searchInputTerm !== null && this.searchInputTerm !== undefined
+      && (this.searchInputTerm.length == 8 || this.searchInputTerm.length == 13) && parseInt(this.searchInputTerm)) {
+
+      let term = this.searchInputTerm;
+      this.searchInputTerm = undefined;
+
+      this._indexDb.products.where('barcode').equals(term).first().then((data: Product)=>{
+        if (data.available_stock > 0) {
+          this.addProduct(data, data.available_stocks, data.default_quantity?data.default_quantity:data.is_loose?0.1:1)
+        }
+        this._cd.markForCheck();
+      }, ()=>{
+      });
+      return
+
+    }
+    this.getProducts();
+    return
+  }
+
   toggleFilter(value: number): void {
     if (this.filterType === value) {
       this.filterType = 0;
@@ -180,9 +300,9 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   setInitialData(retail_shop_id: string): void {
-    this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
-      this.distributors = data;
-    });
+    // this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
+    //   this.distributors = data;
+    // });
 
     this._indexDb.tags.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
       this.tags = data;
@@ -196,12 +316,11 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
       this.salts = data;
     });
 
+    this.getProducts();
 
-    this._indexDb.products.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
-      this.products = data;
-      this._cd.markForCheck();
-
-    });
+    this._indexDb.products.where({retail_shop_id: retail_shop_id}).count().then((count) => {
+      this.totalProducts = count;
+    })
 
   }
 
@@ -232,7 +351,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     else {
       this.selectedBrands.push(id)
     }
-    this.selectedBrands = this.selectedBrands.concat();
+    this.getProducts();
     return
   }
 
@@ -270,20 +389,37 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
 
-  addProduct(product: Product, stock: Stock, qty?: number): void {
-    if (!stock)
+  addProduct(product: Product, stocks: Stock[], qty: number): void {
+    if (!stocks)
       return;
-    this._cartService.addProduct(this.cart.local_id, product, stock, qty).then((cart) => {
-      this.cart = cart;
-      this._cd.markForCheck();
-    })
+    let item: Item;
+    let stockToAdd = stocks.find((stock) => {
+      item = this.cart.items.find((item) => {
+        return item.product_id == product.id && item.stock_id == stock.id;
+      });
+      if (item) {
+        return stock.units_purchased - stock.units_sold - item.quantity > 0;
+      }
+      else {
+        return stock.units_purchased - stock.units_sold > 0;
+      }
+    });
+    if (stockToAdd) {
+      if (item) {
+        qty += item.quantity
+      }
+      this._cartService.addProduct(this.cart.local_id, product, stockToAdd, qty).then((cart) => {
+        this.cart = cart;
+        this._cd.markForCheck();
+      })
+    }
+
   }
 
   updateProductQuantity(productId: string, stockId: string, qty?: number): void {
-    console.log(qty);
+
     this._cartService.updateQuantity(this.cart.local_id, productId, stockId, qty).then((cart) => {
       this.cart = cart;
-      console.log(cart);
       this._cd.markForCheck();
     })
   }

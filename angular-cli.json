@@ -17,13 +17,12 @@
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.app.json",
       "prefix": "app",
-      "mobile": false,
       "styles": [
         "styles.scss",
         "theme.scss",
         "../node_modules/@covalent/core/common/platform.css"
-
       ],
       "scripts": [
         "../node_modules/hammerjs/hammer.min.js"
@@ -33,44 +32,29 @@
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
-
     }
   ],
-  "lint": [{
-    "files": "src/**/*.ts",
-    "project": "src/tsconfig.json"
-  }, {
-    "files": "e2e/**/*.ts",
-    "project": "e2e/tsconfig.json"
-  }
-  ],
-  "addons": [],
-  "packages": [],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"
     }
   },
+  "lint": [
+    {
+      "files": "src/**/*.ts",
+      "project": "src/tsconfig.json"
+    },
+    {
+      "files": "e2e/**/*.ts",
+      "project": "e2e/tsconfig.json"
+    }
+  ],
   "test": {
     "karma": {
       "config": "./karma.conf.js"
     }
   },
   "defaults": {
-    "styleExt": "scss",
-    "prefixInterfaces": false,
-    "lazyRoutePrefix": "+"
-  },
-  "inline": {
-    "style": false,
-    "template": false
-  },
-  "spec": {
-    "class": false,
-    "component": true,
-    "directive": true,
-    "module": false,
-    "pipe": true,
-    "service": true
+    "styleExt": "scss"
   }
 }
