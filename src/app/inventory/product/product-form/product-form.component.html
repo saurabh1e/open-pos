@@ -83,23 +83,7 @@
           </tag-input>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutGap="20px">
-        <div fxFlex>
-          <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
-                     (onAdd)="addDistributor($event)" (onRemove)="removeDistributor($event)"
-                     [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="5"
-                     [identifyBy]="'id'"
-                     [displayBy]="'name'">
-            <tag-input-dropdown [autocompleteObservable]='getDistributors' [appendToBody]="false"
-                                [identifyBy]="'id'"
-                                [displayBy]="'name'">
-              <template let-item="item" let-index="index">
-                {{ item.name }}
-              </template>
-            </tag-input-dropdown>
-          </tag-input>
-        </div>
-      </div>
+
       <div fxLayout="row" fxLayoutGap="20px">
         <tag-input [(ngModel)]="tags" name="tags" fxFlex="100" [placeholder]="'Enter Tags..'"
                    [secondaryPlaceholder]="'Enter Tags...'" [onlyFromAutocomplete]="true" (onAdd)="addTags($event)"

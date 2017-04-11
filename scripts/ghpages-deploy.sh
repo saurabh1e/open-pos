@@ -3,16 +3,16 @@
 git checkout gh-pages
 git reset --hard master
 
-echo 'Replace api endpoint with https://open-point-of-sale.herokuapp.com/api/v1/'
+echo 'Replace api endpoint with https://api.coderin.me/api/v1/'
 
 cat <<'EOF' >> api.config.ts
-export const MOCK_API: string = "https://open-point-of-sale.herokuapp.com/api/v1/";
+export const MOCK_API: string = "https://api.coderin.me/api/v1/";
 EOF
 
 mv src/config/api.config.ts api.config.ts.default
 mv api.config.ts src/config/api.config.ts
 
-ng build --base-href /open-pos/ -prod
+ng build --base-href /open-pos/ --env=prod
 
 echo 'Created and Checked out gh-pages branch'
 

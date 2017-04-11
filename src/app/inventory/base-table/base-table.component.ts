@@ -1,9 +1,8 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {
   TdDataTableSortingOrder, TdLoadingService, LoadingType, LoadingMode,
-  TdDialogService,
+  TdDialogService, IPageChangeEvent
 }from '@covalent/core';
-import { IPageChangeEvent } from '@covalent/core';
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {RESTService} from "@covalent/http";
 import {RetailShop, RetailShopsService} from "../../../services/shop.service";

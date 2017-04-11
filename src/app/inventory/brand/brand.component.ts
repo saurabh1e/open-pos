@@ -18,7 +18,10 @@ export class BrandComponent implements AfterViewInit {
 
   columns: TdDataTableColumn[] = [
     {name: 'name', label: 'Name', sortable: true},
-    {name: 'retail_shop.name', 'label': 'Shop', nested: true}
+    {name: 'retail_shop.name', 'label': 'Shop', nested: true},
+    {name: 'distributors', label: 'Distributor', sortable: false, nested: true, format:  v => v?v.map((value)=>{
+      return value.name
+    }):''},
   ];
 
   title: string;

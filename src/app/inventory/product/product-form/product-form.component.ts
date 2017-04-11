@@ -1,16 +1,19 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {RetailShop, RetailShopsService} from "../../../../services/shop.service";
 import {
-  ItemsService,
-  TagsService,
-  TaxsService,
   BrandsService,
-  DistributorService,
+  Distributor,
+  ItemsService,
+  Product,
+  Salt,
   SaltsService,
-  Product, Distributor, Salt, Tax, Tag
+  Tag,
+  TagsService,
+  Tax,
+  TaxsService
 } from "../../../../services/items.service";
 import {Observable} from "rxjs";
-import {TdLoadingService, LoadingType, LoadingMode, TdDialogService} from "@covalent/core";
+import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
 import {MdDialogRef} from "@angular/material";
 import {FormControl} from "@angular/forms";
 
@@ -23,7 +26,7 @@ import {FormControl} from "@angular/forms";
 export class ProductFormComponent implements OnInit {
 
   product: Product;
-  brands: {display: string, value: string}[] = [];
+  brands: { display: string, value: string }[] = [];
   taxes: Tax[] = [];
   salts: Salt[] = [];
   tags: Tag[] = [];
@@ -34,7 +37,6 @@ export class ProductFormComponent implements OnInit {
 
   constructor(private _itemService: ItemsService,
               private _brandService: BrandsService,
-              private _distributorService: DistributorService,
               private _saltService: SaltsService,
               private _taxService: TaxsService,
               public dialogRef: MdDialogRef<ProductFormComponent>,
@@ -109,13 +111,7 @@ export class ProductFormComponent implements OnInit {
       return {display: item.name, value: item.id}
     }))
   };
-  getDistributors = (event): Observable<string[]> => {
-    return this._distributorService.query({
-      __retail_shop_id__equal: this.product.retail_shop_id, __limit: 20
-      , __name__contains: event
-    }).map(data => data.data)
 
-  };
 
   cancelState(): void {
     this.product = Object.assign({}, this.productCopy);
@@ -129,17 +125,17 @@ export class ProductFormComponent implements OnInit {
     }
     if (this.product.id) {
       this._itemService.update(this.product.id, this.product).subscribe(() => {
-        this._itemService.updateProduct(this.product.id).then(()=>{
+        this._itemService.updateProduct(this.product.id).then(() => {
           this.dialogRef.close(this.product);
           this._loadingService.resolve('product-form');
         });
-      }, ()=>{
+      }, () => {
         this._loadingService.resolve('product-form');
       })
     }
     else {
       this._itemService.create(this.product).subscribe(() => {
-        this._itemService.updateProduct(this.product.id).then(()=>{
+        this._itemService.updateProduct(this.product.id).then(() => {
           this.dialogRef.close(this.product);
           this._loadingService.resolve('product-form');
         });
@@ -147,26 +143,6 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
-  addDistributor(event: Distributor): void {
-    this._itemService.updateDistributor(this.product.id, event.id, 'add').subscribe(()=>{
-      this.product.distributors.push(event);
-    }, ()=>{
-      this.distributors.splice(this.distributors.indexOf(event), 1)
-    })
-
-  }
-
-  removeDistributor(event : Distributor): void {
-    this._itemService.updateDistributor(this.product.id, event.id, 'remove').subscribe(_=>{
-      this.product.distributors.splice(this.product.distributors.findIndex((value)=>{
-        return value.id == event.id
-      }), 1)
-    },()=>{
-
-      this.distributors.push(event);
-    });
-    return
-  }
 
   addBrand(): void {
     this.product.brand = {
@@ -178,35 +154,35 @@ export class ProductFormComponent implements OnInit {
 
   addTags(event: Tag): void {
 
-    this._itemService.updateTag(this.product.id, event.id, 'add').subscribe(()=>{
+    this._itemService.updateTag(this.product.id, event.id, 'add').subscribe(() => {
       this.product.tags.push(event);
-    }, ()=>{
+    }, () => {
       this.tags.splice(this.tags.indexOf(event), 1)
     })
   }
 
   addSalts(event: Salt): void {
-    this._itemService.updateSalt(this.product.id, event.id, 'add').subscribe(()=>{
+    this._itemService.updateSalt(this.product.id, event.id, 'add').subscribe(() => {
       this.product.salts.push(event);
-    }, ()=>{
+    }, () => {
       this.salts.splice(this.salts.indexOf(event), 1)
     })
   }
 
   addTaxes(event: Tax): void {
-    this._itemService.updateTax(this.product.id, event.id, 'add').subscribe(()=>{
+    this._itemService.updateTax(this.product.id, event.id, 'add').subscribe(() => {
       this.product.taxes.push(event);
-    }, ()=>{
+    }, () => {
       this.taxes.splice(this.taxes.indexOf(event), 1)
     })
   }
 
   removeTags(event: Tag): void {
-    this._itemService.updateTag(this.product.id, event.id, 'remove').subscribe(_=>{
-      this.product.tags.splice(this.product.tags.findIndex((value)=>{
+    this._itemService.updateTag(this.product.id, event.id, 'remove').subscribe(_ => {
+      this.product.tags.splice(this.product.tags.findIndex((value) => {
         return value.id == event.id
       }), 1)
-    },()=>{
+    }, () => {
 
       this.tags.push(event);
     });
@@ -214,11 +190,11 @@ export class ProductFormComponent implements OnInit {
   }
 
   removeSalts(event: Salt): void {
-    this._itemService.updateSalt(this.product.id, event.id, 'remove').subscribe(_=>{
-      this.product.salts.splice(this.product.salts.findIndex((value)=>{
+    this._itemService.updateSalt(this.product.id, event.id, 'remove').subscribe(_ => {
+      this.product.salts.splice(this.product.salts.findIndex((value) => {
         return value.id == event.id
       }), 1)
-    },()=>{
+    }, () => {
 
       this.salts.push(event);
     });
@@ -226,23 +202,23 @@ export class ProductFormComponent implements OnInit {
   }
 
   removeTaxes(event: Tax): void {
-    this._itemService.updateTax(this.product.id, event.id, 'remove').subscribe(_=>{
-      this.product.taxes.splice(this.product.taxes.findIndex((value)=>{
+    this._itemService.updateTax(this.product.id, event.id, 'remove').subscribe(_ => {
+      this.product.taxes.splice(this.product.taxes.findIndex((value) => {
         return value.id == event.id
       }), 1)
-    },()=>{
+    }, () => {
 
       this.taxes.push(event);
     });
     return
   }
 
-  close():void {
+  close(): void {
     this.dialogRef.close();
   }
 
-  validateDescription = (term?: FormControl) =>{
-    if(term.value.indexOf(':')<0){
+  validateDescription = (term?: FormControl) => {
+    if (term.value.indexOf(':') < 0) {
       return {'mustContain:': true}
     }
     return null
@@ -252,7 +228,7 @@ export class ProductFormComponent implements OnInit {
     'mustContain:': 'Your key value must be separated by ":" ',
   };
 
-  addDescription = (event): void =>{
+  addDescription = (event): void => {
     event.value = event.value.split(':') [0];
     event.key = event.key.split(':') [1];
   };
@@ -260,7 +236,6 @@ export class ProductFormComponent implements OnInit {
   removeDescription(item: {}, index: number): void {
     this.product.description.splice(index, 1)
   }
-
 
 
 }

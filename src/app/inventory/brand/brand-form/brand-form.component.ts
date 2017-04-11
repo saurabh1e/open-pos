@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {MdDialogRef} from "@angular/material";
-import {Brand, BrandsService} from "../../../../services/items.service";
+import {Brand, BrandsService, Distributor, DistributorService, ItemsService} from "../../../../services/items.service";
 import {TdLoadingService, LoadingType, LoadingMode} from "@covalent/core";
 import {RetailShopsService, RetailShop} from "../../../../services/shop.service";
+import {Observable} from "rxjs";
+
 
 @Component({
   selector: 'app-brand-form',
@@ -14,9 +16,11 @@ export class BrandFormComponent implements OnInit {
   brand: Brand;
   brandCopy: Brand;
   shops: RetailShop[];
+  distributors: Distributor[];
 
   constructor(public dialogRef: MdDialogRef<BrandFormComponent>,
               private _loadingService: TdLoadingService,
+              private _distributorService: DistributorService,
               private _shopService: RetailShopsService,
               private _brandService: BrandsService) {
     this._loadingService.create({
@@ -61,4 +65,34 @@ export class BrandFormComponent implements OnInit {
   close():void {
     this.dialogRef.close();
   }
+
+  getDistributors = (event): Observable<string[]> => {
+    return this._distributorService.query({
+      __retail_shop_id__equal: this.brand.retail_shop_id, __limit: 20
+      , __name__contains: event
+    }).map(data => data.data)
+
+  };
+
+  addDistributor(event: Distributor): void {
+    this._brandService.updateDistributor(this.brand.id, event.id, 'add').subscribe(()=>{
+      this.brand.distributors.push(event);
+    }, ()=>{
+      this.distributors.splice(this.distributors.indexOf(event), 1)
+    })
+
+  }
+
+  removeDistributor(event : Distributor): void {
+    this._brandService.updateDistributor(this.brand.id, event.id, 'remove').subscribe(_=>{
+      this.brand.distributors.splice(this.brand.distributors.findIndex((value)=>{
+        return value.id == event.id
+      }), 1)
+    },()=>{
+
+      this.distributors.push(event);
+    });
+    return
+  }
+
 }

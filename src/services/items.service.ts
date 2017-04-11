@@ -96,6 +96,7 @@ export interface Distributor {
   phone_numbers?: number[];
   emails?: string[];
   products: Product[];
+  brands: Brand[];
 }
 
 export interface Brand {
@@ -103,6 +104,7 @@ export interface Brand {
   name: string
   retail_shop_id?: string;
   retail_shop?: RetailShop;
+  distributors?: Distributor[];
 }
 
 export interface ProductSalt {
@@ -176,10 +178,6 @@ export class ItemsService extends RESTService<Product> {
       .map(data=>data.json())
   }
 
-  updateDistributor(productId: string, distributorId: string, action: string): Observable<Response> {
-    return this._http.post(MOCK_API+'product_distributor', {__action: action, product_id: productId, distributor_id: distributorId})
-      .map(data=>data.json())
-  }
 
   async updateProduct(productId: string): Promise<boolean> {
     return  await this.query({__id__equal: productId, __include: ['distributors', 'brands', 'available_stocks',
@@ -356,6 +354,10 @@ export class BrandsService extends RESTService<Brand> {
   }
   sync(params: any): Observable<{data: Brand[], total: number}> {
     return this.query(params)
+  }
+  updateDistributor(brandId: string, distributorId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'brand_distributor', {__action: action, brand_id: brandId, distributor_id: distributorId})
+      .map(data=>data.json())
   }
 
   brandObservableFork(params: any, total: number): Observable<{}[]>{

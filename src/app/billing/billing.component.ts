@@ -177,7 +177,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
       page = 1
     }
 
-    if (this.totalProducts > 10 && this.searchInputTerm) {
+    if (this.totalProducts > 10000 && this.searchInputTerm) {
       let params = {
         __retail_shop_id__equal: this.cart.retail_shop_id, __name__contains: this.searchInputTerm,
         __only: ['id'], __page: page, __limit: pageSize
