@@ -3,10 +3,10 @@
 git checkout gh-pages
 git reset --hard master
 
-echo 'Replace api endpoint with https://api.coderin.me/api/v1/'
+echo 'Replace api endpoint with http://35.154.196.127/api/v1/'
 
 cat <<'EOF' >> api.config.ts
-export const MOCK_API: string = "https://api.coderin.me/api/v1/";
+export const MOCK_API: string = "http://35.154.196.127/api/v1/";
 EOF
 
 mv src/config/api.config.ts api.config.ts.default
