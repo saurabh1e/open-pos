@@ -166,7 +166,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
   async getProductUpdate(retailShopId: string, date?: string, optionalParams?: any): Promise<boolean> {
     let productParams = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1, __is_disabled__bool: false,
-      __include: ['similar_products', 'available_stocks'], __exclude: ['_links']};
+      __include: ['available_stocks'], __exclude: ['_links', 'brand', 'distributors', 'similar_products']};
 
     if (date !== null) {
       productParams['__updated_on__date_gte'] = date;
@@ -256,7 +256,6 @@ export class RetailShopsService extends RESTService<RetailShop> {
     product_params['__include'] = ['available_stocks'];
     product_params['__exclude'] = ['_links', 'brand', 'distributors', 'similar_products'];
     product_params['__is_disabled__bool'] = 'false';
-    this._brandService.saveBrands(Object.assign({}, params));
     this._tagService.saveTags(Object.assign({}, params));
     this._taxService.saveTaxes(Object.assign({}, params));
 
@@ -327,6 +326,8 @@ export class RetailShopsService extends RESTService<RetailShop> {
               this._indexDB.products.bulkAdd(data.data).then(()=>{}, (err)=>{
               });
             });
+            this._indexDB._db$.next({status: true})
+          }, ()=>{
             this._indexDB._db$.next({status: true})
           });
         })

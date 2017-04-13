@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Brand, Distributor, ItemsService, Product, Salt, Stock, Tag} from "../../services/items.service";
+import {Brand, Distributor, ItemsService, Product, ProductSalt, Salt, Stock, Tag} from "../../services/items.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IPageChangeEvent, LoadingMode, LoadingType, TdLoadingService, TdMediaService} from "@covalent/core";
 import {IndexDBServiceService} from "../../services/indexdb.service";
@@ -31,14 +31,17 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   _salts: Salt[];
   _db: Subscription;
   selectedTags: Tag[] = [];
-  selectedSalts: Salt[] = [];
+  selectedSalts: string[] = [];
   selectedBrands: string[] = [];
   selectedDistributors: string[] = [];
   searchInputTerm: string = null;
   totalProducts: number;
   itemsPerPage: number = 48;
-  // myControl = new FormControl();
-  // filteredProducts: Observable<Product[]>;
+  totalSalts: number;
+  saltsPerPage: number = 48;
+  totalBrands: number;
+  brandsPerPage: number = 48;
+  productSalts: ProductSalt[] = [];
 
   constructor(private _snackBarService: MdSnackBar,
               private _dialogService: MdDialog,
@@ -60,15 +63,8 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.filteredProducts = this.myControl.valueChanges
-    //   .startWith(null)
-    //   .map(product => product && typeof product === 'object' ? this.filter(product.name):this.filter(product))
-  }
 
-  // filter(name: string): Product[] {
-  //   console.log(name, typeof name);
-  //   return this.products.filter(option => new RegExp(`^${name}`, 'gi').test(option.name));
-  // }
+  }
 
   ngOnDestroy() {
     this._db.unsubscribe();
@@ -88,30 +84,44 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     this.media.registerQuery('xs').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 12;
+        this.saltsPerPage = 6;
+        this.brandsPerPage = 6;
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('sm').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 24;
+        this.saltsPerPage = 12;
+        this.brandsPerPage = 12;
+
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('md').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 36;
+        this.saltsPerPage = 24;
+        this.brandsPerPage = 24;
+
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('lg').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 48;
+        this.saltsPerPage = 36;
+        this.brandsPerPage = 36;
+
         this._cd.markForCheck();
       }
     });
     this.media.registerQuery('gt-lg').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 54;
+        this.saltsPerPage = 48;
+        this.brandsPerPage = 48;
+
         this._cd.markForCheck();
       }
     });
@@ -163,12 +173,36 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   change(event: IPageChangeEvent): void {
-    console.log(event);
 
     this.getProducts(event.page, event.pageSize);
   }
 
-  getProducts(page?: number, pageSize?: number) {
+  async queryProductSalt(salts: string[], products?: ProductSalt[]): Promise<ProductSalt[]> {
+    if (salts.length) {
+      if (products && products.length) {
+        let salt = salts.pop();
+        let productSalt = [];
+        products.forEach((product) => {
+          productSalt.push([salt, product.product_id])
+        });
+        return await this._indexDb.productSalt.where(['salt_id+product_id']).anyOf(productSalt).toArray().then((products) => {
+          if (products.length && salts.length)
+            return this.queryProductSalt(salts, products);
+          return products
+        })
+      }
+      else {
+        return await this._indexDb.productSalt.where('salt_id').equals(salts.pop()).toArray().then((products) => {
+          if (products.length && salts.length)
+            return this.queryProductSalt(salts, products);
+          return products
+        })
+      }
+    }
+    return
+  }
+
+  async getProducts(page?: number, pageSize?: number) {
     if (!pageSize) {
       pageSize = this.itemsPerPage
     }
@@ -177,14 +211,26 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
       page = 1
     }
 
+
+    await this.queryProductSalt(Object.assign([], this.selectedSalts)).then((productSalt) => {
+      console.log(productSalt);
+      this.productSalts = productSalt;
+    });
+
     if (this.totalProducts > 10000 && this.searchInputTerm) {
       let params = {
-        __retail_shop_id__equal: this.cart.retail_shop_id, __name__contains: this.searchInputTerm,
+        __retail_shop_id__equal: this.cart.retail_shop_id, __name__contains: this.searchInputTerm || undefined,
         __only: ['id'], __page: page, __limit: pageSize
       };
       if (this.selectedBrands.length) {
         params['__brand_id__in'] = [this.selectedBrands]
       }
+      if (this.productSalts && this.productSalts.length) {
+        params['__id__in'] = this.productSalts.map((product) => {
+          return product.product_id;
+        })
+      }
+
       this._itemService.query(params).subscribe((data: { data: Product[], total: number }) => {
         this._indexDb.products.where('id').anyOf(data.data.map((product) => {
           return product.id
@@ -193,7 +239,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
           this._cd.markForCheck();
           return;
         })
-      }, (err: ProgressEvent)=>{
+      }, (err: ProgressEvent) => {
         if (err.type === 'err') {
           this.getLocalProducts(page, pageSize);
         }
@@ -203,50 +249,65 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     this.getLocalProducts(page, pageSize);
   }
 
-  getLocalProducts(page?: number, pageSize?: number) {
+  async getLocalProducts(page?: number, pageSize?: number) {
 
-    let query = this._indexDb.products;
+    let query: any = this._indexDb.products;
+    let products: Product[] = null;
 
+    console.log(this.selectedSalts);
+    if (this.selectedSalts.length) {
+        await query.where('id').anyOf(this.productSalts.map((product) => {
+          return product.product_id
+        })).toArray().then((data) => {
+          products = data;
+          console.log(products);
+        })
+    }
 
     if (this.selectedBrands.length) {
-      let brandArr = [];
-      this.selectedBrands.forEach((brand_id)=>{
-        brandArr.push([this.cart.retail_shop_id, brand_id]);
-      });
-      if (this.searchInputTerm) {
-        console.log(this.searchInputTerm);
-        query.where(['retail_shop_id+brand_id']).anyOf(brandArr)
-          .filter((product)=>{return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)})
-          .offset((page - 1) * pageSize).limit(pageSize).toArray().then((data) => {
-          this.products = data;
-          this._cd.markForCheck();
+      if (products) {
+        products = products.filter((product) => {
+          return this.selectedBrands.indexOf(product.brand_id) > -1;
         });
-        return
       }
-      query.where(['retail_shop_id+brand_id']).anyOf(brandArr).offset((page - 1) * pageSize).limit(pageSize).toArray().then((data) => {
-        this.products = data;
-        this._cd.markForCheck();
-      });
-      return
+      else {
+        let brandArr = [];
+        this.selectedBrands.forEach((brand_id) => {
+          brandArr.push([this.cart.retail_shop_id, brand_id]);
+        });
+        query = query.where(['retail_shop_id+brand_id']).anyOf(brandArr);
+
+        if (this.searchInputTerm) {
+
+          query = query.filter((product) => {
+            return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)
+          });
+        }
+        await query.toArray().then(data => {
+          products = data;
+        });
+      }
 
     }
 
     if (this.searchInputTerm) {
-      query.offset((page - 1) * pageSize).limit(pageSize).filter((product)=>{return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)})
+      await query.offset((page - 1) * pageSize).limit(pageSize).filter((product) => {
+        return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)
+      })
         .toArray().then((data) => {
-        this.products = data;
-        this._cd.markForCheck();
+        products = data;
       });
-      return
     }
 
-    else {
-      query.offset((page - 1) * pageSize).limit(pageSize).toArray().then((data) => {
-        this.products = data;
-        this._cd.markForCheck();
+    if (!this.selectedSalts.length && !this.selectedBrands.length && !this.searchInputTerm) {
+      await query.offset((page - 1) * pageSize).limit(pageSize).toArray().then(data=>{
+        products = data;
       });
-      return
     }
+    console.log(products);
+    this.products = products;
+    this._cd.markForCheck();
+    return
   }
 
   searchProducts() {
@@ -257,12 +318,12 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
       let term = this.searchInputTerm;
       this.searchInputTerm = undefined;
 
-      this._indexDb.products.where('barcode').equals(term).first().then((data: Product)=>{
+      this._indexDb.products.where('barcode').equals(term).first().then((data: Product) => {
         if (data.available_stock > 0) {
-          this.addProduct(data, data.available_stocks, data.default_quantity?data.default_quantity:data.is_loose?0.1:1)
+          this.addProduct(data, data.available_stocks, data.default_quantity ? data.default_quantity : data.is_loose ? 0.1 : 1)
         }
         this._cd.markForCheck();
-      }, ()=>{
+      }, () => {
       });
       return
 
@@ -272,6 +333,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   toggleFilter(value: number): void {
+
     if (this.filterType === value) {
       this.filterType = 0;
       return
@@ -308,20 +370,66 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
       this.tags = data;
     });
 
-    this._indexDb.brands.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
-      this.brands = data;
-    });
+    this.getBrands();
 
-    this._indexDb.salts.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
-      this.salts = data;
-    });
+    this.getSalts();
 
     this.getProducts();
 
     this._indexDb.products.where({retail_shop_id: retail_shop_id}).count().then((count) => {
       this.totalProducts = count;
+    });
+    this._indexDb.salts.where({retail_shop_id: retail_shop_id}).count().then((count) => {
+      this.totalSalts = count;
+    });
+    this._indexDb.brands.where({retail_shop_id: retail_shop_id}).count().then((count) => {
+      this.totalBrands = count;
     })
 
+  }
+
+  getSalts (saltName?:string, event?: IPageChangeEvent){
+    let page = event? event.page: 2;
+    let pageSize = event?event.pageSize : this.brandsPerPage;
+
+    if (saltName) {
+      this._indexDb.salts.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
+        .limit(pageSize).filter(salt=>{
+          return new RegExp(`^${saltName}`, 'gi').test(salt.name)
+      }).toArray().then(salts=>{
+        this.salts = salts;
+        this._cd.markForCheck();
+      })
+    }
+    else  {
+      this._indexDb.salts.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
+        .limit(pageSize).toArray().then(salts=>{
+        this.salts = salts;
+        this._cd.markForCheck();
+      })
+    }
+  }
+
+  getBrands (brandName?:string, event?: IPageChangeEvent){
+    let page = event? event.page: 2;
+    let pageSize = event?event.pageSize : this.brandsPerPage;
+    console.log(brandName, event, page, pageSize);
+    if (brandName) {
+      this._indexDb.brands.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
+        .limit(pageSize).filter(salt=>{
+        return new RegExp(`^${brandName}`, 'gi').test(salt.name)
+      }).toArray().then(brands=>{
+        this.brands = brands;
+        this._cd.markForCheck();
+      })
+    }
+    else  {
+      this._indexDb.brands.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
+        .limit(pageSize).toArray().then(brands=>{
+        this.brands = brands;
+        this._cd.markForCheck();
+      })
+    }
   }
 
   checkBrand(id: string): boolean {
@@ -339,7 +447,7 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
   }
 
-  checkSalt(salt: Salt): boolean {
+  checkSalt(salt: string): boolean {
     return this.selectedSalts.indexOf(salt) > -1;
 
   }
@@ -377,14 +485,14 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     return
   }
 
-  toggleSalt(salt: Salt): void {
+  toggleSalt(salt: string): void {
     if (this.checkSalt(salt)) {
       this.selectedSalts.splice(this.selectedSalts.indexOf(salt), 1);
     }
     else {
       this.selectedSalts.push(salt)
     }
-    this.selectedSalts = this.selectedSalts.concat();
+    this.getProducts();
     return
   }
 

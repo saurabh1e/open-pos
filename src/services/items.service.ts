@@ -222,7 +222,7 @@ export class ItemsService extends RESTService<Product> {
   productObservableFork(params: any, total: number): Observable<{}[]>{
     let arr = [];
     if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
-      let pages: number =total / params['__limit'];
+      let pages: number = Math.ceil(total / params['__limit']);
       for (let i=2; i<=pages; i++) {
         params['__page'] = i;
         arr.push(this.query(Object.assign({}, params)));
@@ -363,7 +363,7 @@ export class BrandsService extends RESTService<Brand> {
   brandObservableFork(params: any, total: number): Observable<{}[]>{
     let arr = [];
     if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
-      let pages: number =total / params['__limit'];
+      let pages: number = Math.ceil(total / params['__limit']);
       for (let i=2; i<=pages; i++) {
         params['__page'] = i;
         arr.push(this.query(Object.assign({}, params)));
@@ -496,7 +496,7 @@ export class SaltsService extends RESTService<Salt> {
   saltObservableFork(params: any, total: number): Observable<{}[]>{
     let arr = [];
     if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
-      let pages: number =total / params['__limit'];
+      let pages: number = Math.ceil(total / params['__limit']);
       for (let i=2; i<=pages; i++) {
         params['__page'] = i;
         arr.push(this.query(Object.assign({}, params)));
@@ -611,7 +611,7 @@ export class ProductSaltService extends RESTService<ProductSalt> {
   productSaltObservableFork(params: any, total: number): Observable<{}[]>{
     let arr = [];
     if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
-      let pages: number =total / params['__limit'];
+      let pages: number = Math.ceil(total / params['__limit']);
       for (let i=2; i<=pages; i++) {
         params['__page'] = i;
         arr.push(this.query(Object.assign({}, params)));
@@ -641,7 +641,7 @@ export class ProductTagService extends RESTService<ProductTag> {
   productTagObservableFork(params: any, total: number): Observable<{}[]>{
     let arr = [];
     if (params && '__limit' in params && '__page' in params && params['__page'] === 1) {
-      let pages: number =total / params['__limit'];
+      let pages: number = Math.ceil(total / params['__limit']);
       for (let i=2; i<=pages; i++) {
         params['__page'] = i;
         arr.push(this.query(Object.assign({}, params)));

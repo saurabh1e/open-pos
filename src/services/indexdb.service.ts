@@ -60,7 +60,7 @@ export class IndexDBServiceService extends Dexie {
         users: "++id, mobile_number, email",
         configs: "++shop_id,is_selected",
         auth: "++id,authentication_token",
-        productSalt: "++id,product_id,salt_id",
+        productSalt: "++id,product_id,salt_id,[salt_id+product_id]",
         productTag: "++id,product_id,tag_id"
       });
   }
