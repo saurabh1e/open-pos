@@ -59,16 +59,20 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
+    this._loadingService.register('billing');
     this._activatedRoute.params.subscribe((params: { id: string }) => {
       if (params.id) {
-        this._loadingService.register('billing');
         this._indexDb.carts.get((params.id)).then((data) => {
           this.cart = data;
           this.getProducts();
+          this._indexDb.products.where('retail_shop_id').equals(this.cart.retail_shop_id).count().then((count)=>{
+            this.totalProducts = count;
+          });
           this._loadingService.resolve('billing');
         })
       }
     });
+
     this.media.registerQuery('xs').subscribe((data: boolean) => {
       if (data) {
         this.itemsPerPage = 12;

@@ -17,6 +17,7 @@ export class SaltsComponent implements AfterViewInit {
   salts: Salt[] = [];
   saltsPerPage: number;
   shopId: string;
+  totalSalts: number = 0;
 
   constructor(public dialogRef: MdDialogRef<SaltsComponent>,
               private _indexDB: IndexDBServiceService,
@@ -24,7 +25,11 @@ export class SaltsComponent implements AfterViewInit {
 
   ngAfterViewInit() {
 
+    this._indexDB.salts.where('retail_shop_id').equals(this.shopId).count().then((count)=>{
+      this.totalSalts = count;
+    });
     this.getSalts();
+
   }
 
   close():void {

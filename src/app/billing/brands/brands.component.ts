@@ -18,13 +18,16 @@ export class BrandsComponent implements AfterViewInit {
   brands: Brand[] = [];
   brandsPerPage: number;
   shopId: string;
+  totalBrands: number = 0;
 
   constructor(public dialogRef: MdDialogRef<BrandsComponent>,
               private _indexDB: IndexDBServiceService,
               private _cd: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
-
+    this._indexDB.brands.where('retail_shop_id').equals(this.shopId).count().then((count)=>{
+      this.totalBrands = count;
+    });
     this.getBrands();
   }
 
