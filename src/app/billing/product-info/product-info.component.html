@@ -1,5 +1,5 @@
 <div class="" fxLayout="column">
-  <md-card-title class="tc-blue-700" fxLayout="row" fxLayoutWrap="">
+  <md-card-title class="tc-blue-700" fxLayout="row" fxLayoutWrap="" fxFlex="100">
     <span fxLayout-align="center center" fxLayout="row">
       {{product.name}}
     </span>
@@ -8,7 +8,7 @@
       <md-icon class="tc-accent">close</md-icon>
     </button>
   </md-card-title>
-  <md-card-subtitle>{{product.sub_description}}</md-card-subtitle>
+  <md-card-subtitle>{{product.mrp ||0 | currency:'INR':true:'1.2-2'}}</md-card-subtitle>
   <md-divider></md-divider>
   <md-card-content>
     <div fxLayout="row" fxLayoutWrap="">
@@ -25,6 +25,18 @@
 
         </md-list>
       </div>
+      <h4 *ngIf="product.salts && product.salts.length">Salts</h4>
+      <div fxFlex="100" fxLayout="row" fxLayoutWrap="" *ngIf="product.salts && product.salts.length">
+        <md-list *ngFor="let salt of product.salts" fxFlex="">
+          <md-list-item>
+            <md-icon class="tc-blue-500" md-list-avatar="">healing</md-icon>
+            <span md-line>{{salt.name}}</span>
+            <p md-line>Name</p>
+          </md-list-item>
+
+        </md-list>
+      </div>
+
       <div fxLayout="row" fxLayoutWrap="" class="info-dialog">
         <md-list *ngIf="product.description" fxFlex="50">
           <h4>Description</h4>

@@ -213,7 +213,6 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
 
     await this.queryProductSalt(Object.assign([], this.selectedSalts)).then((productSalt) => {
-      console.log(productSalt);
       this.productSalts = productSalt;
     });
 
@@ -254,13 +253,11 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     let query: any = this._indexDb.products;
     let products: Product[] = null;
 
-    console.log(this.selectedSalts);
     if (this.selectedSalts.length) {
         await query.where('id').anyOf(this.productSalts.map((product) => {
           return product.product_id
         })).toArray().then((data) => {
           products = data;
-          console.log(products);
         })
     }
 
@@ -304,7 +301,6 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
         products = data;
       });
     }
-    console.log(products);
     this.products = products;
     this._cd.markForCheck();
     return
@@ -413,7 +409,6 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
   getBrands (brandName?:string, event?: IPageChangeEvent){
     let page = event? event.page: 2;
     let pageSize = event?event.pageSize : this.brandsPerPage;
-    console.log(brandName, event, page, pageSize);
     if (brandName) {
       this._indexDb.brands.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
         .limit(pageSize).filter(salt=>{
