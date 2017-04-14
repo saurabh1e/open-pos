@@ -91,6 +91,7 @@ import {CustomerReportComponent} from "./reporting/customer-report/customer-repo
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
 import { SaltsComponent } from './billing/salts/salts.component';
 import { BrandsComponent } from './billing/brands/brands.component';
+import { BillDetailsComponent } from './stock-management/distributor-bill/bill-details/bill-details.component';
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -143,6 +144,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     BaseTableComponent,
     BrandsComponent,
     StaffComponent,
+    BillDetailsComponent,
     StaffDetailComponent,
     ReportingComponent,
     SaleComponent,
@@ -161,6 +163,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     TruncatePipe,
     SaltsComponent,
     BrandsComponent,
+    BillDetailsComponent,
   ], // directives, components, and pipes owned by this NgModule
   imports: [
     BrowserModule,
@@ -207,7 +210,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
 
   ], // additional providers needed for this module
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
-    ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent,
+    ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent, BillDetailsComponent,
     DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent, SaltsComponent, BrandsComponent],
   bootstrap: [AppComponent],
 })

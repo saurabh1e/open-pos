@@ -21,7 +21,7 @@ export class StockComponent implements OnInit {
     { name: 'product.retail_shop.name', label: 'Shop', sortable: false },
     { name: 'units_purchased', label: 'Units Purchased', numeric: true, sortable: false },
     { name: 'units_sold', label: 'Sold', numeric: true, sortable: true },
-    { name: 'expiry_date', label: 'Expiry', sortable: true },
+    { name: 'expiry_date', label: 'Expiry', sortable: true, numeric: true },
   ];
 
   title: string;

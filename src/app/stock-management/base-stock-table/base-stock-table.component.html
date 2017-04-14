@@ -25,14 +25,14 @@
         (sortChange)="sort(column.name, sortOrder)">
       {{column.label}}
     </th>
-    <th td-data-table-column  *ngIf="editRow">Edit</th>
+    <th td-data-table-column  *ngIf="editRow" [numeric]="true">Details</th>
     <tr td-data-table-row *ngFor="let row of filteredData">
       <td td-data-table-cell *ngFor="let column of columns"
           [numeric]="column.numeric">
         <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
       </td>
-      <td>
-
+      <td td-data-table-cell  *ngIf="editRow" [numeric]="true">
+        <button md-icon-button="" (click)="editRow()"><md-icon color="accent">info</md-icon></button>
       </td>
     </tr>
   </table>

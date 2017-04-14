@@ -1,8 +1,12 @@
 import {Component, OnInit} from "@angular/core";
-import {DistributorBillsService} from "../../../services/items.service";
+import {TdDialogService} from "@covalent/core";
+import {RESTService} from "@covalent/http";
+import { Observable } from 'rxjs'
+
+import {DistributorBill, DistributorBillsService} from "../../../services/items.service";
 import {Title} from "@angular/platform-browser";
 import {TdDataTableColumn} from "../../td-data-table-column";
-import {RESTService} from "@covalent/http";
+import {BillDetailsComponent} from "./bill-details/bill-details.component";
 
 @Component({
   selector: 'app-distributor-bill',
@@ -27,7 +31,7 @@ export class DistributorBillComponent implements OnInit {
   filters: any = {};
 
   constructor(private _titleService: Title,
-              private _distributorBillService: DistributorBillsService) {
+              private _distributorBillService: DistributorBillsService, private _dialogService: TdDialogService) {
   }
 
 
@@ -36,6 +40,12 @@ export class DistributorBillComponent implements OnInit {
     this.title = 'Bills';
 
   }
+
+  editRow = (bill: DistributorBill): Observable<DistributorBill> => {
+    let _dialog = this._dialogService.open(BillDetailsComponent, {height: '70%', width: '80%'});
+    _dialog.componentInstance.bill = Object.assign({}, bill);
+    return _dialog.afterClosed()
+  };
 
   filter = (): RESTService<any> => {
 

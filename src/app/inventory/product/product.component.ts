@@ -1,6 +1,6 @@
 import {Component, AfterViewInit} from "@angular/core";
 import {TdDialogService} from "@covalent/core";
-import {Product, ItemsService, Brand, Distributor} from "../../../services/items.service";
+import {Product, ItemsService, Brand} from "../../../services/items.service";
 import {Title} from "@angular/platform-browser";
 import {TdDataTableColumn} from "../../td-data-table-column";
 import {ProductFormComponent} from "./product-form/product-form.component";
