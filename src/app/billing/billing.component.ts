@@ -345,7 +345,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   filterSalts(): void {
-    let _dialog = this._dialogService.open(SaltsComponent);
+    let _dialog = this._dialogService.open(SaltsComponent, { height: '50%',
+      width: '70%',});
     _dialog.componentInstance.shopId = this.cart.retail_shop_id;
     _dialog.componentInstance.saltsPerPage = this.saltsPerPage;
     _dialog.componentInstance.selectedSalt = this.selectedSalts;
@@ -359,7 +360,8 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   filterBrands(): void {
-    let _dialog = this._dialogService.open(BrandsComponent);
+    let _dialog = this._dialogService.open(BrandsComponent, { height: '400px',
+      width: '600px',});
     _dialog.componentInstance.shopId = this.cart.retail_shop_id;
     _dialog.componentInstance.brandsPerPage = this.saltsPerPage;
     _dialog.componentInstance.selectedBrand = this.selectedBrands;

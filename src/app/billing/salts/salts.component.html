@@ -1,12 +1,11 @@
-<div>
+<div fxLayout="column">
     <md-card-title class="font-bold-500">Salts</md-card-title>
 
-    <md-card-content class="md-content filter-card-height"
-                     >
+    <md-card-content fxFlex="80">
       <div fxLayout="" fxLayoutWrap="" fxLayoutAlign="start">
         <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
                        [alwaysVisible]="true" fxFlex="100"
-                       (search)="term=$event" (clear)="term=null;getSalts()">
+                       (search)="getSalts($event);term=$event" (clear)="getSalts()">
         </td-search-box>
       </div>
       <div fxLayout="row" fxLayoutWrap="">
@@ -28,7 +27,7 @@
       </div>
     </md-card-content>
 
-    <md-card-actions fxLayout="row" fxLayoutAlign="end center">
+    <md-card-actions fxLayout="row" fxLayoutAlign="end end" class="md-action">
       <button md-raised-button="" color="warn" (click)="clearFilter()">Clear</button>
       <button md-raised-button="" color="accent" (click)="close()">Close</button>
     </md-card-actions>

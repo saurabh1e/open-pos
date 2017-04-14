@@ -32,7 +32,7 @@ export class BrandsComponent implements AfterViewInit {
     this.dialogRef.close(this.selectedBrand);
   }
   getBrands (brandName?:string, event?: IPageChangeEvent){
-    let page = event? event.page: 2;
+    let page = event? event.page: 1;
     let pageSize = event?event.pageSize : this.brandsPerPage;
 
     if (brandName) {

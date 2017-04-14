@@ -31,9 +31,8 @@ export class SaltsComponent implements AfterViewInit {
     this.dialogRef.close(this.selectedSalt);
   }
   getSalts (saltName?:string, event?: IPageChangeEvent){
-    let page = event? event.page: 2;
+    let page = event? event.page: 1;
     let pageSize = event?event.pageSize : this.saltsPerPage;
-
     if (saltName) {
       this._indexDB.salts.where('retail_shop_id').equals(this.shopId).offset((page-1)*pageSize)
         .limit(pageSize).filter(salt=>{
