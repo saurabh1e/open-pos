@@ -1,0 +1,35 @@
+<div>
+    <md-card-title class="font-bold-500">Salts</md-card-title>
+
+    <md-card-content class="md-content filter-card-height"
+                     >
+      <div fxLayout="" fxLayoutWrap="" fxLayoutAlign="start">
+        <td-search-box backIcon="arrow_back" placeholder="Search here" [showUnderline]="true" [debounce]="500"
+                       [alwaysVisible]="true" fxFlex="100"
+                       (search)="term=$event" (clear)="term=null;getSalts()">
+        </td-search-box>
+      </div>
+      <div fxLayout="row" fxLayoutWrap="">
+        <template let-salt ngFor [ngForOf]="salts | filter: term">
+          <label fxLayout="row" fxFlex.xs="50" fxFlex.gt-sm="20" fxFlex.gt-lg="15">
+            <input class="push-sm" [checked]="checkSalt(salt.id)" type="checkbox"
+                   (change)="toggleSalt(salt.id)"/>
+            <span class="tc-grey-800 md-caption push-top-sm">{{salt.name |truncate:15}}</span>
+          </label>
+        </template>
+      </div>
+      <div  fxLayout="row" fxLayoutAlign="center center" class=" tc-grey-700">
+        <td-paging-bar #pagingSalt pageSizeAllText="allText" [firstLast]="true" [pageSizeAll]="true"
+                       [pageSizes]="[12, 24, 36, 48, 54, 60, 66]"
+                       [initialPage]="1" [pageSize]="saltsPerPage" [total]="totalSalts" (change)="getSalts(term, $event)">
+          <span td-paging-bar-label hide-xs>Row per page:</span>
+          {{pagingSalt.range}} <span hide-xs>of {{pagingSalt.total}}</span>
+        </td-paging-bar>
+      </div>
+    </md-card-content>
+
+    <md-card-actions fxLayout="row" fxLayoutAlign="end center">
+      <button md-raised-button="" color="warn" (click)="clearFilter()">Clear</button>
+      <button md-raised-button="" color="accent" (click)="close()">Close</button>
+    </md-card-actions>
+</div>

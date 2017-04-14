@@ -166,7 +166,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
 
   async getProductUpdate(retailShopId: string, date?: string, optionalParams?: any): Promise<boolean> {
     let productParams = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1, __is_disabled__bool: false,
-      __include: ['available_stocks'], __exclude: ['_links', 'brand', 'distributors', 'similar_products']};
+      __include: ['available_stocks', 'brand'], __exclude: ['_links', 'distributors', 'similar_products']};
 
     if (date !== null) {
       productParams['__updated_on__date_gte'] = date;
@@ -253,8 +253,8 @@ export class RetailShopsService extends RESTService<RetailShop> {
   async syncData(retailShopId: string): Promise<boolean> {
     let params = {__retail_shop_id__equal: retailShopId, __limit: 100, __page: 1};
     let product_params = Object.assign({}, params);
-    product_params['__include'] = ['available_stocks'];
-    product_params['__exclude'] = ['_links', 'brand', 'distributors', 'similar_products'];
+    product_params['__include'] = ['available_stocks', 'brand'];
+    product_params['__exclude'] = ['_links', 'distributors', 'similar_products'];
     product_params['__is_disabled__bool'] = 'false';
     this._tagService.saveTags(Object.assign({}, params));
     this._taxService.saveTaxes(Object.assign({}, params));
@@ -322,6 +322,7 @@ export class RetailShopsService extends RESTService<RetailShop> {
       this._indexDB.products.clear().then(()=>{
         this._indexDB.products.bulkAdd(data.data).then(()=>{
           this._itemService.productObservableFork(product_params, data.total).subscribe((data: {data:Product[]}[])=>{
+
             data.forEach((data)=>{
               this._indexDB.products.bulkAdd(data.data).then(()=>{}, (err)=>{
               });
@@ -346,7 +347,6 @@ export class RetailShopsService extends RESTService<RetailShop> {
       this._indexDB.configs.update(retailShopId, {stock_time: new Date().toJSON(),
         shop_id: retailShopId}).then(()=>{
       }, (err)=>{
-        console.log(err);
       })
     });
   }

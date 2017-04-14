@@ -7,14 +7,14 @@
     </button>
   </md-card-title>
 
-  <md-card-content fxFlex="75" fxLayout="row" fxLayoutWrap="" fxLayoutAlign="start">
+  <md-card-content fxLayout="row" fxLayoutWrap="" fxLayoutAlign="start">
 
     <div fxHide.gt-xs="" fxLayout="row" fxLayoutWrap="" class="pad-xs">
 
       <input mdInput type="number" [(ngModel)]="cart.amount_paid" fxFlex="100" placeholder="Amount"/>
     </div>
 
-    <div fxHide-xs="" fxFlex.gt-xs="33" fxFlex.gt-lg="33" fxLayout="row" fxLayoutWrap="" class="pad-xs">
+    <div fxHide-xs="" fxFlex.gt-xs="45" fxFlex.gt-lg="33" fxLayout="row" fxLayoutWrap="" class="pad-xs">
 
       <md-card-subtitle class="tc-blue-700">Transaction Detail</md-card-subtitle>
 
@@ -56,11 +56,11 @@
 
     </div>
 
-    <div fxFlex-xs="100" fxFlex-gt-xs="66" fxFlex-gt-lg="66" fxLayout="row" fxLayoutWrap="" class="pad-xs">
+    <div fxFlex.xs="100" fxFlex.gt-xs="45" fxFlex.gt-lg="66" fxLayout="row" fxLayoutWrap="" class="pad-xs">
       <md-card-subtitle fxHide-xs class="tc-blue-700" fxFlex="100">Customer Information</md-card-subtitle>
       <div fxLayout="row" class="" fxFlex="100" fxLayoutAlign="center start">
         <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
-                   (onAdd)="addCustomer($event)" fxFlex-xs="90" fxFlex="65"
+                   (onAdd)="addCustomer($event)" fxFlex.xs="90" fxFlex="65"
                    [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
           <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false" [identifyBy]="'id'"
                               [displayBy]="'name'">
@@ -83,8 +83,8 @@
           </md-input-container>
         </div>
         <md-card-actions fxLayoutAlign="end end" fxLayout="row" fxLayoutWrap="" style="margin: 0">
-          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" (click)="clearCustomer()" color="warn">Clear</button>
-          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" [disabled]="cart.customer_id"
+          <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" (click)="clearCustomer()" color="warn">Clear</button>
+          <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" [disabled]="cart.customer_id"
                   (click)="saveCustomer()" color="primary">Save</button>
         </md-card-actions>
 
@@ -108,8 +108,8 @@
           </md-input-container>
         </div>
         <md-card-actions fxLayoutAlign="end end" fxLayout="row" class="" fxLayoutWrap="" style="margin: 0">
-          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" (click)="clearAddress()" color="warn">Clear</button>
-          <button md-raised-button="" fxFlex-xs="" fxFlex-gt-xs="25" [disabled]="!cart.customer_id || cart.address_id"
+          <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" (click)="clearAddress()" color="warn">Clear</button>
+          <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" [disabled]="!cart.customer_id || cart.address_id"
                   (click)="addAddress()" color="primary">Save</button>
         </md-card-actions>
 
@@ -137,8 +137,8 @@
   </md-card-content>
 
   <span fxFlex></span>
-
-  <md-card-actions fxLayoutAlign="end end" fxLayout="row" fxLayoutWrap="" fxFlex style="margin: 0">
+  <md-divider class="pad-md" fxFlex fxFLexLayoutWrap></md-divider>
+  <md-card-actions fxLayoutAlign="end end" fxLayout="row" fxLayoutWrap="" fxFlex style="padding: 0;margin: 0">
     <button md-raised-button="" *ngIf="shop?.printer_config.have_bill_printer" (click)="printBill()" color="accent">Print Bill</button>
     <button md-raised-button="" (click)="printReceipt()" *ngIf="shop?.printer_config.have_receipt_printer"
             color="accent">Print Receipt</button>

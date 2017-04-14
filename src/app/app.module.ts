@@ -89,6 +89,8 @@ import {CustomerComponent} from "./reporting/customer/customer.component";
 import {CustomerDetailComponent} from "./reporting/customer/customer-detail/customer-detail.component";
 import {CustomerReportComponent} from "./reporting/customer-report/customer-report.component";
 import {StockReportComponent} from "./reporting/stock-report/stock-report.component";
+import { SaltsComponent } from './billing/salts/salts.component';
+import { BrandsComponent } from './billing/brands/brands.component';
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -136,8 +138,10 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     ProductFormComponent,
     SaltFormComponent,
     BrandFormComponent,
+    SaltsComponent,
     MenuComponent,
     BaseTableComponent,
+    BrandsComponent,
     StaffComponent,
     StaffDetailComponent,
     ReportingComponent,
@@ -155,6 +159,8 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     SafeHtml,
     GoBackDirective,
     TruncatePipe,
+    SaltsComponent,
+    BrandsComponent,
   ], // directives, components, and pipes owned by this NgModule
   imports: [
     BrowserModule,
@@ -202,7 +208,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   ], // additional providers needed for this module
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
     ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent,
-    DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent],
+    DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent, SaltsComponent, BrandsComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {

@@ -1,5 +1,5 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Brand, Distributor, ItemsService, Product, ProductSalt, Salt, Stock, Tag} from "../../services/items.service";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {ItemsService, Product, ProductSalt, Stock} from "../../services/items.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IPageChangeEvent, LoadingMode, LoadingType, TdLoadingService, TdMediaService} from "@covalent/core";
 import {IndexDBServiceService} from "../../services/indexdb.service";
@@ -9,7 +9,8 @@ import {CheckoutComponent} from "./checkout/checkout.component";
 import {MdDialog, MdSnackBar} from "@angular/material";
 import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
-import {Subscription} from "rxjs";
+import {SaltsComponent} from "./salts/salts.component";
+import {BrandsComponent} from "./brands/brands.component";
 
 
 @Component({
@@ -20,26 +21,17 @@ import {Subscription} from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
+export class BillingComponent implements AfterViewInit, OnInit {
 
   cart: Order;
-  filterType: number = 0;
-  _brands: Brand[];
+
   _products: Product[] = [];
-  _distributors: Distributor[];
-  _tags: Tag[];
-  _salts: Salt[];
-  _db: Subscription;
-  selectedTags: Tag[] = [];
   selectedSalts: string[] = [];
   selectedBrands: string[] = [];
-  selectedDistributors: string[] = [];
   searchInputTerm: string = null;
   totalProducts: number;
   itemsPerPage: number = 48;
-  totalSalts: number;
   saltsPerPage: number = 48;
-  totalBrands: number;
   brandsPerPage: number = 48;
   productSalts: ProductSalt[] = [];
 
@@ -66,17 +58,13 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {
-    this._db.unsubscribe();
-  }
-
   ngAfterViewInit(): void {
     this._activatedRoute.params.subscribe((params: { id: string }) => {
       if (params.id) {
         this._loadingService.register('billing');
         this._indexDb.carts.get((params.id)).then((data) => {
           this.cart = data;
-          this.setInitialData(this.cart.retail_shop_id);
+          this.getProducts();
           this._loadingService.resolve('billing');
         })
       }
@@ -126,43 +114,8 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
     this.media.broadcast();
-    this._db = this._indexDb.db$.subscribe(() => {
-      this.setInitialData(this.cart.retail_shop_id);
-    });
-  }
 
-  set distributors(data: Distributor[]) {
-    this._distributors = data
   }
-
-  get distributors(): Distributor[] {
-    return this._distributors
-  }
-
-  set tags(data: Tag[]) {
-    this._tags = data
-  }
-
-  get tags(): Tag[] {
-    return this._tags
-  }
-
-  set salts(data: Tag[]) {
-    this._salts = data
-  }
-
-  get salts(): Tag[] {
-    return this._salts
-  }
-
-  set brands(data: Brand[]) {
-    this._brands = data
-  }
-
-  get brands(): Brand[] {
-    return this._brands
-  }
-
 
   set products(data: Product[]) {
     this._products = data
@@ -254,11 +207,11 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     let products: Product[] = null;
 
     if (this.selectedSalts.length) {
-        await query.where('id').anyOf(this.productSalts.map((product) => {
-          return product.product_id
-        })).toArray().then((data) => {
-          products = data;
-        })
+      await query.where('id').anyOf(this.productSalts.map((product) => {
+        return product.product_id
+      })).toArray().then((data) => {
+        products = data;
+      })
     }
 
     if (this.selectedBrands.length) {
@@ -292,12 +245,12 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
         return new RegExp(`^${this.searchInputTerm}`, 'gi').test(product.name)
       })
         .toArray().then((data) => {
-        products = data;
-      });
+          products = data;
+        });
     }
 
     if (!this.selectedSalts.length && !this.selectedBrands.length && !this.searchInputTerm) {
-      await query.offset((page - 1) * pageSize).limit(pageSize).toArray().then(data=>{
+      await query.offset((page - 1) * pageSize).limit(pageSize).toArray().then(data => {
         products = data;
       });
     }
@@ -327,170 +280,6 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
     this.getProducts();
     return
   }
-
-  toggleFilter(value: number): void {
-
-    if (this.filterType === value) {
-      this.filterType = 0;
-      return
-    }
-
-    this.filterType = value;
-    return
-  }
-
-  clearFilter(value: number) {
-    switch (value) {
-      case 0:
-        this.selectedTags = [].concat();
-        break;
-      case 1:
-        this.selectedBrands = [].concat();
-        break;
-      case 2:
-        this.selectedDistributors = [];
-        break;
-      case 3:
-        this.selectedSalts = [].concat();
-        break;
-    }
-    this._cd.markForCheck();
-  }
-
-  setInitialData(retail_shop_id: string): void {
-    // this._indexDb.distributors.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
-    //   this.distributors = data;
-    // });
-
-    this._indexDb.tags.where({retail_shop_id: retail_shop_id}).toArray().then((data) => {
-      this.tags = data;
-    });
-
-    this.getBrands();
-
-    this.getSalts();
-
-    this.getProducts();
-
-    this._indexDb.products.where({retail_shop_id: retail_shop_id}).count().then((count) => {
-      this.totalProducts = count;
-    });
-    this._indexDb.salts.where({retail_shop_id: retail_shop_id}).count().then((count) => {
-      this.totalSalts = count;
-    });
-    this._indexDb.brands.where({retail_shop_id: retail_shop_id}).count().then((count) => {
-      this.totalBrands = count;
-    })
-
-  }
-
-  getSalts (saltName?:string, event?: IPageChangeEvent){
-    let page = event? event.page: 2;
-    let pageSize = event?event.pageSize : this.brandsPerPage;
-
-    if (saltName) {
-      this._indexDb.salts.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
-        .limit(pageSize).filter(salt=>{
-          return new RegExp(`^${saltName}`, 'gi').test(salt.name)
-      }).toArray().then(salts=>{
-        this.salts = salts;
-        this._cd.markForCheck();
-      })
-    }
-    else  {
-      this._indexDb.salts.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
-        .limit(pageSize).toArray().then(salts=>{
-        this.salts = salts;
-        this._cd.markForCheck();
-      })
-    }
-  }
-
-  getBrands (brandName?:string, event?: IPageChangeEvent){
-    let page = event? event.page: 2;
-    let pageSize = event?event.pageSize : this.brandsPerPage;
-    if (brandName) {
-      this._indexDb.brands.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
-        .limit(pageSize).filter(salt=>{
-        return new RegExp(`^${brandName}`, 'gi').test(salt.name)
-      }).toArray().then(brands=>{
-        this.brands = brands;
-        this._cd.markForCheck();
-      })
-    }
-    else  {
-      this._indexDb.brands.where('retail_shop_id').equals(this.cart.retail_shop_id).offset((page-1)*pageSize)
-        .limit(pageSize).toArray().then(brands=>{
-        this.brands = brands;
-        this._cd.markForCheck();
-      })
-    }
-  }
-
-  checkBrand(id: string): boolean {
-    return this.selectedBrands.indexOf(id) > -1;
-
-  }
-
-  checkDistributor(id: string): boolean {
-    return this.selectedDistributors.indexOf(id) > -1;
-
-  }
-
-  checkTag(tag: Tag): boolean {
-    return this.selectedTags.indexOf(tag) > -1;
-
-  }
-
-  checkSalt(salt: string): boolean {
-    return this.selectedSalts.indexOf(salt) > -1;
-
-  }
-
-  toggleBrand(id: string): void {
-    if (this.checkBrand(id)) {
-      this.selectedBrands.splice(this.selectedBrands.indexOf(id), 1);
-    }
-    else {
-      this.selectedBrands.push(id)
-    }
-    this.getProducts();
-    return
-  }
-
-  toggleDistributor(id: string): void {
-    if (this.checkDistributor(id)) {
-      this.selectedDistributors.splice(this.selectedDistributors.indexOf(id), 1);
-    }
-    else {
-      this.selectedDistributors.push(id)
-    }
-    this.selectedDistributors = this.selectedDistributors.concat();
-    return
-  }
-
-  toggleTag(tag: Tag): void {
-    if (this.checkTag(tag)) {
-      this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
-    }
-    else {
-      this.selectedTags.push(tag)
-    }
-    this.selectedTags = this.selectedTags.concat();
-    return
-  }
-
-  toggleSalt(salt: string): void {
-    if (this.checkSalt(salt)) {
-      this.selectedSalts.splice(this.selectedSalts.indexOf(salt), 1);
-    }
-    else {
-      this.selectedSalts.push(salt)
-    }
-    this.getProducts();
-    return
-  }
-
 
   addProduct(product: Product, stocks: Stock[], qty: number): void {
     if (!stocks)
@@ -551,6 +340,34 @@ export class BillingComponent implements AfterViewInit, OnInit, OnDestroy {
         this._cartService.deleteCart(this.cart.local_id).then(() => {
           this._router.navigate(['dashboard/carts/']);
         });
+      }
+    })
+  }
+
+  filterSalts(): void {
+    let _dialog = this._dialogService.open(SaltsComponent);
+    _dialog.componentInstance.shopId = this.cart.retail_shop_id;
+    _dialog.componentInstance.saltsPerPage = this.saltsPerPage;
+    _dialog.componentInstance.selectedSalt = this.selectedSalts;
+
+    _dialog.afterClosed().subscribe((data: string[]) => {
+      if (data) {
+        this.selectedSalts = data;
+        this.getProducts();
+      }
+    })
+  }
+
+  filterBrands(): void {
+    let _dialog = this._dialogService.open(BrandsComponent);
+    _dialog.componentInstance.shopId = this.cart.retail_shop_id;
+    _dialog.componentInstance.brandsPerPage = this.saltsPerPage;
+    _dialog.componentInstance.selectedBrand = this.selectedBrands;
+
+    _dialog.afterClosed().subscribe((data: string[]) => {
+      if (data) {
+        this.selectedBrands = data;
+        this.getProducts();
       }
     })
   }

@@ -227,7 +227,9 @@ export class ItemsService extends RESTService<Product> {
         params['__page'] = i;
         arr.push(this.query(Object.assign({}, params)));
       }
-      console.log(arr);
+      if (!arr.length) {
+        this._indexDB._db$.next({status: true})
+      }
       return Observable.forkJoin(arr)
     }
   }
