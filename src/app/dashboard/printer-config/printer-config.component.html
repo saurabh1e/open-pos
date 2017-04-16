@@ -1,32 +1,42 @@
-
 <div fxLayout="row" fxLayoutAlign="center center" fxLayoutWrap class="push" *ngIf="shop.id">
   <md-card fxFlex="100">
     <md-card-title>Printer Config</md-card-title>
     <md-card-subtitle>{{shop?.name}}</md-card-subtitle>
     <md-divider></md-divider>
-    <md-card-content>
-      <div fxLayoutMargin fxLayoutPadding fxFlex>
+    <md-card-content fxLayout="row" fxLayoutWrap class="push-top-md">
+      <div fxLayoutGap="20px" fxFlex="100" class="push-top-lg push-bottom-sm">
+
+        <md-select mdInput placeholder="Bill Printer Type" [(ngModel)]="printerConfig.bill_printer_type"
+                   name="bill_printer" fxFlex>
+          <md-option [value]="'thermal'">Thermal</md-option>
+          <md-option [value]="'dot_matrix'">Dot Matrix</md-option>
+          <md-option [value]="'laser'">Laser</md-option>
+
+        </md-select>
+
+        <md-select mdInput placeholder="Bill Printer Type" [(ngModel)]="printerConfig.receipt_printer_type"
+                   name="receipt_printer" fxFlex>
+          <md-option [value]="'thermal'">Thermal</md-option>
+          <md-option [value]="'dot_matrix'">Dot Matrix</md-option>
+          <md-option [value]="'laser'">Laser</md-option>
+
+        </md-select>
+
+      </div>
+      <div fxLayoutGap="20px" fxFlex="100">
         <md-input-container fxFlex>
-          <input mdInput [(ngModel)]="shop.printer_config.bill_printer_type" placeholder="Bill Printer Type" />
-        </md-input-container>
-        <md-input-container fxFlex>
-          <input mdInput [(ngModel)]="shop.printer_config.receipt_printer_type" placeholder="Receipt Printer Type" />
+          <input mdInput [(ngModel)]="printerConfig.label_printer_type" placeholder="Label Printer Config"/>
         </md-input-container>
       </div>
-      <div fxLayoutMargin fxLayoutPadding fxFlex>
-        <md-input-container fxFlex>
-          <input mdInput [(ngModel)]="shop.printer_config.label_printer_type" placeholder="label Printer Config" />
-        </md-input-container>
-      </div>
-      <div fxLayoutMargin fxLayoutPadding fxFlex>
-        <div fxFlex fxLayoutMargin fxLayoutPadding>
-          <md-checkbox mdInput [checked]="shop.printer_config.have_bill_printer"
-                       [(ngModel)]="shop.printer_config.have_bill_printer"></md-checkbox>
+      <div fxLayoutGap="20px" fxFlex="100">
+        <div fxFlex fxLayoutGap="20px">
+          <md-checkbox mdInput [checked]="printerConfig.have_bill_printer"
+                       [(ngModel)]="printerConfig.have_bill_printer"></md-checkbox>
           Print Bill
         </div>
-        <div fxFlex fxLayoutMargin fxLayoutPadding>
-          <md-checkbox  mdInput [checked]="shop.printer_config.have_receipt_printer"
-                       [(ngModel)]="shop.printer_config.have_receipt_printer"></md-checkbox>
+        <div fxFlex fxLayoutGap="20px">
+          <md-checkbox mdInput [checked]="printerConfig.have_receipt_printer"
+                       [(ngModel)]="printerConfig.have_receipt_printer"></md-checkbox>
           Print Receipt
         </div>
       </div>
@@ -37,10 +47,10 @@
     <md-card fxFlex="">
       <md-card-title>Receipt Template Editor</md-card-title>
       <md-divider></md-divider>
-      <md-card-content >
+      <md-card-content>
 
         <ckeditor
-          [(ngModel)]="shop.printer_config.receipt_template">
+          [(ngModel)]="printerConfig.receipt_template">
           <ckbutton [name]="'saveButton'"
                     [command]="'saveCmd'"
                     (click)="save($event)"
@@ -57,10 +67,10 @@
     <md-card fxFlex="">
       <md-card-title>Bill Template Editor</md-card-title>
       <md-divider></md-divider>
-      <md-card-content >
+      <md-card-content>
 
         <ckeditor
-          [(ngModel)]="shop.printer_config.bill_template">
+          [(ngModel)]="printerConfig.bill_template">
           <ckbutton [name]="'saveButton'"
                     [command]="'saveCmd'"
                     (click)="save($event)"
@@ -75,5 +85,20 @@
 
     </md-card>
   </div>
+
+  <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top">
+
+    <button  md-fab md-tooltip="undo"
+             (click)="cancelState()" color="warn">
+      <md-icon class="md-24">undo</md-icon>
+    </button>
+    <span class="pad"></span>
+    <button md-fab
+            (click)="saveState()" color="primary" md-tooltip="save"
+    >
+      <md-icon class="md-24">done</md-icon>
+    </button>
+
+  </md-card-actions>
 
 </div>

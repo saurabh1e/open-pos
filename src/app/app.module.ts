@@ -92,6 +92,7 @@ import {StockReportComponent} from "./reporting/stock-report/stock-report.compon
 import { SaltsComponent } from './billing/salts/salts.component';
 import { BrandsComponent } from './billing/brands/brands.component';
 import { BillDetailsComponent } from './stock-management/distributor-bill/bill-details/bill-details.component';
+import { StockEditComponent } from './stock-management/stock/stock-edit/stock-edit.component';
 
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
@@ -151,6 +152,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     StockReportComponent,
     OrderComponent,
     OrderDetailComponent,
+    StockEditComponent,
     CustomerComponent,
     CustomerDetailComponent,
     CustomerReportComponent,
@@ -211,7 +213,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   ], // additional providers needed for this module
   entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
     ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent, BillDetailsComponent,
-    DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent, SaltsComponent, BrandsComponent],
+    DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent, SaltsComponent, BrandsComponent, StockEditComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {

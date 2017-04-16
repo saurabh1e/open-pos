@@ -1,3 +1,65 @@
-<p>
-  stock-edit works!
-</p>
+<div fxLayout="column">
+
+  <md-card-title>{{stock?.product?.name}}</md-card-title>
+
+  <md-divider></md-divider>
+
+
+
+    <form #stockForm="ngForm" class="push-top-md">
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container fxFlex>
+          <input mdInput placeholder="Distributor (disabled)"  disabled [value]="stock.distributor_bill?.distributor.name">
+        </md-input-container>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container fxFlex>
+          <input mdInput type="number" placeholder="Units Purchased" name="units_purchased"
+                 [value]="stock.units_purchased" [(ngModel)]="stock.units_purchased" required
+                 [min]="stock.units_sold || 0" >
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput type="date" placeholder="Expiry" [value]="stock.expiry_date" name="expiry"
+                 [(ngModel)]="stock.expiry_date" required
+                 >
+        </md-input-container>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container fxFlex>
+          <input mdInput type="number" placeholder="Purchase Price" [value]="stock.purchase_amount"
+                 [min]="0"  name="purchase_amount" [(ngModel)]="stock.purchase_amount" required>
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput type="number" placeholder="Selling Price" [value]="stock.selling_amount"
+                 [min]="0"  name="selling_amount" [(ngModel)]="stock.selling_amount" required>
+        </md-input-container>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <md-input-container fxFlex>
+          <input mdInput type="text" maxlength="25" placeholder="Batch Number" [value]="stock.batch_number"
+                   name="batch_number" [(ngModel)]="stock.batch_number" required>
+          <md-hint align="end">{{stock.batch_number?stock.batch_number.length:0}} / 25</md-hint>
+        </md-input-container>
+      </div>
+
+    </form>
+
+
+  <md-card-actions fxLayoutAlign="center center" fxLayout="row" class="push-top-md">
+    <button  md-fab md-tooltip="cancel"
+             (click)="close()" class="" color="accent">
+      <md-icon class="">close</md-icon>
+    </button>
+    <span class="pad"></span>
+    <button md-fab  [disabled]="!stockForm.form.valid"
+            (click)="saveState()" class="" color="primary" md-tooltip="save"
+    >
+      <md-icon class="">done</md-icon>
+    </button>
+  </md-card-actions>
+
+
+</div>

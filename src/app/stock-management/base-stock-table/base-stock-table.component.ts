@@ -68,7 +68,6 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
     this.shop = this._shopService.shop;
     this.shops = this._shopService.shops;
     this.getData();
-
     this.shopsSub = this._shopService.shops$.subscribe((data: RetailShop[]) => {
       this.shops = data;
       this.getData();
@@ -109,14 +108,19 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
     if (this.sortOrder.toString() == 'DESC') {
       sortBy = '-'.concat(sortBy);
     }
+
+    let filters = {
+       __include: this.include.concat(['retail_shop']),
+      __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm
+    };
     let ids = this.shops.map(item => item.id);
     if (this.shop && this.shop.id) {
       ids = [this.shop.id];
     }
-    let filters = {
-      __retail_shop_id__in: ids, __include: this.include.concat(['retail_shop']),
-      __limit: this.pageSize, __page: this.currentPage, __order_by: sortBy, __name__contains: this.searchTerm
-    };
+    if (ids.length) {
+      filters['__retail_shop_id__in']= ids;
+    }
+
     if (this.only.length) {
       filters['__only'] = this.only;
     }
@@ -141,4 +145,14 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
     if(event !== undefined)
       this.getData();
   };
+
+  edit(row: any, index: number):void {
+    this.editRow(row).subscribe((data)=> {
+      if (data) {
+        this.filteredData[index] = data
+      }
+    }, ()=> {
+
+    })
+  }
 }

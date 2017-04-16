@@ -1,10 +1,10 @@
 
-<div layout="column">
-  <div layout="row" class="bgc-white-4" layout-wrap="">
-    <md-card-title flex="100" layout="column" layout-align="center center" class="md-title">Salt Form</md-card-title>
-    <form flex="100" class="" #saltForm="ngForm">
-      <div layout="row" layout-margin>
-        <md-input-container flex>
+<div fxLayout="column">
+  <div fxLayout="row" class="bgc-white-4" fxLayoutWrap="">
+    <md-card-title fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="md-title">Salt Form</md-card-title>
+    <form fxFlex="100" class="" #saltForm="ngForm">
+      <div fxLayout="row" fxLayout-margin>
+        <md-input-container fxFlex>
           <input mdInput placeholder="Salt Name" minlength="1" maxlength="55" required [value]="salt.name || ''"
                  [(ngModel)]="salt.name" name="name">
           <md-hint align="end">{{salt.name?salt.name.length:0}} / 55</md-hint>
@@ -12,35 +12,35 @@
       </div>
 
 
-      <div layout="row" layout-margin>
-        <div flex *ngIf="!salt.retail_shop_id" layout-align="end end">
-          <md-select mdInput placeholder="Select a Shop" [(ngModel)]="salt.retail_shop" name="shop" required>
+      <div fxLayout="row" fxLayout-margin class="push-top">
+        <div fxFlex *ngIf="!salt.retail_shop_id" fxLayoutAlign="end end">
+          <md-select mdInput placeholder="Select a Shop" [(ngModel)]="salt.retail_shop" fxFlex name="shop" required>
             <md-option *ngFor="let shop of shops" [value]="shop">
               {{shop.name}}
             </md-option>
           </md-select>
         </div>
-        <md-input-container flex *ngIf="salt.retail_shop_id">
+        <md-input-container fxFlex *ngIf="salt.retail_shop_id">
           <input mdInput [value]="salt.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
         </md-input-container>
       </div>
 
 
     </form>
-    <md-card-actions layout="row" layout-align="center center" flex class="push-top">
-      <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
-              (click)="close()" class="pad-xs push-xs" color="accent">
-        <md-icon  class="md-24" >close</md-icon>
+    <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top">
+      <button md-fab="" md-tooltip="cancel"
+              (click)="close()" color="accent">
+        <md-icon  >close</md-icon>
       </button>
       <span class="pad"></span>
-      <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="undo"
-              (click)="cancelState()" class="pad-xs push-xs" color="warn">
-        <md-icon  class="md-24" >undo</md-icon>
+      <button md-fab="" md-tooltip="undo"
+              (click)="cancelState()" color="warn">
+        <md-icon  >undo</md-icon>
       </button>
       <span class="pad"></span>
-      <button md-icon-button="" md-fab="" md-raised-button="" [disabled]="!saltForm.form.valid"
-              (click)="saveState()" class="pad-xs push-xs"  color="primary" md-tooltip="save"
-      ><md-icon class="md-24" >done</md-icon>
+      <button md-fab="" [disabled]="!saltForm.form.valid"
+              (click)="saveState()"  color="primary" md-tooltip="save"
+      ><md-icon >done</md-icon>
       </button>
 
     </md-card-actions>

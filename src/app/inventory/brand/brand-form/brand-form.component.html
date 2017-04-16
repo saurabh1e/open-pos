@@ -12,8 +12,8 @@
 
 
     <div fxLayout="row" fxLayout-margin>
-      <div fxFlex *ngIf="!brand.retail_shop_id" fxLayoutAlign="end end">
-        <md-select mdInput placeholder="Select a Shop" [(ngModel)]="brand.retail_shop" name="shop">
+      <div fxFlex *ngIf="!brand.retail_shop_id" fxLayoutAlign="center center" fxLayout-margin>
+        <md-select mdInput placeholder="Select a Shop" [(ngModel)]="brand.retail_shop" name="shop" fxFlex>
           <md-option *ngFor="let shop of shops" [value]="shop">
             {{shop.name}}
           </md-option>
@@ -43,20 +43,20 @@
 
   </form>
   <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top">
-    <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
-            (click)="close()" class="pad-xs push-xs" color="accent">
-      <md-icon class="md-24">close</md-icon>
+    <button md-fab="" md-tooltip="cancel"
+            (click)="close()" color="accent">
+      <md-icon >close</md-icon>
     </button>
     <span class="pad"></span>
-    <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="undo"
-            (click)="cancelState()" class="pad-xs push-xs" color="warn">
-      <md-icon class="md-24">undo</md-icon>
+    <button md-fab="" md-tooltip="undo"
+            (click)="cancelState()" color="warn">
+      <md-icon >undo</md-icon>
     </button>
     <span class="pad"></span>
-    <button md-icon-button="" md-fab="" md-raised-button="" [disabled]="!brandForm.form.valid"
-            (click)="saveState()" class="pad-xs push-xs" color="primary" md-tooltip="save"
+    <button md-fab="" [disabled]="!brandForm.form.valid"
+            (click)="saveState()" color="primary" md-tooltip="save"
     >
-      <md-icon class="md-24">done</md-icon>
+      <md-icon >done</md-icon>
     </button>
 
   </md-card-actions>

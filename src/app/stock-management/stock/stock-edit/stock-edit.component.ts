@@ -12,16 +12,23 @@ export class StockEditComponent implements OnInit {
 
   stock: Stock;
 
-  constructor(public dialogRef: MdDialogRef<StockEditComponent>, private _billService: StocksService) { }
+  constructor(public dialogRef: MdDialogRef<StockEditComponent>, private _stockService: StocksService) { }
 
   ngOnInit() {
-    this._billService.query({id: this.stock.id, __include: ['stocks', 'purchased_items']}).subscribe((data: {data: Stock[]})=>{
-      this.stock = data.data[0];
-    })
+    console.log(this.stock);
   }
 
-  close(): void {
-    this.dialogRef.close();
+  close(stock?: Stock): void {
+    this.dialogRef.close(stock);
+  }
+
+  saveState(): void {
+    this._stockService.update(this.stock.id, this.stock).subscribe((data)=>{
+      this.close(this.stock)
+    }, ()=>{
+
+    });
+
   }
 
 

@@ -1,35 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import {RetailShop, RetailShopsService} from "../../../services/shop.service";
+import { Component, OnInit, ViewContainerRef, OnDestroy, AfterViewInit } from '@angular/core';
+import { TdDialogService } from '@covalent/core';
+import {PrinterConfig, PrinterConfigService, RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-printer-config',
   templateUrl: './printer-config.component.html',
-  styleUrls: ['./printer-config.component.scss']
+  styleUrls: ['./printer-config.component.scss'],
+  viewProviders: [PrinterConfigService]
 })
-export class PrinterConfigComponent implements OnInit {
+export class PrinterConfigComponent implements OnInit, OnDestroy {
 
-  shops: RetailShop[] = [];
   shop: RetailShop;
-  shopsSub: Subscription;
   shopSub: Subscription;
+  printerConfig: PrinterConfig;
 
-  constructor(private _shopService: RetailShopsService) { }
+  constructor(private _shopService: RetailShopsService,
+              private _dialogService: TdDialogService,
+              private _printerService: PrinterConfigService,
+              private _viewContainerRef: ViewContainerRef) { }
 
   ngOnInit() {
     this.shop = this._shopService.shop;
-    this.shops = this._shopService.shops;
-
-    this.shopsSub = this._shopService.shops$.subscribe((data: RetailShop[]) => {
-      this.shops = data;
-    });
+    if (this.shop.id) {
+      this.copyPrinterConfig();
+    }
     this.shopSub = this._shopService.shop$.subscribe((data: RetailShop) => {
       this.shop = data;
+      this.copyPrinterConfig();
     });
 
+    if (!this.shop.id) {
+      this._dialogService.openAlert({
+        message: 'Select a Shop to edit Printer Config.',
+        disableClose: false , // defaults to false
+        viewContainerRef: this._viewContainerRef, //OPTIONAL
+        title: 'Alert', //OPTIONAL, hides if not provided
+        closeButton: 'Close', //OPTIONAL, defaults to 'CLOSE'
+      });
+    }
   }
   ngOnDestroy(){
-    this.shopsSub.unsubscribe();
     this.shopSub.unsubscribe();
   }
 
@@ -38,4 +49,18 @@ export class PrinterConfigComponent implements OnInit {
 
   }
 
+  copyPrinterConfig() {
+    this.printerConfig = Object.assign({}, this.shop.printer_config)
+  }
+
+  cancelState():void {
+    this.copyPrinterConfig();
+  }
+
+  saveState(): void {
+
+    this._shopService.update(this.shop.id, {printer_config: this.printerConfig, id: this.shop.id}).subscribe((data)=>{
+        this.shop.printer_config = this.printerConfig;
+    })
+  }
 }
