@@ -90,15 +90,15 @@
       <div class="md-content bgc-white-4 " md-scroll-y fxFlex.grow>
         <md-list>
           <template let-item ngFor let-last [ngForOf]="cart?.items">
-            <div fxLayout="row" fxLayoutWrap class="push-sm product-list">
+            <div fxLayout="row" fxLayoutWrap class="push-left-sm push-top-sm ">
               <span md-line fxFlex="55" class="tc-grey-700 md-body-2"
                     style="word-break: break-all">
                 {{item.name |truncate: 20}}
               </span>
               <div fxLayout="row" fxLayoutWrap fxFlex="45">
-                <button md-icon-button class="bgc-white-1 pull-top-sm " fxFlex="20"
-                        (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity+item.default_quantity)">
-                  <md-icon class="bgc-accent md-24" color="accent">add_circle_outline</md-icon>
+                <button md-icon-button class="bgc-white-1 pull-top-sm" fxFlex="20"
+                        (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity-(item.default_quantity>1?1:item.default_quantity))">
+                  <md-icon class="bgc-accent md-24" color="accent">remove_circle_outline</md-icon>
                 </button>
                 <span fxFlex></span>
                 <md-input-container class="md-body-2 tc-grey-700 pull-top" fxFlex="50">
@@ -107,27 +107,27 @@
                          (change)="updateProductQuantity(item.product_id, item.stock_id, item.quantity)"/>
                 </md-input-container>
                 <span fxFlex></span>
-                <button md-icon-button class="bgc-white-1 pull-top-sm" fxFlex="20"
-                        (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity-item.default_quantity)">
-                  <md-icon class="bgc-accent md-24" color="accent">remove_circle_outline</md-icon>
+                <button md-icon-button class="bgc-white-1 pull-top-sm " fxFlex="20"
+                        (click)="updateProductQuantity(item.product_id, item.stock_id, item.quantity+item.default_quantity)">
+                  <md-icon class="bgc-accent md-24" color="accent">add_circle_outline</md-icon>
                 </button>
               </div>
             </div>
-            <div fxLayout="row" fxLayoutWrap class="push-bottom-sm bgc-blue-100">
+            <div fxLayout="row" fxLayoutWrap class="bgc-blue-100">
               <del fxFlex class="md-body-1 tc-grey-600" fxLayout="row" fxLayoutAlign="center center">
                 {{item.total_price | currency:'INR':true:'1.2-2'}}/-
               </del>
               <span fxFlex class="md-body-1 tc-accent" fxLayout="row" fxLayoutAlign="center center">
               {{item.discounted_total_price | currency:'INR':true:'1.2-2'}}/-
               </span>
-              <span class="push-sm">
-                <button md-icon-button class="bgc-white-1" md-tooltip="discount"
+              <span class="">
+                <button md-icon-button class="bgc-white-1 push-xs" md-tooltip="discount"
                         (click)="discountItem(item.product_id, item.stock_id, item.discount)">
                 <md-icon class="tc-warn">money_off</md-icon>
               </button>
               </span>
-              <span class="push-sm">
-              <button md-icon-button class="bgc-white-1 push-sm" md-tooltip="remove"
+              <span class="">
+              <button md-icon-button class="bgc-white-1 push-xs" md-tooltip="remove"
                       (click)="removeProduct(item.product_id, item.stock_id)">
                 <md-icon class="tc-warn">close</md-icon>
               </button>

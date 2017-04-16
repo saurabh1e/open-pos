@@ -59,7 +59,7 @@
     <div fxFlex.xs="100" fxFlex.gt-xs="45" fxFlex.gt-lg="66" fxLayout="row" fxLayoutWrap="" class="pad-xs">
       <md-card-subtitle fxHide-xs class="tc-blue-700" fxFlex="100">Customer Information</md-card-subtitle>
       <div fxLayout="row" class="" fxFlex="100" fxLayoutAlign="center start">
-        <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer()"
+        <tag-input [(ngModel)]="customers" name="customer" placeholder="Search Customer..." (onRemove)="addCustomer(null)"
                    (onAdd)="addCustomer($event)" fxFlex.xs="90" fxFlex="65"
                    [secondaryPlaceholder]="'Search Customers...'" [onlyFromAutocomplete]="true" [maxItems]="1">
           <tag-input-dropdown [autocompleteObservable]='getCustomers' [appendToBody]="false" [identifyBy]="'id'"

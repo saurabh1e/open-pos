@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpInterceptorService, RESTService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
-import {Subject, Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
+import { Subject } from 'rxjs/Subject';
 import {IndexDBServiceService} from "./indexdb.service";
 import {RetailShop} from "./shop.service";
 
@@ -62,6 +63,7 @@ export interface DistributorBill {
   purchase_date: Date;
   distributor_id: string;
   purchased_items?: Stock[];
+  bill_amount: number;
 }
 
 export interface Tag {

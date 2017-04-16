@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {RESTService, HttpInterceptorService} from "@covalent/http";
 import {MOCK_API} from "../config/api.config";
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
 import {Order} from "./orders.service";
 
 

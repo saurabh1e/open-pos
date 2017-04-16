@@ -18,6 +18,7 @@ export class SaltsComponent implements AfterViewInit {
   saltsPerPage: number;
   shopId: string;
   totalSalts: number = 0;
+  term: string;
 
   constructor(public dialogRef: MdDialogRef<SaltsComponent>,
               private _indexDB: IndexDBServiceService,

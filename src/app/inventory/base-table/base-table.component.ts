@@ -49,6 +49,7 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   shopSub: Subscription;
   currentPage: number = 1;
   pageSize: number = 50;
+  searchInputTerm: string;
   sortBy: string = 'name';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Ascending;
 

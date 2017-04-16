@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Order, Item, ItemTax, Discount, OrderItemsService} from "./orders.service";
+import {Order, Item, ItemTax, Discount} from "./orders.service";
 import {Subject, Observable} from "rxjs";
 import {IndexDBServiceService} from "./indexdb.service";
-import {Product, Tax, Stock} from "./items.service";
+import {Product, Stock} from "./items.service";
 import {Customer, Address} from "./customer.service";
 
 function round(value, precision) {
@@ -158,8 +158,15 @@ export class CartService {
   async updateQuantity(cartId: string, productId: string, stockId: string, qty?: number): Promise<Order>{
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
-      item.quantity = qty&&qty<=item.max_units?qty:item.quantity<item.max_units?item.quantity+1:item.max_units;
-      return this.calcTotal((cart));
+      console.log(qty);
+      if (qty === 0) {
+        return this.removeProduct(cartId, productId, stockId)
+      }
+      else {
+        item.quantity = qty&&qty<=item.max_units?qty:item.quantity<item.max_units?item.quantity+1:item.max_units;
+        console.log(item.quantity);
+        return this.calcTotal(cart);
+      }
     })
   }
 

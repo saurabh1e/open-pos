@@ -1,6 +1,6 @@
-import {Observable, Subject} from "rxjs";
-
-import Dexie from "dexie";
+import {Observable} from "rxjs/Observable";
+import { Subject } from 'rxjs/Subject';
+import Dexie  from "dexie";
 import {Brand, Distributor, Product, ProductSalt, ProductTag, Salt, Tag, Tax} from "./items.service";
 import {Injectable} from "@angular/core";
 import {RetailShop} from "./shop.service";

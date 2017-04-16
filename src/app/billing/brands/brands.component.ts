@@ -19,6 +19,7 @@ export class BrandsComponent implements AfterViewInit {
   brandsPerPage: number;
   shopId: string;
   totalBrands: number = 0;
+  term: string;
 
   constructor(public dialogRef: MdDialogRef<BrandsComponent>,
               private _indexDB: IndexDBServiceService,

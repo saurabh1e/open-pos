@@ -12,7 +12,7 @@ EOF
 mv src/config/api.config.ts api.config.ts.default
 mv api.config.ts src/config/api.config.ts
 
-ng build --base-href --env=prod
+ng build --base-href pos --env=prod
 
 echo 'Created and Checked out gh-pages branch'
 
