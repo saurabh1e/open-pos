@@ -17,8 +17,8 @@ import {BillDetailsComponent} from "./bill-details/bill-details.component";
 export class DistributorBillComponent implements OnInit {
 
   columns: TdDataTableColumn[] = [
-    { name: 'distributor.name', label: 'Distributor', sortable: false, nested: true },
-    {name: 'distributor.retail_shop.name', label: 'Shop', sortable: false},
+    { name: 'distributor', label: 'Distributor', sortable: false, nested: true, format: v=>v.name },
+    {name: 'distributor', label: 'Shop', sortable: false, format: v=>v.retail_shop.name},
     {name: 'reference_number', label: 'Reference #', numeric: true, sortable: false},
     {name: 'purchase_date', label: 'Date', numeric: true, sortable: true},
     {name: 'bill_amount', label: 'Amount', numeric: true, sortable: false, format: v => v?v.toFixed(2):0},

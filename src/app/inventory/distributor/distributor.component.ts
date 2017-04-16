@@ -20,7 +20,7 @@ export class DistributorComponent implements AfterViewInit {
     {name: 'name', label: 'Name', sortable: true},
     {name: 'phone_numbers', label: 'Numbers'},
     {name: 'emails', label: 'Emails'},
-    {name: 'retail_shop.name', 'label': 'Shop', nested: true}
+    {name: 'retail_shop', 'label': 'Shop', nested: true, format: v=>v.name}
 
   ];
   title: string;

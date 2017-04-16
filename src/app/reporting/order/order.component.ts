@@ -27,9 +27,9 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   columns: TdDataTableColumn[] = [
     {name: 'invoice_number', label: 'Invoice', numeric: false, format: v => '#'+v, sortable: true},
-    {name: 'customer.name', label: 'Customer', sortable: true, nested: true},
-    {name: 'customer.mobile_number', label: 'Number', sortable: true, nested: true},
-    {name: 'retail_shop.name', 'label': 'Shop', nested: true},
+    {name: 'customer', label: 'Customer', sortable: true, nested: true, format: v=>v.name},
+    {name: 'customer', label: 'Number', sortable: true, nested: true, format: v=>v.mobile_number},
+    {name: 'retail_shop', 'label': 'Shop', nested: true, format: v=>v.name},
     {name: 'total', label: 'Total', numeric: true, format: v => v.toFixed(2)},
     {name: 'amount_due', label: 'Due', numeric: true, format: v => v.toFixed(2)},
     {name: 'items_count', label: 'Items', numeric: true},

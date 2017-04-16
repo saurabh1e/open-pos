@@ -15,8 +15,8 @@ export class ShortageComponent implements OnInit {
   columns: TdDataTableColumn[] = [
     { name: 'name', label: 'Product Name', sortable: true, nested: true },
     { name: 'distributors', label: 'Distributor', sortable: false, nested: true, format: v=>v.map((value)=>{return value.name}) },
-    {name: 'retail_shop.name', label: 'Shop', sortable: false},
-    {name: 'brand.name', label: 'Brand', sortable: false},
+    {name: 'retail_shop', label: 'Shop', sortable: false, format: v=>v.name},
+    {name: 'brand', label: 'Brand', sortable: false, format: v=>v.name},
     {name: 'available_stock', label: 'Stock', numeric: true, sortable: false},
     {name: 'min_stock', label: 'Min.Qty', numeric: true, sortable: true},
   ];

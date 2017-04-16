@@ -22,7 +22,8 @@ export class ProductComponent implements AfterViewInit {
 
   columns: TdDataTableColumn[] = [
     {name: 'name', label: 'Product Name', sortable: true, editable: true},
-    {name: 'brand.name', label: 'Brand', sortable: false, nested: true},
+    {name: 'distributors', label: 'Distributors', sortable: false, nested: true, format: v=>v.map(d=>{return d.name})},
+    {name: 'brand', label: 'Brand', sortable: false, nested: true, format: v=>v.name},
     {name: 'mrp', label: 'Price (INR)', numeric: true, format: v => v.toFixed(2), sortable: false},
     {
       name: 'auto_discount',
@@ -38,7 +39,7 @@ export class ProductComponent implements AfterViewInit {
       numeric: true,
       format: v => v?v.toFixed(2):1,
     },
-    {name: 'retail_shop.name', label: 'Shop', sortable: false},
+    {name: 'retail_shop', 'label': 'Shop', nested: true, format: v=>v.name},
     {name: 'available_stock', label: 'Stock', numeric: true, sortable: true},
     {name: 'min_stock', label: 'Min.Qty', numeric: true, sortable: true},
   ];

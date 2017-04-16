@@ -18,11 +18,11 @@ import {StockEditComponent} from "./stock-edit/stock-edit.component";
 export class StockComponent implements OnInit {
 
   columns: TdDataTableColumn[] = [
-    { name: 'product.name', label: 'Product Name', sortable: true, nested: true },
-    { name: 'distributor_bill.distributor.name', label: 'Distributor', sortable: false, nested: true },
+    { name: 'product', label: 'Product Name', sortable: true, nested: true, format: v => v.name },
+    { name: 'distributor_bill', label: 'Distributor', sortable: false, nested: true, format: v => v.distributor.name },
     { name: 'purchase_amount', label: 'Purchase (INR)', numeric: true, format: v => v.toFixed(2), sortable: false },
     { name: 'selling_amount', label: 'Selling (INR)', numeric: true, format: v => v.toFixed(2), sortable: false },
-    { name: 'product.retail_shop.name', label: 'Shop', sortable: false },
+    { name: 'product', label: 'Shop', sortable: false , format: v => v.retail_shop.name},
     { name: 'units_purchased', label: 'Units Purchased', numeric: true, sortable: false },
     { name: 'units_sold', label: 'Sold', numeric: true, sortable: true },
     { name: 'expiry_date', label: 'Expiry', sortable: true, numeric: true },
