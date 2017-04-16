@@ -26,10 +26,10 @@
       {{column.label}}
     </th>
     <th td-data-table-column  *ngIf="editRow" [numeric]="true">Details</th>
-    <tr td-data-table-row *ngFor="let row of filteredData; let i = index;trackBy: trackByFn">
+    <tr td-data-table-row *ngFor="let row of filteredData; let i = index">
       <td td-data-table-cell *ngFor="let column of columns"
           [numeric]="column.numeric">
-        <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
+        {{column.format ? column.format(row[column.name]) : row[column.name]}}
       </td>
       <td td-data-table-cell  *ngIf="editRow" [numeric]="true">
         <button md-icon-button="" (click)="edit(row, i)"><md-icon color="accent">info</md-icon></button>

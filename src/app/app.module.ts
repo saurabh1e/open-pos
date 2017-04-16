@@ -58,7 +58,6 @@ import {ExpiryComponent} from "./stock-management/expiry/expiry.component";
 import {ShortageComponent} from "./stock-management/shortage/shortage.component";
 import {BaseStockTableComponent} from "./stock-management/base-stock-table/base-stock-table.component";
 import {SideMenuComponent} from "./side-menu/side-menu.component";
-import {TableRowComponent} from "./inventory/table-row/table-row.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {ShopComponent} from "./dashboard/shops/shops.component";
 import {CartComponent} from "./dashboard/carts/carts.component";
@@ -116,7 +115,6 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     ShortageComponent,
     BaseStockTableComponent,
     SideMenuComponent,
-    TableRowComponent,
     DashboardComponent,
     ShopComponent,
     CartComponent,

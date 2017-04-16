@@ -26,7 +26,8 @@
     <tr td-data-table-row *ngFor="let row of filteredData">
       <td td-data-table-cell *ngFor="let column of columns"
           [numeric]="column.numeric">
-        <app-table-row [value]="row" [column]="column" [format]="column.format"></app-table-row>
+        {{column.format ? column.format(row[column.name]) : row[column.name]}}
+
       </td>
       <td td-data-table-cell>
 

@@ -70,7 +70,7 @@ export class SaltsComponent implements AfterViewInit {
     return
   }
 
-  clearFilter(value: number) {
+  clearFilter() {
     this.selectedSalt = [];
     this._cd.markForCheck();
   }

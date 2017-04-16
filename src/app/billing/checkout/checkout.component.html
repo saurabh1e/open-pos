@@ -109,7 +109,7 @@
         </div>
         <md-card-actions fxLayoutAlign="end end" fxLayout="row" class="" fxLayoutWrap="" style="margin: 0">
           <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" (click)="clearAddress()" color="warn">Clear</button>
-          <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" [disabled]="!cart.customer_id || cart.address_id"
+          <button md-raised-button="" fxFlex.xs="" fxFlex.gt-xs="25" [disabled]="!cart.customer_id || !!cart.address_id"
                   (click)="addAddress()" color="primary">Save</button>
         </md-card-actions>
 
