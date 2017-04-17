@@ -73,7 +73,7 @@
           [(ngModel)]="printerConfig.bill_template">
           <ckbutton [name]="'saveButton'"
                     [command]="'saveCmd'"
-                    (click)="save($event)"
+                    (click)="saveState()"
                     [icon]="'save.png'"
                     [label]="'Save Document'"
                     [toolbar]="'clipboard,1'">

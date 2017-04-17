@@ -66,8 +66,10 @@ export interface PrinterConfig {
 }
 
 export interface RegistrationDetail {
+  id?: string;
   name: string;
   value: string;
+  retail_shop_id: string;
 
 }
 
@@ -376,7 +378,21 @@ export class PrinterConfigService extends RESTService<PrinterConfig> {
   constructor(private _http: HttpInterceptorService,) {
     super(_http, {
       baseUrl: MOCK_API,
-      path: '/product_config',
+      path: '/printer_config',
+    });
+
+  }
+}
+
+
+
+@Injectable()
+export class RegistrationDetailService extends RESTService<RegistrationDetail> {
+
+  constructor(private _http: HttpInterceptorService,) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/registration_detail',
     });
 
   }

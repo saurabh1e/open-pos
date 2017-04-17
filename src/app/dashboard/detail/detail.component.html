@@ -1,3 +1,45 @@
-<p>
-  detail works!
-</p>
+<div fxLayout="row" class="push" fxLayoutAlign="center center" fxLayoutWrap>
+
+  <md-card class="pad bgc-white-5" fxFlex="66">
+    <md-card-title>Registration Details</md-card-title>
+
+    <div fxLayout="row">
+      <md-list fxFlex class="push-lg">
+        <ng-template ngFor [ngForOf]="regDetails" let-reg>
+          <md-list-item>
+            <h3 md-line fxFlex>{{reg.name}}</h3>
+            <span fxFlex="10"></span>
+            <span fxFlex="40" class="md-body-1 tc-grey-700">
+          {{reg.value}}
+          </span>
+            <button fxFlex md-icon-button="" md-tooltip="delete" (click)="deleteRegDetail(reg)">
+              <md-icon color="warn">close</md-icon>
+            </button>
+          </md-list-item>
+        </ng-template>
+      </md-list>
+
+    </div>
+  </md-card>
+
+  <md-card class="pad bgc-white-5" fxFlex="66" *ngIf="shop.id">
+    <md-card-title>Add Registration Details</md-card-title>
+    <form #regForm="ngForm">
+
+      <md-input-container fxFlex>
+        <input mdInput type="text" minlength="2" required [(ngModel)]="name" placeholder="Name" name="name">
+      </md-input-container>
+      <md-input-container fxFlex>
+        <input mdInput type="text" minlength="2" required [(ngModel)]="value" placeholder="Value" name="value ">
+      </md-input-container>
+
+      <md-card-actions>
+        <button md-fab
+                (click)="saveState()" color="primary" md-tooltip="save" [disabled]="!regForm.form.valid"
+        >
+          <md-icon class="md-24">done</md-icon>
+        </button>
+      </md-card-actions>
+    </form>
+  </md-card>
+</div>

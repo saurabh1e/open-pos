@@ -314,6 +314,21 @@ export class CheckoutComponent implements OnInit {
       element.querySelector('#item').innerHTML = null;
 
     }
+    if (element.querySelector('#regParent')) {
+
+      let regRow = element.querySelector('#regParent').children[0].children[0];
+      let regName = regRow.children[0];
+      let regValue = regRow.children[1];
+      this.shop.registration_details.forEach((reg) => {
+        regName.innerHTML = reg.name;
+        regValue.innerHTML = reg.value;
+
+        element.querySelector('#regParent2').innerHTML += regRow.outerHTML;
+      });
+
+      element.querySelector('#regParent').innerHTML = null;
+
+    }
 
     if (element.querySelector('#address1')) {
       element.querySelector('#address1').innerHTML = this.address.name || '';

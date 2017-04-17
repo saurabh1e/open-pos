@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef, OnDestroy, AfterViewInit } from '@
 import { TdDialogService } from '@covalent/core';
 import {PrinterConfig, PrinterConfigService, RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Subscription} from "rxjs";
+import {IndexDBServiceService} from "../../../services/indexdb.service";
 
 @Component({
   selector: 'app-printer-config',
@@ -17,6 +18,7 @@ export class PrinterConfigComponent implements OnInit, OnDestroy {
 
   constructor(private _shopService: RetailShopsService,
               private _dialogService: TdDialogService,
+              private _indexDB: IndexDBServiceService,
               private _printerService: PrinterConfigService,
               private _viewContainerRef: ViewContainerRef) { }
 
@@ -58,9 +60,21 @@ export class PrinterConfigComponent implements OnInit, OnDestroy {
   }
 
   saveState(): void {
-
-    this._shopService.update(this.shop.id, {printer_config: this.printerConfig, id: this.shop.id}).subscribe((data)=>{
+    if (this.printerConfig.id) {
+      this._printerService.update(this.printerConfig.id, this.printerConfig).subscribe((data)=>{
         this.shop.printer_config = this.printerConfig;
-    })
+        this._indexDB.shops.update(this.shop.id, this.shop).then(()=>{
+          this._shopService.shop = this.shop;
+        })
+      })
+    }
+    else {
+      this._printerService.create(this.printerConfig).subscribe((data)=>{
+        this.shop.printer_config = this.printerConfig;
+        this._indexDB.shops.update(this.shop.id, this.shop).then(()=>{
+          this._shopService.shop = this.shop;
+        })
+      })
+    }
   }
 }
