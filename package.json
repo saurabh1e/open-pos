@@ -11,7 +11,7 @@
     "Open"
   ],
   "scripts": {
-    "ngbuild": "rm -rf ./dist && rm -rf ./dist-app && ng build",
+    "ngbuild": "rm -rf ./dist && rm -rf ./dist-app && ng build --prod --aot=true",
     "build": "gulp copy --option noreload",
     "temp": "npm run ngbuild && npm run build && npm run npm-install && gulp watch",
     "e2e": "protractor",
@@ -60,12 +60,10 @@
     "@covalent/http": "1.0.0-beta.3",
     "@swimlane/ngx-charts": "^5.0.0",
     "angular2-moment": "^1.2.0",
-    "canvas": "",
     "core-js": "^2.4.1",
     "d3": "^4.6.0",
     "dexie": "^2.0.0-beta.10",
     "hammerjs": "^2.0.8",
-    "jsbarcode": "^3.5.9",
     "moment": "^2.17.1",
     "ng2-ckeditor": "^1.1.6",
     "ng2-tag-input": "^1.0.5",

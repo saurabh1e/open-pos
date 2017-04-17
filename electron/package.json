@@ -21,11 +21,7 @@
   ],
   "dependencies":{
     "randomstring": "",
-    "electron-squirrel-startup": "",
-    "barcode": "",
-    "datauri": "",
-    "jsbarcode": "",
-    "canvas": ""
+    "electron-squirrel-startup": ""
   },
   "devDependencies": {
     "electron": "^1.6.2"

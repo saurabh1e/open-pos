@@ -4,10 +4,10 @@ var client;
 const ipcMain = electron.ipcMain;
 var exec = require('child_process').execSync;
 var randomstring = require("randomstring");
-var JsBarcode = require('jsbarcode');
-var Canvas  = require('canvas');
-
-var canvas = new Canvas();
+// var JsBarcode = require('jsbarcode');
+// var Canvas  = require('canvas');
+//
+// var canvas = new Canvas();
 
 if (require('electron-squirrel-startup')) return;
 
@@ -80,28 +80,28 @@ ipcMain.on('printBill', function(event, args) {
 });
 
 ipcMain.on('printLabel', function(event, args){
-  JsBarcode(canvas, args,  {
-    format: "EAN8"
-  });
-
-  var data =  '<img src="' + canvas.toDataURL('image/png') + '">';
-  var html =  'data:text/html,' + encodeURIComponent('<html><body><div>' + data + '</div></body>');
-
-  var win = new BrowserWindow({
-    width: 400,
-    height: 200,
-    titleBarStyle: 'hidden-inset',
-    "web-preferences": {
-      "web-security": false
-    }
-  });
-
-  // and load the index.html of the app.
-  win.loadURL(html);
-  win.webContents.on('did-finish-load', function() {
-    win.webContents.print();
-
-  });
+//   JsBarcode(canvas, args,  {
+//     format: "EAN8"
+//   });
+//
+//   var data =  '<img src="' + canvas.toDataURL('image/png') + '">';
+//   var html =  'data:text/html,' + encodeURIComponent('<html><body><div>' + data + '</div></body>');
+//
+//   var win = new BrowserWindow({
+//     width: 400,
+//     height: 200,
+//     titleBarStyle: 'hidden-inset',
+//     "web-preferences": {
+//       "web-security": false
+//     }
+//   });
+//
+//   // and load the index.html of the app.
+//   win.loadURL(html);
+//   win.webContents.on('did-finish-load', function() {
+//     win.webContents.print();
+//
+//   });
 });
 
 

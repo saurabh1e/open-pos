@@ -23,7 +23,7 @@ export class ShortageComponent implements OnInit {
 
   title: string;
   only: string[] = ['id', 'name', 'distributors', 'retail_shop', 'available_stock', 'min_stock', 'is_short',
-    'stock_required'];
+    'stock_required', 'brand'];
   include: string[] = ['distributors', 'brand'];
   filters: any = {__stock_required__gte: 1, __is_disabled_bool: false};
 

@@ -8,6 +8,9 @@ import {
 } from "../../../services/items.service";
 import {MdSnackBar} from "@angular/material";
 
+export interface StockAdd extends Stock {
+  add?: boolean;
+}
 
 @Component({
   selector: 'app-add-stock',
@@ -25,7 +28,7 @@ export class AddStockComponent implements OnInit {
   shops: RetailShop[];
   state: number = 1;
   entryType: string;
-  stocks: Stock[];
+  stocks: StockAdd[];
   bill: DistributorBill = <DistributorBill>{};
   distributors:any[]=[];
   products:any[]=[];
@@ -128,9 +131,9 @@ export class AddStockComponent implements OnInit {
       __include:['last_selling_amount', 'last_purchase_amount', 'stock_required']})
       .subscribe((data: {data: Product[]})=>{
         this.stocks = data.data.map((data)=>{
-          let stock: Stock = <Stock>{product: data, purchase_amount: data.last_purchase_amount,
+          let stock: StockAdd = <StockAdd>{product: data, purchase_amount: data.last_purchase_amount,
             selling_amount: data.last_selling_amount, units_purchased: data.stock_required,
-            product_id: data.id, quantity_label: data.quantity_label};
+            product_id: data.id, quantity_label: data.quantity_label, add: false};
           stock.product = data;
           return stock;
 
@@ -145,7 +148,8 @@ export class AddStockComponent implements OnInit {
     this._loadingService.register('distributor-bill');
     this.bill.distributor_id = this.distributors[0].value;
     this.bill.purchased_items = this.stocks.filter((data)=>{
-      return data.units_purchased > 0 && data.selling_amount && data.purchase_amount;
+      delete data.product;
+      return data.add;
     });
     this._distributorBillService.create(this.bill).subscribe((data: {data: DistributorBill[]})=>{
       this.stateStep3 = StepState.Complete;

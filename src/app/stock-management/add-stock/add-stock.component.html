@@ -1,5 +1,5 @@
 <div fxLayoutWrap="" fxLayout="column" class="pad-sm">
-  <div class="md-content bgc-white-4" fxLayoutFill>
+  <div class="bgc-white-4 pad">
     <td-steps  mode="'vertical'">
       <td-step #step1
                [active]="state===1" [disabled]="disabled" [state]="stateStep1" >
@@ -63,10 +63,10 @@
       <td-step #step3 label="Add Stock"
                [state]="stateStep3" [disabled]="disabled" [active]="state===3">
 
-        <form fxLayout="row" fxLayoutWrap="" fxFlex="100" *ngIf="shop?.id && entryType =='distributor'">
+        <form fxLayout="row" #addStockForm="ngForm" fxLayoutWrap="" fxFlex="100" *ngIf="shop?.id && entryType =='distributor'">
 
-          <div fxLayout="row" fxLayout-margin="" fxFlex="100">
-            <div fxLayout-margin="" fxFlex>
+          <div fxLayout="row" fxFlex="100">
+            <div fxFlex="30" class="push-right-md">
               <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
                          (onAdd)="addDistributor($event)" (onRemove)="removeDistributor($event)"
                          [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="1"
@@ -80,44 +80,54 @@
                 </tag-input-dropdown>
               </tag-input>
             </div>
-            <div fxLayout-margin="" fxFlex>
-              <md-input-container fxFlex="100"  fxLayout-margin>
-                <input mdInput type="textarea" [placeholder]="'Enter Reference Number'" name="reference_number"
+            <div fxFlex="40" fxLayoutAlign="end end" class="push-right-md">
+              <md-input-container fxFlex="100" class="push-right-md">
+                <input mdInput type="text" [placeholder]="'Enter Reference Number'" required name="reference_number"
                 [(ngModel)]="bill.reference_number">
               </md-input-container>
-            </div>
-            <div fxLayout-margin="" fxFlex>
-              <md-input-container  fxLayout-margin fxFlex="100">
-                <input mdInput type="date" [placeholder]="'Bill Date'" name="bill_date" [(ngModel)]="bill.purchase_date">
+
+              <md-input-container  fxFlex="100" class="push-right-md">
+                <input mdInput type="date" [placeholder]="'Bill Date'" name="bill_date" required [(ngModel)]="bill.purchase_date">
               </md-input-container>
             </div>
 
           </div>
 
           <ng-template ngFor [ngForOf]="stocks" let-item let-i="index">
-            <div fxLayout="row" fxLayoutWrap="" fxFlex="100" >
-              <div fxFlex-shrink fxLayout-margin fxLayout-padding="" class="push-left-md">
-                <input #barcodeCopy  type="checkbox" [name]="'add_'+i"
-                       [value]="true" checked
-                       [(ngModel)]="item.add" />
+            <div fxFlex="100" *ngIf="sti">
+              <div fxLayoutAlign="start center" fxFlex="50">
+                <md-checkbox [checked]="item.add" class="md-body-1" [(ngModel)]="item.add"  [name]="'add_'+i">
+                  {{ item?.product?.name | truncate: 40}}
+                </md-checkbox>
               </div>
-              <md-input-container fxFlex="35" fxLayout-margin class="push-left-md">
-                <input mdInput [disabled]="true" [readOnly]="true" [value]="item.product.name | truncate: 40" />
-              </md-input-container>
-              <md-input-container fxFlex="10" fxLayout-margin class="push-left-md">
-                <input mdInput  placeholder="Enter Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
+              <md-input-container fxFlex="20" class="push-right-md">
+                <input mdInput  placeholder="Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
                        [(ngModel)]="item.units_purchased" min="0" />
               </md-input-container>
-              <md-input-container fxFlex="5" fxLayout-margin class="push-left-md">
+              <md-input-container fxFlex="20" class="push-right-md">
                 <input mdInput [value]="item.quantity_label" [readOnly]="true" />
               </md-input-container>
-              <md-input-container fxFlex="15" fxLayout-margin class="push-left-md">
-                <input mdInput  placeholder="Enter Purchase Amount" type="number" [name]="'purchase_amount'+i"
+
+
+            </div>
+            <div  fxFlex="100" fxLayoutAlign="end end">
+
+              <md-input-container fxFlex="25" class="push-right-md">
+                <input mdInput  placeholder="Purchase Amount" type="number" [name]="'purchase_amount'+i"
                        [(ngModel)]="item.purchase_amount" min="0" [value]="item.purchase_amount"/>
               </md-input-container>
-              <md-input-container fxFlex="15" fxLayout-margin class="push-left-md">
-                <input mdInput placeholder="Enter Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
+              <md-input-container fxFlex="25" class="push-right-md">
+                <input mdInput placeholder="Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
                        [(ngModel)]="item.selling_amount" [value]="item.selling_amount" />
+              </md-input-container>
+              <md-input-container fxFlex="25" class="push-right-md">
+              <input mdInput placeholder="Expiry Date" type="date" [name]="'expiry'+i"
+              [(ngModel)]="item.expiry_date" />
+              </md-input-container>
+
+              <md-input-container fxFlex="25" class="push-right-md">
+              <input mdInput  placeholder="Batch Number" type="text"
+              [value]="item.batch_number" name="'batch_'+i" [(ngModel)]="item.batch_number"/>
               </md-input-container>
 
             </div>
@@ -126,12 +136,12 @@
               <!--<div fxFlex>-->
 
               <!--</div>-->
-              <!--<md-input-container fxFlex="20" fxLayout-margin>-->
+              <!--<md-input-container fxFlex="20">-->
                 <!--<input mdInput placeholder="Enter Expiry" type="date" [name]="'expiry'+i"-->
                        <!--[(ngModel)]="item.expiry_date" />-->
               <!--</md-input-container>-->
 
-              <!--<md-input-container fxFlex="20" fxLayout-margin>-->
+              <!--<md-input-container fxFlex="20">-->
                 <!--<input mdInput  placeholder="Enter Barcode Copies" type="number"-->
                        <!--[value]="item.units_purchased" name="'sasas_'+i" [(ngModel)]="item.copies"-->
                         <!--min="0" />-->
@@ -140,27 +150,27 @@
             <!--</div>-->
 
           </ng-template>
-          <div fxLayout="row" fxLayout-margin="" fxLayoutAlign="center center" fxFlex="100" *ngIf="distributors.length">
+
             <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top">
-              <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
-                      (click)="close()" class="pad-xs push-xs" color="accent">
-                <md-icon  class="md-24" >close</md-icon>
+              <button md-fab="" md-tooltip="cancel"
+                      (click)="close()" color="accent">
+                <md-icon>close</md-icon>
               </button>
               <span class="pad"></span>
-              <button md-icon-button="" md-fab="" md-raised-button=""
-                      (click)="saveBill()" class="pad-xs push-xs"  color="primary" md-tooltip="save"
-              ><md-icon class="md-24" >done</md-icon>
+              <button md-fab="" [disabled]="!addStockForm.form.valid"
+                      (click)="saveBill()"  color="primary" md-tooltip="save"
+              ><md-icon>done</md-icon>
               </button>
 
             </md-card-actions>
-          </div>
+
         </form>
 
 
         <form fxLayout="row" fxLayoutWrap="" fxFlex="100" *ngIf="shop?.id && entryType =='item'" #stockForm="ngForm">
 
-          <div fxLayout="row" fxLayout-margin="" fxFlex="100">
-            <div fxLayout-margin="" fxFlex>
+          <div fxLayout="row" fxFlex="100">
+            <div fxFlex>
               <tag-input [(ngModel)]="products" name="product" [placeholder]="'Enter Product...'"
                          (onAdd)="addProduct($event)" (onRemove)="removeProduct($event)"
                          [secondaryPlaceholder]="'Enter Product...'" [onlyFromAutocomplete]="true" [maxItems]="1"
@@ -179,29 +189,29 @@
 
           <ng-template ngFor [ngForOf]="stocks" let-item let-i="index">
             <div fxLayout="row" fxLayoutWrap="" fxFlex="100" >
-              <md-input-container fxFlex fxLayout-margin>
+              <md-input-container fxFlex>
                 <input mdInput [disabled]="true" [readOnly]="true" [value]="item.product.name" />
               </md-input-container>
-              <md-input-container fxFlex fxLayout-margin>
+              <md-input-container fxFlex>
                 <input mdInput  placeholder="Enter Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
                        [(ngModel)]="item.units_purchased" min="0" required/>
               </md-input-container>
-              <md-input-container fxFlex fxLayout-margin>
+              <md-input-container fxFlex>
                 <input mdInput  placeholder="Enter Purchase Amount" type="number" [name]="'purchase_amount'+i"
                        [(ngModel)]="item.purchase_amount" min="0" [value]="item.purchase_amount" required/>
               </md-input-container>
-              <md-input-container fxFlex fxLayout-margin>
+              <md-input-container fxFlex>
                 <input mdInput placeholder="Enter Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
                        [(ngModel)]="item.selling_amount" [value]="item.selling_amount" required />
               </md-input-container>
-              <md-input-container fxFlex fxLayout-margin>
+              <md-input-container fxFlex>
                 <input mdInput placeholder="Enter Expiry" type="date" [name]="'expiry'+i" required
                        [(ngModel)]="item.expiry_date" />
               </md-input-container>
             </div>
 
           </ng-template>
-          <div fxLayout="row" fxLayout-margin="" fxLayoutAlign="center center" fxFlex="100" *ngIf="products.length">
+          <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100" *ngIf="products.length">
             <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top">
               <button md-icon-button="" md-fab="" md-raised-button="" md-tooltip="cancel"
                       (click)="step3.close()()" class="pad-xs push-xs" color="warn">

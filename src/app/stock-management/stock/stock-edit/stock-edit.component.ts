@@ -15,7 +15,6 @@ export class StockEditComponent implements OnInit {
   constructor(public dialogRef: MdDialogRef<StockEditComponent>, private _stockService: StocksService) { }
 
   ngOnInit() {
-    console.log(this.stock);
   }
 
   close(stock?: Stock): void {

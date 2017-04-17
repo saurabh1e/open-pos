@@ -129,3 +129,6 @@ dist/
 dist-app/
 dist-ng/
 
+depl
+build/
+deployment/
