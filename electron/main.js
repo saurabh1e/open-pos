@@ -51,8 +51,7 @@ ipcMain.on('generateReferenceNumber', function(event){
 
 ipcMain.on('printBill', function(event, args) {
   console.log(args);
-  var html = '<html><body>args<div><button id="print_button">' +
-    'Print</button>&nbsp;<button id="cancel">Cancel</button></div></body></html>';
+  var html = '<html><body>'+args+'</body></html>';
   html =  'data:text/html,' + encodeURIComponent(html);
 
   var win = new BrowserWindow({
@@ -67,15 +66,14 @@ ipcMain.on('printBill', function(event, args) {
   // and load the index.html of the app.
   win.loadURL(html);
   win.webContents.on('did-finish-load', function() {
-    win.document.getElementById('print_button').addEventListener('click', function() {
-      win.webContents.print();event.returnValue = true});
-    windowdocument.getElementById('cancel').addEventListener('click', function() {
-      win.webContents.print();event.returnValue = false});
 
+    win.webContents.print();event.returnValue = true
   });
+
   win.on('closed', function() {
     event.returnValue = false
   });
+
 
 });
 

@@ -28,6 +28,7 @@ export class CheckoutComponent implements OnInit {
   total: string = '0';
   ipcRenderer: any;
   currentInvoiceNumber: number;
+  printContent: string = null;
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
               private _customerService: CustomerService,
@@ -226,18 +227,35 @@ export class CheckoutComponent implements OnInit {
   printBill(): void {
     //#TODO Very Bad DOM manipulation need to change
 
-    try {
-      if (this.ipcRenderer.send('printBill',
-          this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML)) {
+    if (!this.printContent) {
+      try {
+        this.ipcRenderer.send('printBill',
+            this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML)
+
+          this.increaseInvoiceNumber()
+
+      }
+      catch (err) {
+        let wnd = window.open("about:blank", "", "_blank");
+        wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML);
+        wnd.print();
         this.increaseInvoiceNumber()
       }
     }
-    catch (err) {
-      let wnd = window.open("about:blank", "", "_blank");
-      wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML);
-      wnd.print();
-      this.increaseInvoiceNumber()
+    else {
+      try {
+        if (this.ipcRenderer.send('printBill', this.printContent)) {
+
+        }
+      }
+      catch (err) {
+        let wnd = window.open("about:blank", "", "_blank");
+        wnd.document.write(this.printContent);
+        wnd.print();
+
+      }
     }
+
 
   }
 
@@ -333,7 +351,7 @@ export class CheckoutComponent implements OnInit {
     if (element.querySelector('#address1')) {
       element.querySelector('#address1').innerHTML = this.address.name || '';
     }
-
+    this.printContent = element.innerHTML;
     return element;
   }
 
