@@ -209,18 +209,33 @@ export class CheckoutComponent implements OnInit {
 
   printReceipt(): void {
 
+    if (!this.printContent) {
+      try {
+        this.ipcRenderer.send('printBill',
+          this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML)
 
-    try {
-      if (this.ipcRenderer.send('printBill',
-          this.renderHtml(this.elRef.nativeElement.querySelector('#print-receipt')).innerHTML)) {
+        this.increaseInvoiceNumber()
+
+      }
+      catch (err) {
+        let wnd = window.open("about:blank", "", "_blank");
+        wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML);
+        wnd.print();
         this.increaseInvoiceNumber()
       }
     }
-    catch (err) {
-      let wnd = window.open("about:blank", "", "_blank");
-      wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#print-receipt')).innerHTML);
-      wnd.print();
-      this.increaseInvoiceNumber()
+    else {
+      try {
+        if (this.ipcRenderer.send('printBill', this.printContent)) {
+
+        }
+      }
+      catch (err) {
+        let wnd = window.open("about:blank", "", "_blank");
+        wnd.document.write(this.printContent);
+        wnd.print();
+
+      }
     }
   }
 
