@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewContainerRef, OnDestroy, AfterViewInit } from '@angular/core';
-import { TdDialogService } from '@covalent/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
+import {TdDialogService, LoadingMode, LoadingType, TdLoadingService, } from "@covalent/core";
 import {PrinterConfig, PrinterConfigService, RetailShop, RetailShopsService} from "../../../services/shop.service";
 import {Subscription} from "rxjs";
+import {MdSnackBar} from "@angular/material";
 import {IndexDBServiceService} from "../../../services/indexdb.service";
 
 @Component({
@@ -19,8 +20,17 @@ export class PrinterConfigComponent implements OnInit, OnDestroy {
   constructor(private _shopService: RetailShopsService,
               private _dialogService: TdDialogService,
               private _indexDB: IndexDBServiceService,
+              private _loadingService: TdLoadingService,
+              private _snackBarService: MdSnackBar,
               private _printerService: PrinterConfigService,
-              private _viewContainerRef: ViewContainerRef) { }
+              private _viewContainerRef: ViewContainerRef) {
+    this._loadingService.create({
+      name: 'printConfig',
+      type: LoadingType.Circular,
+      mode: LoadingMode.Indeterminate,
+      color: 'warn',
+    });
+  }
 
   ngOnInit() {
     this.shop = this._shopService.shop;
@@ -60,12 +70,17 @@ export class PrinterConfigComponent implements OnInit, OnDestroy {
   }
 
   saveState(): void {
+    this._loadingService.register('printConfig');
     if (this.printerConfig.id) {
       this._printerService.update(this.printerConfig.id, this.printerConfig).subscribe((data)=>{
         this.shop.printer_config = this.printerConfig;
         this._indexDB.shops.update(this.shop.id, this.shop).then(()=>{
           this._shopService.shop = this.shop;
+          this._loadingService.resolve('printConfig');
+          this._snackBarService.open('Printer Config Saved SuccessFully', '', {duration: 3000});
         })
+      }, ()=>{
+        this._loadingService.resolve('printConfig');
       })
     }
     else {
@@ -73,7 +88,11 @@ export class PrinterConfigComponent implements OnInit, OnDestroy {
         this.shop.printer_config = this.printerConfig;
         this._indexDB.shops.update(this.shop.id, this.shop).then(()=>{
           this._shopService.shop = this.shop;
+          this._loadingService.resolve('printConfig');
+          this._snackBarService.open('Printer Config Saved SuccessFully', '', {duration: 3000});
         })
+      }, ()=>{
+        this._loadingService.resolve('printConfig');
       })
     }
   }

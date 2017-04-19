@@ -62,7 +62,7 @@ export class BillingComponent implements AfterViewInit, OnInit {
     this._loadingService.register('billing');
     this._activatedRoute.params.subscribe((params: { id: string }) => {
       if (params.id) {
-        this._indexDb.carts.get((params.id)).then((data) => {
+        this._indexDb.carts.get(parseInt(params.id)).then((data) => {
           this.cart = data;
           this.getProducts();
           this._indexDb.products.where('retail_shop_id').equals(this.cart.retail_shop_id).count().then((count)=>{

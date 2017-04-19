@@ -50,6 +50,7 @@
       <md-card-content>
 
         <ckeditor
+          [config]="{allowedContent: true}"
           [(ngModel)]="printerConfig.receipt_template">
           <ckbutton [name]="'saveButton'"
                     [command]="'saveCmd'"
@@ -70,9 +71,11 @@
       <md-card-content>
 
         <ckeditor
+          [config]="{allowedContent: true}"
           [(ngModel)]="printerConfig.bill_template">
           <ckbutton [name]="'saveButton'"
                     [command]="'saveCmd'"
+
                     (click)="saveState()"
                     [icon]="'save.png'"
                     [label]="'Save Document'"

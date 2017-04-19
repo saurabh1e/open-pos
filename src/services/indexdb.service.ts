@@ -36,7 +36,7 @@ export class IndexDBServiceService extends Dexie {
   localities: Dexie.Table<Locality, string>;
   auth: Dexie.Table<Auth, string>;
   configs: Dexie.Table<Config, string>;
-  carts: Dexie.Table<Order, string>;
+  carts: Dexie.Table<Order, number>;
   users: Dexie.Table<IUser, string>;
   productSalt: Dexie.Table<ProductSalt, string>;
   productTag: Dexie.Table<ProductTag, string>;

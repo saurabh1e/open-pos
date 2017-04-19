@@ -105,20 +105,20 @@ export class CartService {
     return item
   }
 
-  async setCart(data: Order, localId: string): Promise<boolean>{
+  async setCart(data: Order, localId: number): Promise<boolean>{
     return await this._indexDB.carts.update(localId, data).then(()=>{
       return true
     })
   }
-  async getCart(localId: string): Promise<Order> {
+  async getCart(localId: number): Promise<Order> {
     return await this._indexDB.carts.get(localId).then((cart)=>{
       return cart;
     })
   }
 
-  async newCart(id: string, invoiceNumber: number): Promise<string>{
-    let localId = JSON.stringify(Math.floor(Math.random() * (9999 - 999 + 1)) + 999);
-    let referenceNumber = '';
+  async newCart(id: string, invoiceNumber: number): Promise<number>{
+    let localId = Math.floor(Math.random() * (9999 - 999 + 1)) + 999;
+    let referenceNumber = JSON.stringify(invoiceNumber);
     try{
       referenceNumber = this.ipcRenderer.sendSync('generateReferenceNumber');
     }
@@ -135,13 +135,13 @@ export class CartService {
       });
   }
 
-  async deleteCart(cartId: string): Promise<boolean>{
+  async deleteCart(cartId: number): Promise<boolean>{
     return this._indexDB.carts.delete(cartId).then(()=>{
       return true
     })
   }
 
-  async addProduct(cartId: string, product: Product, stock: Stock, qty?: number): Promise<Order> {
+  async addProduct(cartId: number, product: Product, stock: Stock, qty?: number): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, product.id, stock.id);
       let units_available = stock.units_purchased-stock.units_sold;
@@ -155,7 +155,7 @@ export class CartService {
     })
   }
 
-  async updateQuantity(cartId: string, productId: string, stockId: string, qty?: number): Promise<Order>{
+  async updateQuantity(cartId: number, productId: string, stockId: string, qty?: number): Promise<Order>{
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       console.log(qty);
@@ -170,21 +170,21 @@ export class CartService {
     })
   }
 
-  async removeProduct(cartId: string, productId: string, stockId: string): Promise<Order> {
+  async removeProduct(cartId: number, productId: string, stockId: string): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       cart.items.splice(cart.items.indexOf(item), 1);
       return this.calcTotal(cart);
     })
   }
-  async updateDiscount(cartId: string, productId: string, stockId: string, discount: number): Promise<Order> {
+  async updateDiscount(cartId: number, productId: string, stockId: string, discount: number): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       let item = this.getProduct(cart.items, productId, stockId);
       item.discount = discount;
       return this.calcTotal(cart);
     })
   }
-  async updateOrderDiscount(cartId: string, discount: number): Promise<Order> {
+  async updateOrderDiscount(cartId: number, discount: number): Promise<Order> {
     return await this.getCart(cartId).then((cart)=> {
       cart.discounts[0].value = discount;
       return this.calcTotal(cart);

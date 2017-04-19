@@ -13,7 +13,7 @@ export interface Order {
   sub_total?: number;
   total?: number;
   auto_discount?: number;
-  local_id: string;
+  local_id: number;
   customer_id?: string;
   amount_paid?: number
   invoice_number?: number

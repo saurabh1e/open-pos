@@ -139,10 +139,15 @@
   <span fxFlex></span>
   <md-divider class="pad-md" fxFlex fxFLexLayoutWrap></md-divider>
   <md-card-actions fxLayoutAlign="end end" fxLayout="row" fxLayoutWrap="" fxFlex style="padding: 0;margin: 0">
-    <button md-raised-button="" *ngIf="shop?.printer_config.have_bill_printer" (click)="printBill()" color="accent">Print Bill</button>
-    <button md-raised-button="" (click)="printReceipt()" *ngIf="shop?.printer_config.have_receipt_printer"
+    <button md-raised-button="" *ngIf="shop?.printer_config.have_bill_printer && (this.cart?.invoice_number || this.shop.separate_offline_billing)"
+            (click)="print('print-bill')" color="accent">Print Bill</button>
+    <button md-raised-button="" (click)="print(print-receipt)"
+            *ngIf="shop?.printer_config.have_receipt_printer && (this.cart?.invoice_number || this.shop?.separate_offline_billing)"
             color="accent">Print Receipt</button>
-    <button md-raised-button="" (click)="checkOut()" color="primary">Checkout</button>
+    <button md-raised-button="" (click)="checkOut()" color="primary"
+    [disabled]="(this.cart?.invoice_number && !this.shop?.separate_offline_billing) || this.cart?.current_status_id">Place Order</button>
+    <button md-raised-button="" (click)="settle()" [disabled]="!this.cart?.invoice_number && !this.shop?.separate_offline_billing"
+            color="primary">Settle Bill</button>
   </md-card-actions>
 
 </div>

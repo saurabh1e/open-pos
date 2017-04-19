@@ -54,7 +54,7 @@ export class CartComponent implements OnInit {
     })
   }
 
-  openCart(id: string): void {
+  openCart(id: number): void {
     this._loadingService.register('cart');
     this._indexDB.carts.get(id).then((cart) => {
       this.routeCart(cart.local_id);
@@ -78,12 +78,12 @@ export class CartComponent implements OnInit {
       return
     }
 
-    this._cartService.newCart(this.shop_id, this.invoice_number).then((cartId) => {
+    this._cartService.newCart(this.shop_id, this.invoice_number+1).then((cartId) => {
       this.routeCart(cartId);
     });
   }
 
-  routeCart(cartId: string): void {
+  routeCart(cartId: number): void {
     this._route.navigate(['billing/' + cartId]).then(() => {
       this._loadingService.resolve('cart');
 

@@ -1,4 +1,6 @@
-import {NgModule, Type} from "@angular/core";
+import * as Raven from 'raven-js';
+
+import {NgModule, Type, ErrorHandler } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 
 import {CovalentCoreModule, CovalentDataTableModule, CovalentDialogsModule, CovalentSearchModule} from "@covalent/core";
@@ -92,7 +94,16 @@ import { SaltsComponent } from './billing/salts/salts.component';
 import { BrandsComponent } from './billing/brands/brands.component';
 import { BillDetailsComponent } from './stock-management/distributor-bill/bill-details/bill-details.component';
 import { StockEditComponent } from './stock-management/stock/stock-edit/stock-edit.component';
+import { environment } from './environment';
 
+
+Raven.config(environment.ravenId).install();
+
+export class RavenErrorHandler implements ErrorHandler {
+  handleError(err:any) : void {
+    Raven.captureException(err.originalError);
+  }
+}
 
 const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
   RequestInterceptor,
@@ -187,6 +198,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     NgxChartsModule,
   ], // modules needed to run this module
   providers: [
+    { provide: ErrorHandler, useClass: RavenErrorHandler },
     appRoutingProviders,
     RetailShopsService,
     UsersService,

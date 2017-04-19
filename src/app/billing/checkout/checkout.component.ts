@@ -27,7 +27,7 @@ export class CheckoutComponent implements OnInit {
   denominationArray: {} = {1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 500: 0, 1000: 0, 2000: 0};
   total: string = '0';
   ipcRenderer: any;
-  currentInvoiceNumber: number;
+  currentInvoiceNumber: number = null;
   printContent: string = null;
 
   constructor(public dialogRef: MdDialogRef<CheckoutComponent>,
@@ -55,9 +55,6 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this._indexDB.shops.get(this.cart.retail_shop_id).then((shop) => {
       this.shop = shop;
-      this._indexDB.configs.get(this.shop.id).then((data) => {
-        this.currentInvoiceNumber = data.invoiceNumber + 1;
-      })
     });
     if (this.cart.customer) {
       this.customer = this.cart.customer;
@@ -107,7 +104,6 @@ export class CheckoutComponent implements OnInit {
         this._loadingService.resolve('checkout');
         return item
       }), () => {
-        console.log('ddd')
 
       }).catch((error) => {
         this._loadingService.resolve('checkout');
@@ -152,21 +148,31 @@ export class CheckoutComponent implements OnInit {
   checkOut(): void {
     this._loadingService.register('checkout');
     this._orderService.create(this.cart).subscribe((data: { data: Order[] }) => {
-      this._cartService.updateStock(this.cart).then((status) => {
-        console.log(status);
-        this._loadingService.resolve('checkout');
-        this.dialogRef.close(data.data[0].reference_number);
-      });
+      if (!this.shop.separate_offline_billing) {
+        this.cart.invoice_number = data.data[0].invoice_number;
+      }
+      this.cart.current_status_id = data.data[0].current_status_id;
+      this._cartService.setCart(this.cart, this.cart.local_id).then(()=>{
+        this._cartService.updateStock(this.cart).then((status) => {
+          this._loadingService.resolve('checkout');
 
-    }, () => {
+        });
+      });
+    }, (err: ProgressEvent) => {
+      if (err.type === 'error') {
+        this.cart.invoice_number = null;
+      }
       this._loadingService.resolve('checkout');
     })
+  }
+
+  settle(): void {
+    this.dialogRef.close(this.cart.invoice_number);
   }
 
   saveCustomer(): void {
     this.customer.retail_brand_id = this.shop.retail_brand_id;
     this._customerService.create(this.customer).subscribe((data: { data: Customer[] }) => {
-      console.log(data);
       this.cart.customer_id = data.data[0].id;
       this.customer = data.data[0];
     });
@@ -193,7 +199,6 @@ export class CheckoutComponent implements OnInit {
   addAddress(): void {
     this._loadingService.register('checkout');
     this._customerService.addAddress(this.address).subscribe((data: { data: Address[] }) => {
-      console.log(data);
       this._customerService.addCustomerAddress(data.data[0].id, this.customer.id).subscribe(() => {
         this.address.id = data.data[0].id;
         this.addresses = this.addresses.concat(this.address);
@@ -207,21 +212,34 @@ export class CheckoutComponent implements OnInit {
     })
   }
 
-  printReceipt(): void {
+  print(type: string): void {
+    if (this.shop.separate_offline_billing && isNaN(this.cart.invoice_number) ) {
+      this._indexDB.configs.get(this.shop.id).then((data) => {
+        this.cart.invoice_number = data.invoiceNumber + 1;
+        this.increaseInvoiceNumber();
+        this.printBill(type);
+        return
+      })
+    }
+    this.printBill(type);
+    return ;
+
+
+  }
+
+  printBill(type: string): void {
 
     if (!this.printContent) {
       try {
         this.ipcRenderer.send('printBill',
-          this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML)
-
-        this.increaseInvoiceNumber()
+          this.renderHtml(this.elRef.nativeElement.querySelector('#'+type)).innerHTML)
 
       }
       catch (err) {
         let wnd = window.open("about:blank", "", "_blank");
-        wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML);
+        wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#'+type)).innerHTML);
         wnd.print();
-        this.increaseInvoiceNumber()
+
       }
     }
     else {
@@ -239,40 +257,6 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  printBill(): void {
-    //#TODO Very Bad DOM manipulation need to change
-
-    if (!this.printContent) {
-      try {
-        this.ipcRenderer.send('printBill',
-            this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML)
-
-          this.increaseInvoiceNumber()
-
-      }
-      catch (err) {
-        let wnd = window.open("about:blank", "", "_blank");
-        wnd.document.write(this.renderHtml(this.elRef.nativeElement.querySelector('#print-bill')).innerHTML);
-        wnd.print();
-        this.increaseInvoiceNumber()
-      }
-    }
-    else {
-      try {
-        if (this.ipcRenderer.send('printBill', this.printContent)) {
-
-        }
-      }
-      catch (err) {
-        let wnd = window.open("about:blank", "", "_blank");
-        wnd.document.write(this.printContent);
-        wnd.print();
-
-      }
-    }
-
-
-  }
 
   renderHtml(element: any) {
     if (element.querySelector('#shopName')) {
@@ -291,7 +275,7 @@ export class CheckoutComponent implements OnInit {
       element.querySelector('#customerNumber').innerHTML = this.cart.customer.mobile_number || null;
     }
     if (element.querySelector('#invoiceNumber')) {
-      element.querySelector('#invoiceNumber').innerHTML = '#' + this.pad(this.currentInvoiceNumber, 5) || null;
+      element.querySelector('#invoiceNumber').innerHTML = ('#' + this.pad(this.cart.invoice_number, 5)) || null;
     }
     if (element.querySelector('#subTotal')) {
       element.querySelector('#subTotal').innerHTML = (this.cart.sub_total || 0).toString() + '/-';
@@ -307,7 +291,6 @@ export class CheckoutComponent implements OnInit {
       let taxes = {};
       this.cart.items.forEach((item) => {
         item.taxes.forEach((tax) => {
-          console.log(tax);
           if (tax.tax.name in taxes) {
             taxes[tax.tax.name] += tax.tax_amount;
           }
@@ -377,9 +360,13 @@ export class CheckoutComponent implements OnInit {
   }
 
   increaseInvoiceNumber() {
-    this._indexDB.configs.update(this.shop.id, {invoiceNumber: this.currentInvoiceNumber}).then((data) => {
-      this._shopService.update(this.shop.id, {id: this.shop.id, invoice_number: this.currentInvoiceNumber}).subscribe()
-    })
+    if (this.shop.separate_offline_billing) {
+      this._indexDB.configs.update(this.shop.id, {invoiceNumber: this.cart.invoice_number}).then((data) => {
+        this._shopService.update(this.shop.id, {id: this.shop.id, invoice_number: this.cart.invoice_number}).subscribe();
+        this._cartService.setCart(this.cart, this.cart.local_id).then();
+      })
+    }
+
   }
 
 }

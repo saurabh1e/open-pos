@@ -38,6 +38,7 @@ export interface RetailShop {
     total_orders: number;
     total_items: number;
   };
+  separate_offline_billing?: boolean;
   retail_brand?: RetailBrand;
   address?: Address;
   brands?: Brand[];

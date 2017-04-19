@@ -94,7 +94,7 @@
           </div>
 
           <ng-template ngFor [ngForOf]="stocks" let-item let-i="index">
-            <div fxFlex="100" *ngIf="sti">
+            <div fxFlex="100" *ngIf="stocks.length">
               <div fxLayoutAlign="start center" fxFlex="50">
                 <md-checkbox [checked]="item.add" class="md-body-1" [(ngModel)]="item.add"  [name]="'add_'+i">
                   {{ item?.product?.name | truncate: 40}}

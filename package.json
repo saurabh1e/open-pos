@@ -67,6 +67,7 @@
     "moment": "^2.17.1",
     "ng2-ckeditor": "^1.1.6",
     "ng2-tag-input": "^1.0.5",
+    "raven-js": "^3.14.2",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },

@@ -24,12 +24,12 @@
 
   <md-card class="pad bgc-white-5" fxFlex="66" *ngIf="shop.id">
     <md-card-title>Add Registration Details</md-card-title>
-    <form #regForm="ngForm">
+    <form #regForm="ngForm" class="push">
 
-      <md-input-container fxFlex>
+      <md-input-container fxFlex class="push-right">
         <input mdInput type="text" minlength="2" required [(ngModel)]="name" placeholder="Name" name="name">
       </md-input-container>
-      <md-input-container fxFlex>
+      <md-input-container fxFlex class="push-right">
         <input mdInput type="text" minlength="2" required [(ngModel)]="value" placeholder="Value" name="value ">
       </md-input-container>
 
