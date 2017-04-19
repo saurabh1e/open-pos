@@ -218,8 +218,9 @@ export class CheckoutComponent implements OnInit {
         this.cart.invoice_number = data.invoiceNumber + 1;
         this.increaseInvoiceNumber();
         this.printBill(type);
-        return
-      })
+
+      });
+      return
     }
     this.printBill(type);
     return ;
