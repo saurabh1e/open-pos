@@ -135,6 +135,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 700,
+    title: require('./package.json').name,
     titleBarStyle: 'hidden-inset',
     "web-preferences": {
       "web-security": false
