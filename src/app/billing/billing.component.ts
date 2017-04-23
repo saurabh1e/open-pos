@@ -333,7 +333,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
   addProduct(product: Product, stocks: Stock[], qty: number): void {
     if (!stocks)
       return;
-    console.log(stocks);
     if (stocks.length === 1 && stocks[0].default_stock) {
       this.updateProduct(product, stocks[0].id).then(() => {
         this.addToCart(product, product.available_stocks, qty)

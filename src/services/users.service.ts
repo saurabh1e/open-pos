@@ -17,6 +17,7 @@ export interface IUser {
   mobile_number: string;
   roles: Role[];
   retail_shop_ids: string[];
+  password?: string;
   brand_id: string;
   retail_shops: RetailShop[];
   retail_brand: RetailBrand[];
