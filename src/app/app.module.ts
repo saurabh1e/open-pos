@@ -11,13 +11,15 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CovalentPagingModule } from '@covalent/core';
+import { DatepickerModule } from 'angular2-material-datepicker'
+
 
 import {AppComponent} from "./app.component";
 import {appRoutes, appRoutingProviders} from "./app.routes";
 import {RequestInterceptor} from "../config/interceptors/request.interceptor";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {AuthService} from "../services/auth.service";
-import {UsersService} from "../services/users.service";
+import {RolesService, UsersService} from "../services/users.service";
 import {RetailShopsService} from "../services/shop.service";
 
 import {
@@ -185,6 +187,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     CovalentDataTableModule,
     CovalentPagingModule,
     CovalentDialogsModule,
+    DatepickerModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
@@ -207,6 +210,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     AuthGuard,
     ItemsService,
     OrderItemsService,
+    RolesService,
     DistributorService,
     TagsService,
     SaltsService,
@@ -221,7 +225,7 @@ const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
     IndexDBServiceService,
 
   ], // additional providers needed for this module
-  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent,
+  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent, StaffDetailComponent,
     ProductFormComponent, BrandFormComponent, TagFormComponent, TaxFormComponent, SaltFormComponent, BillDetailsComponent,
     DistributorFormComponent, CustomerDetailComponent, OrderDetailComponent, SaltsComponent, BrandsComponent, StockEditComponent],
   bootstrap: [AppComponent],

@@ -65,7 +65,7 @@
 
         <form fxLayout="row" #addStockForm="ngForm" fxLayoutWrap="" fxFlex="100" *ngIf="shop?.id && entryType =='distributor'">
 
-          <div fxLayout="row" fxFlex="100">
+          <div fxLayout="row" fxFlex="100" class="push-bottom">
             <div fxFlex="30" class="push-right-md">
               <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
                          (onAdd)="addDistributor($event)" (onRemove)="removeDistributor($event)"
@@ -97,7 +97,10 @@
             <div fxFlex="100" *ngIf="stocks.length">
               <div fxLayoutAlign="start center" fxFlex="50">
                 <md-checkbox [checked]="item.add" class="md-body-1" [(ngModel)]="item.add"  [name]="'add_'+i">
-                  {{ item?.product?.name | truncate: 40}}
+                  <md-input-container>
+                    <input mdInput type="text" readonly [value]="item?.product?.name | truncate: 100" />
+                  </md-input-container>
+
                 </md-checkbox>
               </div>
               <md-input-container fxFlex="20" class="push-right-md">
@@ -170,10 +173,10 @@
         <form fxLayout="row" fxLayoutWrap="" fxFlex="100" *ngIf="shop?.id && entryType =='item'" #stockForm="ngForm">
 
           <div fxLayout="row" fxFlex="100">
-            <div fxFlex>
+            <div fxFlex class="push-bottom">
               <tag-input [(ngModel)]="products" name="product" [placeholder]="'Enter Product...'"
                          (onAdd)="addProduct($event)" (onRemove)="removeProduct($event)"
-                         [secondaryPlaceholder]="'Enter Product...'" [onlyFromAutocomplete]="true" [maxItems]="1"
+                         [secondaryPlaceholder]="'Enter Product...'" [onlyFromAutocomplete]="true" [maxItems]="25"
               >
                 <tag-input-dropdown [autocompleteObservable]='getProducts'  [appendToBody]="false"
                                     [identifyBy]="'id'"
@@ -188,27 +191,60 @@
           </div>
 
           <ng-template ngFor [ngForOf]="stocks" let-item let-i="index">
-            <div fxLayout="row" fxLayoutWrap="" fxFlex="100" >
-              <md-input-container fxFlex>
-                <input mdInput [disabled]="true" [readOnly]="true" [value]="item.product.name" />
+            <div fxFlex="100" *ngIf="stocks.length">
+              <div fxLayoutAlign="start center" fxFlex="50">
+                <md-checkbox [checked]="item.add" class="md-body-1" [(ngModel)]="item.add"  [name]="'add_'+i">
+                  {{ item?.product?.name | truncate: 40}}
+                </md-checkbox>
+              </div>
+              <md-input-container fxFlex="20" class="push-right-md">
+                <input mdInput  placeholder="Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
+                       [(ngModel)]="item.units_purchased" min="0" />
               </md-input-container>
-              <md-input-container fxFlex>
-                <input mdInput  placeholder="Enter Quantity" type="number" [name]="'units_purchased'+i" [value]="item.units_purchased"
-                       [(ngModel)]="item.units_purchased" min="0" required/>
+              <md-input-container fxFlex="20" class="push-right-md">
+                <input mdInput [value]="item.quantity_label" [readOnly]="true" />
               </md-input-container>
-              <md-input-container fxFlex>
-                <input mdInput  placeholder="Enter Purchase Amount" type="number" [name]="'purchase_amount'+i"
-                       [(ngModel)]="item.purchase_amount" min="0" [value]="item.purchase_amount" required/>
+
+
+            </div>
+            <div  fxFlex="100" fxLayoutAlign="end end">
+
+              <md-input-container fxFlex="25" class="push-right-md">
+                <input mdInput  placeholder="Purchase Amount" type="number" [name]="'purchase_amount'+i"
+                       [(ngModel)]="item.purchase_amount" min="0" [value]="item.purchase_amount"/>
               </md-input-container>
-              <md-input-container fxFlex>
-                <input mdInput placeholder="Enter Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
-                       [(ngModel)]="item.selling_amount" [value]="item.selling_amount" required />
+              <md-input-container fxFlex="25" class="push-right-md">
+                <input mdInput placeholder="Selling Amount" type="number" min="0" [name]="'selling_amount'+i"
+                       [(ngModel)]="item.selling_amount" [value]="item.selling_amount" />
               </md-input-container>
-              <md-input-container fxFlex>
-                <input mdInput placeholder="Enter Expiry" type="date" [name]="'expiry'+i" required
+              <md-input-container fxFlex="25" class="push-right-md">
+                <input mdInput placeholder="Expiry Date" type="date" [name]="'expiry'+i"
                        [(ngModel)]="item.expiry_date" />
               </md-input-container>
+
+              <md-input-container fxFlex="25" class="push-right-md">
+                <input mdInput  placeholder="Batch Number" type="text"
+                       [value]="item.batch_number" name="'batch_'+i" [(ngModel)]="item.batch_number"/>
+              </md-input-container>
+
             </div>
+
+            <!--<div fxLayout="row" fxLayoutWrap="" fxFlex="100" >-->
+            <!--<div fxFlex>-->
+
+            <!--</div>-->
+            <!--<md-input-container fxFlex="20">-->
+            <!--<input mdInput placeholder="Enter Expiry" type="date" [name]="'expiry'+i"-->
+            <!--[(ngModel)]="item.expiry_date" />-->
+            <!--</md-input-container>-->
+
+            <!--<md-input-container fxFlex="20">-->
+            <!--<input mdInput  placeholder="Enter Barcode Copies" type="number"-->
+            <!--[value]="item.units_purchased" name="'sasas_'+i" [(ngModel)]="item.copies"-->
+            <!--min="0" />-->
+            <!--</md-input-container>-->
+            <!--<button md-raised-button="" color="primary">Print</button>-->
+            <!--</div>-->
 
           </ng-template>
           <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100" *ngIf="products.length">

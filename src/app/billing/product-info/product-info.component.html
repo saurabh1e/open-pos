@@ -17,10 +17,11 @@
         <md-list *ngFor="let stock of product.available_stocks" fxFlex="">
           <md-list-item>
             <md-icon class="tc-blue-500" md-list-avatar="">local_grocery_store</md-icon>
-            <span md-line>Stock:&nbsp;{{stock.units_purchased-stock.units_sold}}</span>
+            <span md-line>Stock Available:&nbsp;{{stock.units_purchased-stock.units_sold}}</span>
             <p md-line>Purchase Date:&nbsp;{{stock.purchase_date}}</p>
             <p md-line>Expiry Date:&nbsp;{{stock.expiry_date}}</p>
             <p md-line>Price:&nbsp;{{stock.selling_amount ||0 | currency:'INR':true:'1.2-2'}}</p>
+            <p md-line>Batch#:&nbsp;{{stock.batch_number }}</p>
           </md-list-item>
 
         </md-list>

@@ -23,8 +23,8 @@
         <input mdInput [value]="brand.retail_shop.name" [readOnly]="true" [disabled]="true" type="text">
       </md-input-container>
     </div>
-    <div fxfxLayout="row" fxfxLayoutGap="20px">
-      <div fxfxFlex>
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex>
         <tag-input [(ngModel)]="distributors" name="distributor" [placeholder]="'Enter Distributor...'"
                    (onAdd)="addDistributor($event)" (onRemove)="removeDistributor($event)"
                    [secondaryPlaceholder]="'Enter Distributor...'" [onlyFromAutocomplete]="true" [maxItems]="5"

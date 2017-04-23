@@ -37,6 +37,9 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   include:string[]=[];
 
   @Input()
+  exportAllowed: boolean = false;
+
+  @Input()
   editRow:(any)=> Observable<any>;
   @Input()
   toggleRow:(any)=> Observable<any>;

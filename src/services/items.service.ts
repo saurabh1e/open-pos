@@ -51,8 +51,10 @@ export interface Stock {
   is_loose: boolean;
   units_purchased: number;
   units_sold: number,
+  add?: boolean;
   product_id: string;
   product?: Product;
+  default_stock: boolean;
   distributor_bill?: DistributorBill;
 }
 
@@ -580,6 +582,10 @@ export class StocksService extends RESTService<Stock> {
       path: '/stock',
     });
 
+  }
+
+  post(body: Stock[]): Observable<Response> {
+    return this._http.post(MOCK_API+'stock', body).map(data=>data.json())
   }
 
 }

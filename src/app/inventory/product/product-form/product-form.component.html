@@ -26,7 +26,7 @@
         </md-input-container>
         <md-input-container  fxFlex="33" fxLayout="row">
           <input mdInput placeholder="Barcode" [value]="product.barcode"
-                 [(ngModel)]="product.barcode" name="barcode" required maxlength="13" minlength="8" />
+                 [(ngModel)]="product.barcode" name="barcode" maxlength="13" minlength="8" />
           <md-hint align="end">{{product.barcode?product.barcode.length:0}} / 13</md-hint>
         </md-input-container>
       </div>
@@ -48,6 +48,19 @@
             <md-option [value]="'TAB'">Tablet</md-option>
             <md-option [value]="'SYRUP'">Syrup</md-option>
             <md-option [value]="'OTH'">Other</md-option>
+
+            <md-option [value]="'CAP'">Capsule</md-option>
+            <md-option [value]="'INJ'">Injection</md-option>
+            <md-option [value]="'BOTTLE'">Bottle</md-option>
+            <md-option [value]="'VAIL'">Vail</md-option>
+            <md-option [value]="'KIT'">Kit</md-option>
+            <md-option [value]="'Strip'">Strip</md-option>
+            <md-option [value]="'PACK'">Pack</md-option>
+            <md-option [value]="'SET'">Set</md-option>
+            <md-option [value]="'SACHET'">Sachet</md-option>
+            <md-option [value]="'PILLS'">Pills</md-option>
+            <md-option [value]="'SYRINGE'">Syringe</md-option>
+            <md-option [value]="'ROLL'">Roll</md-option>
 
           </md-select>
         </div>
@@ -127,20 +140,20 @@
           </tag-input-dropdown>
         </tag-input>
       </div>
-      <div fxLayout="row" fxLayoutGap="20px">
-        <tag-input [(ngModel)]="product.description" name="description" fxFlex="100"
-                   [placeholder]="'Enter Key : Value Description..'"
-                   [secondaryPlaceholder]="'Enter Description...'" (onAdd)="addDescription($event)"
-                   [validators]="validators"
-                   [identifyBy]="'key'"
-                   [errorMessages]="errorMessages"
-                   [displayBy]="'value'">
-          <template let-item="item" let-index="index">
-            {{ item.key }}:{{ item.value }}
-            <delete-icon (click)="removeDescription(item, index)"></delete-icon>
-          </template>
-        </tag-input>
-      </div>
+      <!--<div fxLayout="row" fxLayoutGap="20px">-->
+        <!--<tag-input [(ngModel)]="product.description" name="description" fxFlex="100"-->
+                   <!--[placeholder]="'Enter Key : Value Description..'"-->
+                   <!--[secondaryPlaceholder]="'Enter Description...'" (onAdd)="addDescription($event)"-->
+                   <!--[validators]="validators"-->
+                   <!--[identifyBy]="'key'"-->
+                   <!--[errorMessages]="errorMessages"-->
+                   <!--[displayBy]="'value'">-->
+          <!--<template let-item="item" let-index="index">-->
+            <!--{{ item.key }}:{{ item.value }}-->
+            <!--<delete-icon (click)="removeDescription(item, index)"></delete-icon>-->
+          <!--</template>-->
+        <!--</tag-input>-->
+      <!--</div>-->
 
 
     </form>

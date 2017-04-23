@@ -29,6 +29,7 @@ export class DistributorBillComponent implements OnInit {
   only: string[] = [];
   include: string[] = ['distributor'];
   filters: any = {};
+  dateFilter: any = {fromDate:'__purchase_date__date_gte', toDate:'__purchase_date__date_lte'};
 
   constructor(private _titleService: Title,
               private _distributorBillService: DistributorBillsService, private _dialogService: TdDialogService) {

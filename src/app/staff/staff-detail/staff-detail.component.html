@@ -1,3 +1,69 @@
-<p>
-  staff-detail works!
-</p>
+<div fxLayout="column">
+  <md-card-title>{{user.name}}</md-card-title>
+  <md-card-subtitle>{{user.mobile_number}}</md-card-subtitle>
+  <md-divider></md-divider>
+  <form fxFlex="100" class="push-top-md" #staffForm="ngForm" fxLayoutWrap>
+
+    <div fxLayout="row" fxFlex="100">
+      <md-input-container fxFlex class="push-right">
+        <input mdInput [(ngModel)]="user.name" type="text" name="name" placeholder="Name"/>
+      </md-input-container>
+      <md-input-container fxFlex class="push-right">
+        <input mdInput [(ngModel)]="user.mobile_number" type="number" name="mobile_number" placeholder="Number"/>
+      </md-input-container>
+    </div>
+
+    <div fxLayout="row" fxFlex="100">
+      <md-input-container fxFlex class="push-right">
+        <input mdInput [(ngModel)]="user.email" type="email" name="email" placeholder="Email"/>
+      </md-input-container>
+      <div fxLayout="row" fxFlex class="push-right" fxLayoutAlign="end center">
+        <md-checkbox [(ngModel)]="user.active" [checked]="user.active" name="active">
+          Is Active
+        </md-checkbox>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxFlex="100">
+      <md-input-container fxFlex="33" class="push-right">
+        <input mdInput [(ngModel)]="user.password" type="password" name="password" placeholder="Edit to Change Password"/>
+      </md-input-container>
+
+
+        <div fxFlex>
+          <tag-input [(ngModel)]="userShops" name="shops" [placeholder]="'Enter Shop...'"
+                     (onAdd)="addShop($event)" (onRemove)="removeShop($event)"
+                     [secondaryPlaceholder]="'Enter Shops...'" [onlyFromAutocomplete]="true"
+                     [identifyBy]="'id'"
+                     [displayBy]="'name'">
+            <tag-input-dropdown [autocompleteItems]="shops" [appendToBody]="false"
+                                [identifyBy]="'id'"
+                                [displayBy]="'name'">
+              <template let-item="item" let-index="index">
+                {{ item.name }}
+              </template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+
+
+    </div>
+
+  </form>
+
+  <div fxLayout="row" fxLayoutWrap *ngFor="let role of roles">
+
+    <md-checkbox  fxFlex="100" class="push-top-md push-bottom-sm md-body-1" (change)="updateRole(role)"
+                  [checked]="checkUserRole(role)">
+      {{role.name}}
+    </md-checkbox>
+    <md-checkbox *ngFor="let permission of role.permissions" fxFlex="20" (change)="updatePermission(permission)"
+                 [checked]="checkUserPermission(permission)" class="md-caption">
+      {{permission.name}}
+    </md-checkbox>
+
+  </div>
+
+
+
+</div>

@@ -1,7 +1,16 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from "@angular/core";
-import {ItemsService, Product, ProductSalt, Stock} from "../../services/items.service";
+import {ItemsService, Product, ProductSalt, Stock, StocksService} from "../../services/items.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {IPageChangeEvent, LoadingMode, LoadingType, TdLoadingService, TdMediaService} from "@covalent/core";
+import {
+  IPageChangeEvent,
+  LoadingMode,
+  LoadingType,
+  TdDialogService,
+  TdLoadingService,
+  TdMediaService
+} from "@covalent/core";
+import {Observable} from "rxjs/Observable";
+
 import {IndexDBServiceService} from "../../services/indexdb.service";
 import {Item, Order, OrdersService} from "../../services/orders.service";
 import {ProductInfoComponent} from "./product-info/product-info.component";
@@ -11,13 +20,16 @@ import {CartService} from "../../services/cart.service";
 import {ItemDiscountComponent} from "./item-discount/item-discount.component";
 import {SaltsComponent} from "./salts/salts.component";
 import {BrandsComponent} from "./brands/brands.component";
+import {ProductFormComponent} from "../inventory/product/product-form/product-form.component";
+import {StockEditComponent} from "../stock-management/stock/stock-edit/stock-edit.component";
+import {RetailShop, RetailShopsService} from "../../services/shop.service";
 
 
 @Component({
   selector: 'billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent],
+  entryComponents: [ProductInfoComponent, CheckoutComponent, ItemDiscountComponent, ProductFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
@@ -34,15 +46,19 @@ export class BillingComponent implements AfterViewInit, OnInit {
   saltsPerPage: number = 48;
   brandsPerPage: number = 48;
   productSalts: ProductSalt[] = [];
+  shop: RetailShop;
 
   constructor(private _snackBarService: MdSnackBar,
               private _dialogService: MdDialog,
               private _cartService: CartService,
               private _itemService: ItemsService,
               private _orderService: OrdersService,
+              private _retailService: RetailShopsService,
               private _cd: ChangeDetectorRef,
+              private _tdDialogService: TdDialogService,
               private _activatedRoute: ActivatedRoute,
               private _loadingService: TdLoadingService,
+              private _stockService: StocksService,
               private _indexDb: IndexDBServiceService,
               public media: TdMediaService,
               private _router: Router) {
@@ -64,8 +80,12 @@ export class BillingComponent implements AfterViewInit, OnInit {
       if (params.id) {
         this._indexDb.carts.get(parseInt(params.id)).then((data) => {
           this.cart = data;
+          this._indexDb.shops.where('id').equals(this.cart.retail_shop_id).first().then((data) => {
+            this.shop = data;
+            this._retailService.shop = this.shop;
+          });
           this.getProducts();
-          this._indexDb.products.where('retail_shop_id').equals(this.cart.retail_shop_id).count().then((count)=>{
+          this._indexDb.products.where('retail_shop_id').equals(this.cart.retail_shop_id).count().then((count) => {
             this.totalProducts = count;
           });
           this._loadingService.resolve('billing');
@@ -285,9 +305,46 @@ export class BillingComponent implements AfterViewInit, OnInit {
     return
   }
 
+  async updateProduct(product: Product, stockId: string) {
+    return await this.editProduct(product).subscribe((editedProduct: Product) => {
+      this.getStock(stockId).subscribe((data: { data: Stock[] }) => {
+        this.editStock(data.data[0]).subscribe((stock) => {
+          if (editedProduct) {
+            product = editedProduct;
+          }
+          if (stock) {
+            product.available_stocks[0] = stock;
+          }
+          if (editedProduct || stock) {
+            return this._indexDb.products.update(product.id, product).then(d => {
+              return true
+            })
+          }
+          else {
+            return false
+          }
+        })
+      })
+
+
+    });
+  }
+
   addProduct(product: Product, stocks: Stock[], qty: number): void {
     if (!stocks)
       return;
+    console.log(stocks);
+    if (stocks.length === 1 && stocks[0].default_stock) {
+      this.updateProduct(product, stocks[0].id).then(() => {
+        this.addToCart(product, product.available_stocks, qty)
+      })
+    }
+    else {
+      this.addToCart(product, stocks, qty)
+    }
+  }
+
+  addToCart(product: Product, stocks: Stock[], qty: number): void {
     let item: Item;
     let stockToAdd = stocks.find((stock) => {
       item = this.cart.items.find((item) => {
@@ -309,7 +366,6 @@ export class BillingComponent implements AfterViewInit, OnInit {
         this._cd.markForCheck();
       })
     }
-
   }
 
   updateProductQuantity(productId: string, stockId: string, qty?: number): void {
@@ -349,8 +405,10 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   filterSalts(): void {
-    let _dialog = this._dialogService.open(SaltsComponent, { height: '50%',
-      width: '70%',});
+    let _dialog = this._dialogService.open(SaltsComponent, {
+      height: '50%',
+      width: '70%',
+    });
     _dialog.componentInstance.shopId = this.cart.retail_shop_id;
     _dialog.componentInstance.saltsPerPage = this.saltsPerPage;
     _dialog.componentInstance.selectedSalt = this.selectedSalts;
@@ -364,8 +422,10 @@ export class BillingComponent implements AfterViewInit, OnInit {
   }
 
   filterBrands(): void {
-    let _dialog = this._dialogService.open(BrandsComponent, { height: '400px',
-      width: '600px',});
+    let _dialog = this._dialogService.open(BrandsComponent, {
+      height: '400px',
+      width: '600px',
+    });
     _dialog.componentInstance.shopId = this.cart.retail_shop_id;
     _dialog.componentInstance.brandsPerPage = this.saltsPerPage;
     _dialog.componentInstance.selectedBrand = this.selectedBrands;
@@ -414,6 +474,27 @@ export class BillingComponent implements AfterViewInit, OnInit {
 
     }, () => {
       this._loadingService.resolve('billing');
+    })
+  }
+
+
+  editProduct(product: Product): Observable<Product> {
+    product.retail_shop = this.shop;
+    let _dialog = this._tdDialogService.open(ProductFormComponent);
+    _dialog.componentInstance.product = Object.assign({}, product);
+    return _dialog.afterClosed()
+  };
+
+  editStock(stock): Observable<Stock> {
+    let _dialog = this._tdDialogService.open(StockEditComponent);
+    _dialog.componentInstance.stock = Object.assign({}, stock);
+    return _dialog.afterClosed()
+
+  }
+
+  getStock(stockId): Observable<{ data: Stock[] }> {
+    return this._stockService.query({
+      __id__equal: stockId, __include: ['product', 'distributor_bill']
     })
   }
 }

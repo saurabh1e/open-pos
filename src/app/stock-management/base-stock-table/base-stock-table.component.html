@@ -1,4 +1,12 @@
-<div class=" bgc-white-4 push-sm table" fxFlex="100" fxLayoutWrap="" fxLayout="row" fxLayoutAlign="center">
+<div class=" bgc-white-4 push-sm table" fxFlex="100" fxLayoutWrap="" fxLayout="row" fxLayoutAlign="center" fxLayoutFill>
+
+
+  <div fxLayout="row" fxLayoutAlign="center center" class="bgc-white-5 push-top">
+    <material-datepicker [(date)]="fromDate" (onSelect)="filterByDate()" [rangeEnd]="toDate"
+                         class="push-right-sm md-shadow-bottom-z-1 date-picker"></material-datepicker>
+    <material-datepicker [(date)]="toDate" (onSelect)="filterByDate()" [rangeStart]="fromDate"
+                         class="push-left-sm md-shadow-bottom-z-1 date-picker"></material-datepicker>
+  </div>
 
   <div fxLayout="row" fxLayoutAlign="start center" class="pad-left-sm pad-right-sm" fxFlex="100">
       <span class="push-left-sm">
@@ -15,7 +23,7 @@
     </td-search-box>
   </div>
 
-  <table td-data-table>
+  <table td-data-table class="td-table">
     <th td-data-table-column
         *ngFor="let column of columns"
         [sortable]="column.sortable"

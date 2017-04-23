@@ -1,4 +1,9 @@
 import {Component, OnInit} from "@angular/core";
+import {Observable} from "rxjs";
+import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
+import {MdDialogRef} from "@angular/material";
+import {FormControl} from "@angular/forms";
+
 import {RetailShop, RetailShopsService} from "../../../../services/shop.service";
 import {
   BrandsService,
@@ -12,10 +17,6 @@ import {
   Tax,
   TaxsService
 } from "../../../../services/items.service";
-import {Observable} from "rxjs";
-import {LoadingMode, LoadingType, TdLoadingService} from "@covalent/core";
-import {MdDialogRef} from "@angular/material";
-import {FormControl} from "@angular/forms";
 
 
 @Component({
@@ -58,7 +59,6 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.product);
     this.productCopy = Object.assign({}, this.product);
 
     this.resetProduct();
@@ -75,7 +75,6 @@ export class ProductFormComponent implements OnInit {
     if (this.product.tags) {
       this.tags = this.product.tags;
     }
-    this.distributors = this.product.distributors;
 
     this.brands = this.product.brand && this.product.brand.id ?
       [{display: this.product.brand.name, value: this.product.brand.id}] : [];

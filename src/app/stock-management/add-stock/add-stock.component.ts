@@ -8,9 +8,6 @@ import {
 } from "../../../services/items.service";
 import {MdSnackBar} from "@angular/material";
 
-export interface StockAdd extends Stock {
-  add?: boolean;
-}
 
 @Component({
   selector: 'app-add-stock',
@@ -28,7 +25,7 @@ export class AddStockComponent implements OnInit {
   shops: RetailShop[];
   state: number = 1;
   entryType: string;
-  stocks: StockAdd[];
+  stocks: Stock[];
   bill: DistributorBill = <DistributorBill>{};
   distributors:any[]=[];
   products:any[]=[];
@@ -88,9 +85,13 @@ export class AddStockComponent implements OnInit {
   };
 
   getProducts = (event): Observable<string[]> => {
+    let ids = this.stocks.map((stock)=>{return stock.product.id});
+    if (!ids.length){
+      ids = undefined;
+    }
     return this._itemService.query({
       __retail_shop_id__equal: this.shop.id, __only:['id', 'name', 'retail_shop_id']
-      , __name__contains: event
+      , __name__contains: event, __id__not_in: ids
     }).map(data => data.data)
   };
 
@@ -125,19 +126,18 @@ export class AddStockComponent implements OnInit {
   }
 
   addProduct(event:{display: string, value: number}): void {
+    console.log(this.stocks);
     this._loadingService.register('distributor-bill');
     this._itemService.query({__retail_shop_id__equal: this.shop.id, __id__equal: event.value,
       __only:['id', 'name', 'last_selling_amount', 'last_purchase_amount', 'stock_required', 'quantity_label'],
       __include:['last_selling_amount', 'last_purchase_amount', 'stock_required']})
       .subscribe((data: {data: Product[]})=>{
-        this.stocks = data.data.map((data)=>{
-          let stock: StockAdd = <StockAdd>{product: data, purchase_amount: data.last_purchase_amount,
+        this.stocks = this.stocks.concat(data.data.map((data)=>{
+          return <Stock>{product: data, purchase_amount: data.last_purchase_amount,
             selling_amount: data.last_selling_amount, units_purchased: data.stock_required,
-            product_id: data.id, quantity_label: data.quantity_label, add: false};
-          stock.product = data;
-          return stock;
+            product_id: data.id, quantity_label: data.quantity_label, add: true};
 
-        });
+        }));
         this._loadingService.resolve('distributor-bill');
       }, ()=>{
         this._loadingService.resolve('distributor-bill');
@@ -171,12 +171,13 @@ export class AddStockComponent implements OnInit {
 
   saveProductStock(): void {
 
-    this._stockService.create(this.stocks[0]).subscribe((data: {data: Stock[]})=>{
-      this._shopService.getProductUpdate(this.shop.id, null, {__id__in: [this.stocks[0].product_id]}).then(()=>{
+    this._stockService.post(this.stocks).subscribe((data)=>{
+      console.log(data);
+      this._shopService.getProductUpdate(this.shop.id, null, {__id__in: this.stocks.map((stock)=>{return stock.product.id})}).then(()=>{
         this.stocks = [];
         this.distributors = [];
         this.products = [];
-        this._snackBarService.open('Stock updated with ID#' + JSON.stringify(data.data[0].id), '', { duration: 3000 });
+        this._snackBarService.open('Stock updated with ID#' + JSON.stringify(1), '', { duration: 3000 });
         this._loadingService.resolve('distributor-bill');
       });
     }, ()=>{

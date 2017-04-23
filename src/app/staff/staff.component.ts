@@ -11,15 +11,17 @@ import {TdDataTableColumn} from "../td-data-table-column";
 import {Order} from "../../services/orders.service";
 import {Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
-import {IUser, UsersService} from "../../services/users.service";
+import {IUser, Role, RolesService, UsersService} from "../../services/users.service";
 import {StaffDetailComponent} from "./staff-detail/staff-detail.component";
+import {RetailShop, RetailShopsService} from "../../services/shop.service";
 
 
 @Component({
   selector: 'app-staff',
   templateUrl: './staff.component.html',
   styleUrls: ['./staff.component.scss'],
-  entryComponents: [StaffDetailComponent]
+  entryComponents: [StaffDetailComponent],
+  viewProviders: [RolesService]
 })
 export class StaffComponent implements OnInit, OnDestroy {
 
@@ -52,6 +54,9 @@ export class StaffComponent implements OnInit, OnDestroy {
   pageSize: number = 50;
   sortBy: string = 'name';
   order: Order;
+  roles: Role[];
+  shops: RetailShop[] = [];
+  shopsSub: Subscription;
 
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
@@ -59,6 +64,8 @@ export class StaffComponent implements OnInit, OnDestroy {
               public media: TdMediaService,
               private _loadingService: TdLoadingService,
               private _userService: UsersService,
+              private _shopService: RetailShopsService,
+              private _roleService: RolesService,
               private _dialogService: TdDialogService) {
     this._loadingService.create({
       name: 'orders',
@@ -69,6 +76,9 @@ export class StaffComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this._roleService.query({__include: ['permissions']}).subscribe((data: {data: Role[]})=>{
+      this.roles = data.data;
+    })
   }
 
   ngAfterViewInit(): void {
@@ -83,10 +93,15 @@ export class StaffComponent implements OnInit, OnDestroy {
       this.filter();
     });
     this.media.broadcast();
+    this.shops = this._shopService.shops;
+    this.shopsSub = this._shopService.shops$.subscribe((data: RetailShop[]) => {
+      this.shops = data;
+    });
   }
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
+    this.shopsSub.unsubscribe();
   }
 
   sort(name: string, sortOrder: TdDataTableSortingOrder): void {
@@ -163,14 +178,15 @@ export class StaffComponent implements OnInit, OnDestroy {
   showDetail(user: Order): void {
     this._loadingService.register('users');
     this._userService.query({
-      __id__equal: user.id, __include: ['login_count', 'current_login_ip',
-        'last_login_ip', 'retail_shops', 'last_login_at', 'current_login_at', 'created_on']
+      __id__equal: user.id, __include: ['permissions', 'roles',]
     })
       .subscribe((data: {data: IUser[]}) => {
         this.user = data.data[0];
         this._loadingService.resolve('users');
         let _dialog = this._dialogService.open(StaffDetailComponent);
         _dialog.componentInstance.user = this.user;
+        _dialog.componentInstance.roles = this.roles;
+        _dialog.componentInstance.shops = this.shops;
         _dialog.afterClosed();
       })
   }

@@ -44,6 +44,8 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
   toggleRow: (any) => Observable<any>;
   @Input()
   addRow: () => Observable<any>;
+  @Input()
+  dateFilter: any = null;
 
   shops: RetailShop[] = [];
   shop: RetailShop;
@@ -52,6 +54,8 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   pageSize: number = 50;
   sortBy: string = 'id';
+  fromDate: Date;
+  toDate: Date;
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
   constructor(private _loadingService: TdLoadingService,
@@ -127,6 +131,11 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
     Object.keys(this.filters).forEach((k)=>{
       filters[k] = this.filters[k]
     });
+
+    if (this.dateFilter && this.fromDate && this.toDate) {
+      filters[this.dateFilter['fromDate']] = this.fromDate.toJSON();
+      filters[this.dateFilter['toDate']] = this.toDate.toJSON();
+    }
     this.filter().query(filters)
       .subscribe((resp: {data: any[], total: number}) => {
         this.filteredData = resp.data;
@@ -134,6 +143,19 @@ export class BaseStockTableComponent implements OnInit, OnDestroy {
         this._loadingService.resolve('tables');
       }, () => this._loadingService.resolve('tables'));
   }
+
+
+  filterByDate(){
+    if (this.fromDate && this.toDate) {
+      if (this.fromDate > this.toDate) {
+        let date = this.fromDate;
+        this.fromDate = this.toDate;
+        this.toDate = date;
+      }
+      this.getData();
+    }
+  }
+
 
   searchProduct = (event): void =>{
     this.filters['__product_name__contains'] = event;

@@ -22,6 +22,7 @@ export class StockEditComponent implements OnInit {
   }
 
   saveState(): void {
+    this.stock.default_stock = false;
     this._stockService.update(this.stock.id, this.stock).subscribe((data)=>{
       this.close(this.stock)
     }, ()=>{

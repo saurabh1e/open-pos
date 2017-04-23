@@ -19,7 +19,7 @@ export class StockComponent implements OnInit {
 
   columns: TdDataTableColumn[] = [
     { name: 'product', label: 'Product Name', sortable: true, nested: true, format: v => v.name },
-    { name: 'distributor_bill', label: 'Distributor', sortable: false, nested: true, format: v => v.distributor.name },
+    { name: 'distributor_name', label: 'Distributor', sortable: false, nested: true },
     { name: 'purchase_amount', label: 'Purchase (INR)', numeric: true, format: v => v.toFixed(2), sortable: false },
     { name: 'selling_amount', label: 'Selling (INR)', numeric: true, format: v => v.toFixed(2), sortable: false },
     { name: 'product', label: 'Shop', sortable: false , format: v => v.retail_shop.name},
@@ -29,8 +29,9 @@ export class StockComponent implements OnInit {
   ];
 
   title: string;
-  include: string[] = ['product', 'distributor_bill'];
+  include: string[] = ['product', 'distributor_name'];
   filters: any = {__order_by: '-created_on'};
+  dateFilter: any = {fromDate:'__created_on__date_gte', toDate:'__created_on__date_lte'};
 
   constructor(private _titleService: Title,
               private _dialogService: TdDialogService,

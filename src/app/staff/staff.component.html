@@ -2,10 +2,10 @@
                     [opened]="media.registerQuery('gt-md') | async"
                     [mode]="(media.registerQuery('gt-md') | async) ? 'side' : 'over'"
                     class="bgc-white-1"  [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '200px' : '100%'">
-  <div td-toolbar-content layout="row" layout-align="start center" flex>
-    <span flex></span>
+  <div td-toolbar-content fxLayout="row" fxLayoutAlign="start center" fxFlex>
+    <span fxFlex></span>
     <span>{{title}}</span>
-    <span flex></span>
+    <span fxFlex></span>
     <app-user></app-user>
   </div>
 
@@ -14,15 +14,15 @@
   <app-side-menu></app-side-menu>
   </md-nav-list>
 
-  <div class=" bgc-white-4 push-sm table" flex="100" layout-wrap="" layout="row" layout-align="center center">
+  <div class=" bgc-white-4 push-sm table" fxLayoutWrap="" fxLayout="row" fxLayoutAlign="center start">
 
-    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" flex="100">
+    <div fxLayout="row" fxLayoutAlign="start center" class="pad-left-sm pad-right-sm" fxFlex="100">
       <span class="push-left-sm">
         <span class="md-title">{{title}}</span>
       </span>
-      <span flex></span>
+      <span fxFlex></span>
       <td-search-box class=" push-right-sm" placeholder="Search Here.."
-                     (searchDebounce)="search($event)" flex="" [showUnderline]="true" [debounce]="500"
+                     (searchDebounce)="search($event)" fxFlex="" [showUnderline]="true" [debounce]="500"
                      [alwaysVisible]="true">
       </td-search-box>
     </div>
@@ -64,8 +64,9 @@
     </table>
 
   </div>
-  <div layout="row" layout-wrap="" class="pagination bgc-white-4 tc-black-4 pad-sm">
-    <td-paging-bar [pageSizes]="[25, 50, 75, 100]" [total]="filteredTotal"
+  <div fxLayout="row" fxLayoutWrap="" class="pagination bgc-white-4 tc-black-4 pad-sm md-shadow-bottom-z-1"
+       fxLayoutAlign="center center" fxFlex="100">
+    <td-paging-bar [pageSizes]="[50, 75, 100]" [total]="filteredTotal"
                    (change)="page($event)"></td-paging-bar>
   </div>
 </td-layout-nav-list>

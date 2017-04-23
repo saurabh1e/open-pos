@@ -15,15 +15,28 @@ export interface IUser {
   name: string;
   email: string;
   mobile_number: string;
-  roles: string[];
+  roles: Role[];
   retail_shop_ids: string[];
   brand_id: string;
   retail_shops: RetailShop[];
   retail_brand: RetailBrand[];
+  permissions: Permission[];
   _links: {}
   active: boolean;
 
 }
+
+export interface Role {
+  id: string;
+  name: string;
+  permissions: Permission[];
+}
+
+export interface Permission {
+  id: string;
+  name: string;
+}
+
 
 @Injectable()
 export class UsersService extends RESTService<IUser> {
@@ -119,5 +132,36 @@ export class UsersService extends RESTService<IUser> {
     return this.user && this.user.active
   }
 
+  updateShopAccess(userId: string, shopId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'user_retail_shop', {__action: action, retail_shop_id: shopId, user_id: userId})
+      .map(data=>data.json())
+  }
+
+
 }
+
+@Injectable()
+export class RolesService extends RESTService<Role> {
+
+  constructor(private _http: HttpInterceptorService) {
+    super(_http, {
+      baseUrl: MOCK_API,
+      path: '/role',
+    });
+  }
+
+
+  updateRoleAcess(userId: string, roleId: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'user_role', {__action: action, user_id: userId, role_id: roleId})
+      .map(data=>data.json())
+  }
+
+
+  updatePermissionAcess(userId: string, permission: string, action: string): Observable<Response> {
+    return this._http.post(MOCK_API+'user_permission', {__action: action, user_id: userId, permission_id: permission})
+      .map(data=>data.json())
+  }
+}
+
+
 
