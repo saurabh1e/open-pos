@@ -25,7 +25,7 @@
     </div>
 
     <div fxLayout="row" fxFlex="100">
-      <md-input-container fxFlex="33" class="push-right">
+      <md-input-container fxFlex="33" class="push-right" fxLayoutAlign="start end">
         <input mdInput [(ngModel)]="user.password" type="password" name="password" placeholder="Edit to Change Password"/>
       </md-input-container>
 
@@ -53,17 +53,32 @@
 
   <div fxLayout="row" fxLayoutWrap *ngFor="let role of roles">
 
-    <md-checkbox  fxFlex="100" class="push-top-md push-bottom-sm md-body-1" (change)="updateRole(role)"
-                  [checked]="checkUserRole(role)">
-      {{role.name}}
+    <md-checkbox  fxFlex="100"  (change)="updateRole(role)"
+                  [checked]="checkUserRole(role)" color="primary" class="bgc-primary push-top push-bottom">
+
+      {{role.name | uppercase}}
     </md-checkbox>
     <md-checkbox *ngFor="let permission of role.permissions" fxFlex="20" (change)="updatePermission(permission)"
                  [checked]="checkUserPermission(permission)" class="md-caption">
-      {{permission.name}}
+      {{permission.name.replace('_', ' ') | uppercase}}
     </md-checkbox>
 
   </div>
 
+  <md-card-actions fxLayout="row" fxLayoutAlign="center center" fxFlex class="push-top-lg">
+    <button md-fab="" md-tooltip="cancel"
+            (click)="close()" color="accent">
+      <md-icon >close</md-icon>
+    </button>
+    <span class="pad"></span>
 
+    <span class="pad"></span>
+    <button md-fab="" [disabled]="!staffForm.form.valid"
+            (click)="saveState()" color="primary" md-tooltip="save"
+    >
+      <md-icon >done</md-icon>
+    </button>
+
+  </md-card-actions>
 
 </div>

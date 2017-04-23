@@ -151,14 +151,14 @@ export class RolesService extends RESTService<Role> {
   }
 
 
-  updateRoleAcess(userId: string, roleId: string, action: string): Observable<Response> {
+  updateRoleAccess(userId: string, roleId: string, action: string): Observable<Response> {
     return this._http.post(MOCK_API+'user_role', {__action: action, user_id: userId, role_id: roleId})
       .map(data=>data.json())
   }
 
 
-  updatePermissionAcess(userId: string, permission: string, action: string): Observable<Response> {
-    return this._http.post(MOCK_API+'user_permission', {__action: action, user_id: userId, permission_id: permission})
+  updatePermissionAccess(data: {user_id: string, permission_id: string, __action: string}[]): Observable<Response> {
+    return this._http.post(MOCK_API+'user_permission', data)
       .map(data=>data.json())
   }
 }
