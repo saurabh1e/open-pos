@@ -1,4 +1,5 @@
-## Deprecated
+## [![deprecated](http://badges.github.io/stability-badges/dist/deprecated.svg)](http://github.com/badges/stability-badges)
+Deprecated
 This is no longer supported, please consider using https://github.com/saurabh1e/pos instead.
 
 ## Setup
