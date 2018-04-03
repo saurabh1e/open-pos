@@ -1,3 +1,7 @@
+## DEPRICATED
+
+This is no longer supported, please consider using https://github.com/saurabh1e/pos instead.
+
 ## Setup
 
 * Ensure you have Node 4.4+ and NPM 3+ installed.
