@@ -1,5 +1,4 @@
-## DEPRICATED
-
+## Deprecated
 This is no longer supported, please consider using https://github.com/saurabh1e/pos instead.
 
 ## Setup
